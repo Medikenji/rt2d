@@ -1,10 +1,11 @@
 # CMake entry point
-cmake_minimum_required (VERSION 2.8.12)
+cmake_minimum_required (VERSION 3.5)
 project (rt2d)
 
 # delete CMakeCache.txt from the build directory when you edit these options
 ####################################################################
 OPTION(MAKE_START "Make RT2D start application" ON)
+OPTION(MAKE_SPLENDOR "Make RT2D start application" ON)
 OPTION(MAKE_DEMO "Make RT2D demo (tests) application" ON)
 OPTION(MAKE_CANVAS_DEMO "Make RT2D Canvas demo (tests) application" ON)
 OPTION(MAKE_FLOCKING "Make flocking application" ON)
@@ -147,6 +148,32 @@ file(
 	COPY ${CMAKE_SOURCE_DIR}/rt2d/fonts
 	DESTINATION ${CMAKE_BINARY_DIR}
 )
+####################################################################
+# splendor                                                         #
+####################################################################
+IF(MAKE_SPLENDOR)
+	add_executable(splendor
+		splendor/main.cpp
+		splendor/player.cpp
+		splendor/player.h
+		splendor/myscene.cpp
+		splendor/myscene.h
+		splendor/enemy.cpp
+		splendor/enemy.h
+		splendor/altpathenemy.cpp
+		splendor/altpathenemy.h
+		splendor/linepathenemy.cpp
+		splendor/linepathenemy.h
+	)
+	target_link_libraries(splendor
+		${ALL_GRAPHICS_LIBS}
+	)
+	# Copy assets to the build directory
+	file(
+		COPY splendor/assets
+		DESTINATION ${CMAKE_BINARY_DIR}
+	)
+ENDIF()
 
 ####################################################################
 # start                                                            #

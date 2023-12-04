@@ -1,14 +1,3 @@
-/**
- * @file rt2dconfig.h
- *
- * @brief This header file defines some global vars.
- *
- * This file is part of RT2D, a 2D OpenGL framework.
- *
- * - Copyright 2015 Rik Teerling <rik@onandoffables.com>
- *   - Initial commit
- */
-
 #ifndef CONFIG_H
 #define CONFIG_H
 
@@ -16,7 +5,6 @@
 #include <string>
 
 #include <rt2d/color.h>
-
 
 // screenwidth, screenheight
 #define SWIDTH 1280 ///< The screen width
@@ -26,38 +14,36 @@
 
 #define WINDOWNAME "RT2D" ///< The window name
 
-#define CLEARCOLOR_RED 0.1f ///< The red component of the color of the window
+#define CLEARCOLOR_RED 0.1f   ///< The red component of the color of the window
 #define CLEARCOLOR_GREEN 0.1f ///< The green component of the color of the window
-#define CLEARCOLOR_BLUE 0.1f ///< The blue component of the color of the window
+#define CLEARCOLOR_BLUE 0.1f  ///< The blue component of the color of the window
 
 // defaultshader for Renderer as fallback if Sprite has no shader defined
-#define SPRITEVERTEXSHADER "shaders/sprite.vert" ///< vertexshader name
+#define SPRITEVERTEXSHADER "shaders/sprite.vert"   ///< vertexshader name
 #define SPRITEFRAGMENTSHADER "shaders/sprite.frag" ///< fragmentshader name
-#define AUTOGENWHITE "#autogen-white-TGA#" ///< auto generated Texture
+#define AUTOGENWHITE "#autogen-white-TGA#"         ///< auto generated Texture
 
 #define VSYNC 0 ///< VSYNC on (1) or off (0)
 
 #define DEFAULTFILTER 3 ///< texture filter
-#define DEFAULTWRAP 1 ///< texture clamping (0=repeat, 1=mirror, 2=clamp)
+#define DEFAULTWRAP 1   ///< texture clamping (0=repeat, 1=mirror, 2=clamp)
 
 #ifdef _WIN32
-	//static std::string _prefix = "C:/Users/[you]/path/to/rt2d/demo/";
-	static std::string _prefix = "";
+// static std::string _prefix = "C:/Users/[you]/path/to/rt2d/demo/";
+static std::string _prefix = "";
 #endif
 
 #ifdef __APPLE__
-	//static std::string _prefix = "/Users/[you]/path/to/rt2d/demo/";
-	static std::string _prefix = "";
+// static std::string _prefix = "/Users/[you]/path/to/rt2d/demo/";
+static std::string _prefix = "";
 #endif
 
 #ifdef __linux__
-	//static std::string _prefix = "/home/[you]/path/to/rt2d/demo/";
-	static std::string _prefix = "";
+// static std::string _prefix = "/home/[you]/path/to/rt2d/demo/";
+static std::string _prefix = "";
 #endif
 
-
 #endif /* CONFIG_H */
-
 
 /**
  * @mainpage RT2D - 2D OpenGL Framework

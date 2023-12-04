@@ -19,27 +19,27 @@
  * @brief pi (180 deg)
  * @var PI
  */
-#define PI			3.1415926535897932384626433832795
+#define PI 3.1415926535897932384626433832795
 /**
  * @brief pi/2 (90 deg)
  * @var HALF_PI
  */
-#define HALF_PI		1.5707963267948966192313216916398
+#define HALF_PI 1.5707963267948966192313216916398
 /**
  * @brief pi*2 (360 deg)
  * @var TWO_PI
  */
-#define TWO_PI		6.283185307179586476925286766559
+#define TWO_PI 6.283185307179586476925286766559
 /**
  * @brief convert degrees to radians
  * @var DEG_TO_RAD
  */
-#define DEG_TO_RAD	0.017453292519943295769236907684886
+#define DEG_TO_RAD 0.017453292519943295769236907684886
 /**
  * @brief convert radians to degrees
  * @var RAD_TO_DEG
  */
-#define RAD_TO_DEG	57.295779513082320876798154814105
+#define RAD_TO_DEG 57.295779513082320876798154814105
 
 /**
  * @brief A helper class to calculate distances and angles
@@ -162,14 +162,14 @@ public:
 	 * @return angle
 	 * The angle between this Vector_t<T>, and another Vector_t<T> in radians
 	 */
-	const T getAngle(const VectorX_t<T>& other) const;
+	const T getAngle(const VectorX_t<T> &other) const;
 	/**
 	 * @brief Get the angle between this Vector_t<T>, and another Vector_t<T> in degrees
 	 *
 	 * @return angle
 	 * The angle between this Vector_t<T>, and another Vector_t<T> in degrees
 	 */
-	const T getAngleDeg(const VectorX_t<T>& other) const;
+	const T getAngleDeg(const VectorX_t<T> &other) const;
 	/**
 	 * @brief Get the normalized Vector_t<T>.
 	 *
@@ -198,7 +198,7 @@ public:
 	 * @return Scalar
 	 * Returns the dot product
 	 */
-	const T dot(const VectorX_t<T>& other) const;
+	const T dot(const VectorX_t<T> &other) const;
 	/**
 	 * @brief Get the cross product of this and another Vector3.
 	 * This only makes sense with a Vector3
@@ -206,7 +206,7 @@ public:
 	 * @return Vector_t<T>
 	 * the cross product
 	 */
-	const VectorX_t<T> cross(const VectorX_t<T>& other) const;
+	const VectorX_t<T> cross(const VectorX_t<T> &other) const;
 	/**
 	 * @brief Rotate this Vector2 in radians.
 	 *
@@ -397,7 +397,6 @@ typedef Vector3f Vector3;
 template <class T>
 VectorX_t<T>::VectorX_t()
 {
-
 }
 
 template <class T>
@@ -419,23 +418,22 @@ VectorX_t<T>::VectorX_t(T xx, T yy, T zz)
 template <class T>
 VectorX_t<T>::VectorX_t(Point_t<T> begin, Point_t<T> end)
 {
-    this->x = (end.x - begin.x);
-    this->y = (end.y - begin.y);
-    this->z = (end.z - begin.z);
+	this->x = (end.x - begin.x);
+	this->y = (end.y - begin.y);
+	this->z = (end.z - begin.z);
 }
 
 template <class T>
 VectorX_t<T>::VectorX_t(Point_t<T> p)
 {
-    this->x = p.x;
-    this->y = p.y;
-    this->z = p.z;
+	this->x = p.x;
+	this->y = p.y;
+	this->z = p.z;
 }
 
 template <class T>
 VectorX_t<T>::~VectorX_t()
 {
-
 }
 
 // getLength()
@@ -452,7 +450,7 @@ const T VectorX_t<T>::getLengthSquared() const
 	T yy = this->y;
 	T zz = this->z;
 
-    return (xx*xx)+(yy*yy)+(zz*zz);
+	return (xx * xx) + (yy * yy) + (zz * zz);
 }
 
 // setLength()
@@ -476,7 +474,7 @@ const T VectorX_t<T>::getAngle() const
 
 	// You'd expect the following to work, but it doesn't, because the
 	// angle between 2 Vectors is always between 0 and 180 degrees (pi radians)
-	//return getAngle(VectorX_t<T>(1,0,0));
+	// return getAngle(VectorX_t<T>(1,0,0));
 }
 
 template <class T>
@@ -487,18 +485,18 @@ const T VectorX_t<T>::getAngleDeg() const
 
 // getAngle(VectorX_t<T>& other)
 template <class T>
-const T VectorX_t<T>::getAngle(const VectorX_t<T>& other) const
+const T VectorX_t<T>::getAngle(const VectorX_t<T> &other) const
 {
 	VectorX_t<T> copy = *this;
 	T dot = copy.dot(other);
 	T l1 = copy.getLength();
 	T l2 = other.getLength();
 
-	return acos(dot/(l1*l2)); // law of cosines
+	return acos(dot / (l1 * l2)); // law of cosines
 }
 
 template <class T>
-const T VectorX_t<T>::getAngleDeg(const VectorX_t<T>& other) const
+const T VectorX_t<T>::getAngleDeg(const VectorX_t<T> &other) const
 {
 	return (getAngle(other) * RAD_TO_DEG);
 }
@@ -517,7 +515,8 @@ template <class T>
 void VectorX_t<T>::normalize()
 {
 	T l = this->getLength();
-	if (l != 0) {
+	if (l != 0)
+	{
 		*this /= l;
 	}
 }
@@ -539,7 +538,7 @@ const VectorX_t<T> VectorX_t<T>::getLerped(T frac) const
 
 // dot and cross products
 template <class T>
-const T VectorX_t<T>::dot(const VectorX_t<T>& other) const
+const T VectorX_t<T>::dot(const VectorX_t<T> &other) const
 {
 	T x = this->x * other.x;
 	T y = this->y * other.y;
@@ -549,13 +548,13 @@ const T VectorX_t<T>::dot(const VectorX_t<T>& other) const
 }
 
 template <class T>
-const VectorX_t<T> VectorX_t<T>::cross(const VectorX_t<T>& other) const
+const VectorX_t<T> VectorX_t<T>::cross(const VectorX_t<T> &other) const
 {
 	T x = (this->y * other.z) - (this->z * other.y);
 	T y = (this->z * other.x) - (this->x * other.z);
 	T z = (this->x * other.y) - (this->y * other.x);
 
-	return VectorX_t<T>(x,y,z);
+	return VectorX_t<T>(x, y, z);
 }
 
 // rotation
@@ -604,7 +603,8 @@ const VectorX_t<T> VectorX_t<T>::getRotatedDeg(T angle) const
 template <class T>
 void VectorX_t<T>::limit(T amount)
 {
-	if (this->getLengthSquared() > amount*amount) {
+	if (this->getLengthSquared() > amount * amount)
+	{
 		this->normalize();
 		*this *= amount;
 	}
@@ -635,8 +635,6 @@ bool VectorX_t<T>::operator>=(VectorX_t<T> other)
 	return (this->getLengthSquared() >= other.getLengthSquared());
 }
 
-
-
 // =================================================
 // Class definition of Polar_t<T>
 // =================================================
@@ -657,7 +655,7 @@ class Polar_t
 {
 public:
 	T angle;	///< @brief angle of Polar_t
-	T radius;	///< @brief radius of Polar_t
+	T radius; ///< @brief radius of Polar_t
 
 	/// @brief Default Polar_t<T> constructor.
 	Polar_t<T>();
@@ -672,7 +670,7 @@ public:
 
 	/// @brief Set this Polar from a VectorX_t
 	/// @return Polar_t<T>
-	Polar_t<T> fromCartesian(const VectorX_t<T>& vec);
+	Polar_t<T> fromCartesian(const VectorX_t<T> &vec);
 
 	/// @brief Set this Polar from an x and y
 	/// @return Polar_t<T>
@@ -709,7 +707,7 @@ const VectorX_t<T> Polar_t<T>::cartesian() const
 }
 
 template <class T>
-Polar_t<T> Polar_t<T>::fromCartesian(const VectorX_t<T>& vec)
+Polar_t<T> Polar_t<T>::fromCartesian(const VectorX_t<T> &vec)
 {
 	this->angle = vec.getAngle();
 	this->radius = vec.getLength();
@@ -733,7 +731,5 @@ typedef Polar_t<float> Polarf;
 typedef Polar_t<double> Polard;
 /// @brief A typedef for creating a default Polar
 typedef Polarf Polar;
-
-
 
 #endif // VECTORX_H_

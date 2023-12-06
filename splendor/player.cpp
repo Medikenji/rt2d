@@ -2,6 +2,7 @@
 #include <vectorx.h>
 Player::Player() : Entity()
 {
+
 	t.start();
 	this->addSprite("assets/player.tga");
 	this->scale = Point2(0.1, 0.1);
@@ -13,6 +14,7 @@ Player::~Player()
 
 void Player::update(float deltaTime)
 {
+	HandlePlayer();
 }
 
 void Player::controlPlayer(int switcher, float deltaTime)
@@ -37,7 +39,7 @@ void Player::controlPlayer(int switcher, float deltaTime)
 	}
 }
 
-void Player::HandlePlayer(float mx, float my)
+void Player::HandlePlayer()
 {
 	if (velocity.x && velocity.y != NULL)
 	{
@@ -46,6 +48,4 @@ void Player::HandlePlayer(float mx, float my)
 	}
 	this->position += velocity;
 	velocity *= 0;
-	Vector2 diff = Vector2(mx, my) - this->position;
-	this->rotation.z = diff.getAngle();
 }

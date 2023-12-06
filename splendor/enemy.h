@@ -7,18 +7,17 @@
 class Enemy : public Entity
 {
 public:
-	float speedMultiplier = 1;
-	void EnemyMover(Point playerPos);
-	void Visuals(float deltaTime);
 	Enemy();
 	virtual ~Enemy();
+	void EnemyMover(Point playerPos);
+	void Visuals(float deltaTime);
+	void killYourself();
 	virtual void update(float deltatime);
-
-	Player *p;
+	int health;
+	float speedMultiplier;
 
 private:
 	Timer t;
-	Point velocity;
 };
 
 #endif

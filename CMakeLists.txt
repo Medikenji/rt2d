@@ -156,8 +156,8 @@ IF(MAKE_SPLENDOR)
 		splendor/main.cpp
 		splendor/player.cpp
 		splendor/player.h
-		splendor/myscene.cpp
-		splendor/myscene.h
+		splendor/gamescene.cpp
+		splendor/gamescene.h
 		splendor/enemy.cpp
 		splendor/enemy.h
 		splendor/altpathenemy.cpp

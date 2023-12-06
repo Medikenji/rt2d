@@ -8,23 +8,23 @@
 #include "altpathenemy.h"
 #include "linepathenemy.h"
 
-class MyScene : public Scene
+class GameScene : public Scene
 {
 public:
-	MyScene();
+	GameScene();
+	virtual ~GameScene();
+	virtual void update(float deltaTime);
 	void getMouse();
 	void exitGame();
 	void drawLine(float mx, float my);
 	void controlPlayer(float deltaTime);
-	virtual ~MyScene();
-	virtual void update(float deltaTime);
 
 private:
 	Player *player;
 	AltPathEnemy *altEnemy;
 	LinePathEnemy *straightEnemy;
-	Enemy *enemy2;
 	Timer t;
+	Vector2 enemyTarget;
 	float mx;
 	float my;
 };

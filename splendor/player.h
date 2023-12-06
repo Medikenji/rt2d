@@ -6,8 +6,9 @@
 class Player : public Entity
 {
 public:
+	Point velocity;
 	Player();
-	void HandlePlayer(float mx, float my);
+	void HandlePlayer();
 	void controlPlayer(int switcher, float deltaTime);
 	virtual ~Player();
 	virtual void update(float deltaTime);
@@ -15,7 +16,6 @@ public:
 private:
 	Timer t;
 	int speed = 750;
-	Point velocity;
 	double sqrt2 = sqrt(2);
 };
 #endif

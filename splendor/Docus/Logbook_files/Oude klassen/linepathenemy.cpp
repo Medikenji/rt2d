@@ -5,7 +5,6 @@ LinePathEnemy::LinePathEnemy(Vector2 *targetEntity) : Enemy()
 	speed = 250 * speedMultiplier;
 	this->health = 100;
 	this->targetPosition = targetEntity;
-	this->position = Point2(rand() % SWIDTH, rand() % SHEIGHT);
 }
 
 LinePathEnemy::~LinePathEnemy()

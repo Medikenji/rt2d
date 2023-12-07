@@ -18,11 +18,14 @@ public:
 	void exitGame();
 	void drawLine(float mx, float my);
 	void controlPlayer(float deltaTime);
+	void createAltPathEnemies(int amount);
+	void createLinePathEnemies(int amount);
 
 private:
 	Player *player;
-	AltPathEnemy *altEnemy;
-	LinePathEnemy *straightEnemy;
+	std::vector<AltPathEnemy *> altPathEnemies;
+	std::vector<LinePathEnemy *> linePathEnemies;
+
 	Timer t;
 	Vector2 enemyTarget;
 	float mx;

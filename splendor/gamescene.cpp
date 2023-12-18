@@ -11,8 +11,8 @@ GameScene::GameScene() : Scene()
 	this->addChild(player);
 	altPathEnemies = std::vector<AltPathEnemy *>();
 	linePathEnemies = std::vector<LinePathEnemy *>();
-	createAltPathEnemies(100);
-	createLinePathEnemies(100);
+	createAltPathEnemies(5);
+	createLinePathEnemies(1);
 }
 
 GameScene::~GameScene()
@@ -23,11 +23,13 @@ GameScene::~GameScene()
 
 void GameScene::update(float deltaTime)
 {
+
 	enemyTarget = player->position;
 	getMouse();
 	exitGame();
-	controlPlayer(deltaTime);
 	drawLine(mx, my);
+	controlPlayer(deltaTime);
+	checkCol(deltaTime);
 }
 
 void GameScene::getMouse()
@@ -62,7 +64,7 @@ void GameScene::controlPlayer(float deltaTime)
 	{
 		player->controlPlayer(4, deltaTime);
 	}
-	if (input()->getKey(KeyCode::LeftShift))
+	if (input()->getKeyDown(KeyCode::LeftShift))
 	{
 		player->controlPlayer(5, deltaTime);
 	}
@@ -96,4 +98,38 @@ void GameScene::createLinePathEnemies(int amount)
 	{
 		this->addChild(lineEnemy);
 	}
+}
+
+void GameScene::checkCol(float deltaTime)
+{
+	for (const auto AltPathEnemy : altPathEnemies)
+	{
+		if (AltPathEnemy->position.x > SWIDTH || AltPathEnemy->position.y > SHEIGHT)
+		{
+			AltPathEnemy->position = Point2(rand() % SWIDTH, -SHEIGHT);
+		}
+		if (col(AltPathEnemy))
+		{
+			player->takeDamage(deltaTime);
+		}
+	}
+	for (const auto LinePathEnemy : linePathEnemies)
+	{
+		if (LinePathEnemy->position.x > SWIDTH || LinePathEnemy->position.y > SHEIGHT)
+		{
+			LinePathEnemy->position = Point2(rand() % SWIDTH, -SHEIGHT);
+		}
+		if (col(LinePathEnemy))
+		{
+			player->takeDamage(deltaTime);
+		}
+	}
+}
+
+bool GameScene::col(Enemy *enemy)
+{
+	return (enemy->position.x < player->position.x + player->sprite()->size.x * player->scale.x &&
+					enemy->position.x + enemy->sprite()->size.x * enemy->scale.x > player->position.x &&
+					enemy->position.y < player->position.y + player->sprite()->size.y * player->scale.y &&
+					enemy->position.y + enemy->sprite()->size.y * enemy->scale.y > player->position.y);
 }

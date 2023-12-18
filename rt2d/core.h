@@ -27,13 +27,13 @@
 class Core
 {
 public:
-	Core(); ///< @brief Constructor of the Core
+	Core();					 ///< @brief Constructor of the Core
 	virtual ~Core(); ///< @brief Destructor of the Core
 
 	/// @brief runs a Scene (update/render)
 	/// @param scene The scene that needs to 'run'.
 	/// @return void
-	void run(Scene* scene);
+	void run(Scene *scene);
 	/// @brief clean up this session (everything except Shader)
 	/// @return void
 	void cleanup();
@@ -45,12 +45,13 @@ public:
 	/// @param numsecs print framerate every nth second.
 	/// @return void
 	void showFrameRate(float numsecs);
+	void hideCursor();
 
 private:
 	Renderer _renderer; ///< @brief The Renderer member
 
 	double _calculateDeltaTime(); ///< @brief updates deltaTime internally
-	double _deltaTime; ///< @brief deltaTime member
+	double _deltaTime;						///< @brief deltaTime member
 };
 
 #endif /* CORE_H */

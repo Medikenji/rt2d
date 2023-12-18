@@ -14,7 +14,7 @@ Player::~Player()
 
 void Player::update(float deltaTime)
 {
-	HandlePlayer();
+	handlePlayer();
 }
 
 void Player::controlPlayer(int switcher, float deltaTime)
@@ -39,7 +39,7 @@ void Player::controlPlayer(int switcher, float deltaTime)
 	}
 }
 
-void Player::HandlePlayer()
+void Player::handlePlayer()
 {
 	if (velocity.x && velocity.y != NULL)
 	{

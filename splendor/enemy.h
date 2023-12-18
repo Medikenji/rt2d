@@ -12,9 +12,11 @@ public:
 	void EnemyMover(Point playerPos);
 	void Visuals(float deltaTime);
 	void killYourself();
-	virtual void update(float deltatime);
+	void addForce(float deltaTime);
+	void update(float deltatime);
 	int health;
 	float speedMultiplier;
+	Vector2 velocity;
 
 private:
 	Timer t;

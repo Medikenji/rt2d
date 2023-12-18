@@ -2,9 +2,8 @@
 
 AltPathEnemy::AltPathEnemy(Vector2 *targetEntity) : Enemy()
 {
-	speed = 250 * speedMultiplier;
 	health = 100;
-	randomiser = rand() % 4;
+	randomiser = rand() % 2;
 	this->targetPosition = targetEntity;
 	this->position = Point2(rand() % SWIDTH, rand() % SHEIGHT);
 }
@@ -14,9 +13,9 @@ AltPathEnemy::~AltPathEnemy()
 }
 void AltPathEnemy::update(float deltaTime)
 {
-	goMove(*targetPosition, deltaTime);
-	countDown(0.5, deltaTime);
 	Enemy::update(deltaTime);
+	countDown(0.5, deltaTime);
+	goMove(*targetPosition, deltaTime);
 }
 
 void AltPathEnemy::goMove(Point targetPos, float deltaTime)
@@ -25,7 +24,6 @@ void AltPathEnemy::goMove(Point targetPos, float deltaTime)
 	Vectorial.normalize();
 	velocity += Vectorial * speed * deltaTime;
 	goAccelerate(deltaTime, Vectorial, randomiser);
-	velocity;
 	this->position += velocity;
 	velocity *= 0;
 }
@@ -35,16 +33,16 @@ void AltPathEnemy::goAccelerate(float deltaTime, Vector2 vectorial, int switcher
 	switch (switcher)
 	{
 	case 0:
-		velocity.x += -vectorial.y * speed * deltaTime;
+		speed = 50 * speedMultiplier;
 		break;
 	case 1:
-		velocity.y += -vectorial.x * speed * deltaTime;
+		speed = 100 * speedMultiplier;
 		break;
 	case 2:
-		velocity.x += vectorial.y * speed * deltaTime;
+		speed = 150 * speedMultiplier;
 		break;
 	case 3:
-		velocity.y += vectorial.x * speed * deltaTime;
+		speed = 200 * speedMultiplier;
 		break;
 	}
 }

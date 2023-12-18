@@ -14,7 +14,9 @@ Enemy::~Enemy()
 
 void Enemy::update(float deltaTime)
 {
+
 	Visuals(deltaTime);
+	addForce(deltaTime);
 }
 
 void Enemy::Visuals(float deltaTime)
@@ -31,5 +33,10 @@ void Enemy::Visuals(float deltaTime)
 void Enemy::killYourself()
 {
 	parent()->removeChild(this);
-	delete this;
+}
+
+void Enemy::addForce(float deltaTime)
+{
+	// gravity
+	velocity += Vector2(0, 350) * deltaTime;
 }

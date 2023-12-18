@@ -2,7 +2,8 @@
 #include <vectorx.h>
 Player::Player() : Entity()
 {
-
+	health = 3;
+	speed = 750;
 	t.start();
 	this->addSprite("assets/player.tga");
 	this->scale = Point2(0.1, 0.1);
@@ -14,7 +15,8 @@ Player::~Player()
 
 void Player::update(float deltaTime)
 {
-	HandlePlayer();
+	killYourself();
+	handlePlayer();
 }
 
 void Player::controlPlayer(int switcher, float deltaTime)
@@ -39,7 +41,7 @@ void Player::controlPlayer(int switcher, float deltaTime)
 	}
 }
 
-void Player::HandlePlayer()
+void Player::handlePlayer()
 {
 	if (velocity.x && velocity.y != NULL)
 	{
@@ -48,4 +50,17 @@ void Player::HandlePlayer()
 	}
 	this->position += velocity;
 	velocity *= 0;
+}
+
+void Player::takeDamage(float deltaTime)
+{
+	health -= 1 * deltaTime;
+}
+
+void Player::killYourself()
+{
+	if (health <= 0 && this != nullptr)
+	{
+		this->parent()->removeChild(this);
+	}
 }

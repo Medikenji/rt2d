@@ -8,14 +8,17 @@ class Player : public Entity
 public:
 	Point velocity;
 	Player();
-	void HandlePlayer();
+	void handlePlayer();
 	void controlPlayer(int switcher, float deltaTime);
 	virtual ~Player();
 	virtual void update(float deltaTime);
+	void killYourself();
+	void takeDamage(float deltaTime);
 
 private:
 	Timer t;
-	int speed = 750;
+	int speed;
 	double sqrt2 = sqrt(2);
+	double health;
 };
 #endif

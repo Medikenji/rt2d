@@ -26,3 +26,19 @@ Ik heb in het 2e uur een spawner functie gemaakt om een bepaalde hoeveelheid ene
 In 3e uur ga ik een nieuw enemy type maken, dit type beweegt niet. Ik heb de altPathEnemy ook een nieuwe AI gegeven om zijn tactiek constant te veranderen.
 
 ---
+
+# Week 50
+
+---
+
+> #### 11/12/23
+
+Ik ben de hele dag bezig geweest om mijn portfolio op nieuw te maken. Dit is volledig gelukt behalve het hosten in verband met niet betaald geld.
+
+> #### 12/12/23
+
+Ik heb het spel aangepast door altpathenemy een nieuwe functie te geven. Ook heeft de speler nu collision met de enemies.
+
+> #### 13/12/23
+
+Ik heb de muis laten verdwijnen in mijn spel. Ook heb ik een werkend health systeem gemaakt voor de speler met een game over state.

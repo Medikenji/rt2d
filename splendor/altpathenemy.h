@@ -18,7 +18,6 @@ public:
 private:
 	float time;
 	Vector2 *targetPosition;
-	Vector2 velocity;
 	int randomiser;
 	float speed;
 };

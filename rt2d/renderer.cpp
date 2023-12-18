@@ -40,29 +40,34 @@ Renderer::~Renderer()
 int Renderer::init()
 {
 	// Initialise GLFW
-	if( !glfwInit() ) {
-		fprintf( stderr, "Failed to initialize GLFW\n" );
+	if (!glfwInit())
+	{
+		fprintf(stderr, "Failed to initialize GLFW\n");
 		return -1;
 	}
 
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // MacOS X
+	// glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // MacOS X
 
-	GLFWmonitor* primary = glfwGetPrimaryMonitor();
-	const GLFWvidmode* mode = glfwGetVideoMode(primary);
-	std::cout << "monitor: " << mode->width << "x"  << mode->height << std::endl;
+	GLFWmonitor *primary = glfwGetPrimaryMonitor();
+	const GLFWvidmode *mode = glfwGetVideoMode(primary);
+	std::cout << "monitor: " << mode->width << "x" << mode->height << std::endl;
 
 	// Open a window and create its OpenGL context
-	if (FULLSCREEN) {
-		_window = glfwCreateWindow( SWIDTH, SHEIGHT, WINDOWNAME, primary, nullptr);
-	} else {
-		_window = glfwCreateWindow( SWIDTH, SHEIGHT, WINDOWNAME, nullptr, nullptr);
+	if (FULLSCREEN)
+	{
+		_window = glfwCreateWindow(SWIDTH, SHEIGHT, WINDOWNAME, primary, nullptr);
+	}
+	else
+	{
+		_window = glfwCreateWindow(SWIDTH, SHEIGHT, WINDOWNAME, nullptr, nullptr);
 	}
 
-	if( _window == nullptr ) {
-		fprintf( stderr, "Failed to open GLFW window.\n" );
+	if (_window == nullptr)
+	{
+		fprintf(stderr, "Failed to open GLFW window.\n");
 		glfwTerminate();
 		return -1;
 	}
@@ -72,7 +77,8 @@ int Renderer::init()
 	glfwSwapInterval(VSYNC);
 
 	// Initialize GLEW
-	if (glewInit() != GLEW_OK) {
+	if (glewInit() != GLEW_OK)
+	{
 		fprintf(stderr, "Failed to initialize GLEW\n");
 		return -1;
 	}
@@ -81,21 +87,21 @@ int Renderer::init()
 	glfwSetInputMode(_window, GLFW_STICKY_KEYS, GL_TRUE);
 
 	// MS Windows only
-	//glfwSetCursorPos(_window, SWIDTH/2, SHEIGHT/2);
+	// glfwSetCursorPos(_window, SWIDTH/2, SHEIGHT/2);
 
 	// Black background
 	glClearColor(CLEARCOLOR_RED, CLEARCOLOR_GREEN, CLEARCOLOR_BLUE, 1.0f);
 
 	// Orthographic camera. We don't need these.
 	// Enable depth test
-	//glEnable(GL_DEPTH_TEST);
+	// glEnable(GL_DEPTH_TEST);
 	// Accept fragment if it closer to the camera than the former one
-	//glDepthFunc(GL_LESS);
+	// glDepthFunc(GL_LESS);
 
 	// Cull triangles which normal is not towards the camera
-	//glEnable(GL_CULL_FACE);
+	// glEnable(GL_CULL_FACE);
 
-	_defaultShader =_resman.getShader(SPRITEVERTEXSHADER, SPRITEFRAGMENTSHADER);
+	_defaultShader = _resman.getShader(SPRITEVERTEXSHADER, SPRITEFRAGMENTSHADER);
 	printf("Renderer using uberShader as fallback\n");
 
 	printf("Renderer::init() done\n");
@@ -103,13 +109,13 @@ int Renderer::init()
 	return 0;
 }
 
-void Renderer::renderScene(Scene* scene)
+void Renderer::renderScene(Scene *scene)
 {
-	// Since apple scales automatically, this will cause bugs where the viewport gets very small.
-	#ifndef __APPLE__
-		// Set the glViewport to the width and height of the window.
-		glViewport(0, 0, scene->input()->getWindowWidth(), scene->input()->getWindowHeight());
-	#endif
+// Since apple scales automatically, this will cause bugs where the viewport gets very small.
+#ifndef __APPLE__
+	// Set the glViewport to the width and height of the window.
+	glViewport(0, 0, scene->input()->getWindowWidth(), scene->input()->getWindowHeight());
+#endif
 
 	// Clear the screen
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -129,20 +135,20 @@ void Renderer::renderScene(Scene* scene)
 	glfwSwapBuffers(_window);
 }
 
-void Renderer::_renderEntity(glm::mat4 modelMatrix, Entity* entity, Camera* camera)
+void Renderer::_renderEntity(glm::mat4 modelMatrix, Entity *entity, Camera *camera)
 {
 	/*
-	  All steps to take:
+		All steps to take:
 
-	  - build model matrix for this entity
-	  - multiply that with model matrix of parent
-	  - update real world coordinates of entity (we calculate it here anyway)
+		- build model matrix for this entity
+		- multiply that with model matrix of parent
+		- update real world coordinates of entity (we calculate it here anyway)
 
-	  - render sprite (if any)
-	  - render line (if any)
-	  - render spritebatch (if any)
+		- render sprite (if any)
+		- render line (if any)
+		- render spritebatch (if any)
 
-	  Do this recursively for all children of this entity.
+		Do this recursively for all children of this entity.
 	*/
 
 	// OpenGL doesn't understand our Point3. Make it glm::vec3 compatible.
@@ -151,9 +157,9 @@ void Renderer::_renderEntity(glm::mat4 modelMatrix, Entity* entity, Camera* came
 	glm::vec3 scale = glm::vec3(entity->scale.x, entity->scale.y, entity->scale.z);
 
 	// Build the Model matrix
-	glm::mat4 translationMatrix	= glm::translate(glm::mat4(1.0f), position);
-	glm::mat4 rotationMatrix	= glm::eulerAngleYXZ(rotation.y, rotation.x, rotation.z);
-	glm::mat4 scalingMatrix		= glm::scale(glm::mat4(1.0f), scale);
+	glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), position);
+	glm::mat4 rotationMatrix = glm::eulerAngleYXZ(rotation.y, rotation.x, rotation.z);
+	glm::mat4 scalingMatrix = glm::scale(glm::mat4(1.0f), scale);
 
 	glm::mat4 mm = translationMatrix * rotationMatrix * scalingMatrix;
 
@@ -162,8 +168,8 @@ void Renderer::_renderEntity(glm::mat4 modelMatrix, Entity* entity, Camera* came
 	modelMatrix *= mm;
 
 	// #######################################################
-	//glm::vec4 realpos = modelMatrix * glm::vec4(0,0,0,1);
-	//entity->_worldposition = Vector3(realpos.x, realpos.y, realpos.z);
+	// glm::vec4 realpos = modelMatrix * glm::vec4(0,0,0,1);
+	// entity->_worldposition = Vector3(realpos.x, realpos.y, realpos.z);
 
 	// send the real world transforms back to Entity (glm::decompose is experimental)
 	glm::vec3 realscale;
@@ -179,73 +185,89 @@ void Renderer::_renderEntity(glm::mat4 modelMatrix, Entity* entity, Camera* came
 	// #######################################################
 
 	// Check for Sprites to see if we need to render anything
-	Sprite* sprite = entity->sprite();
-	if (sprite != nullptr) {
+	Sprite *sprite = entity->sprite();
+	if (sprite != nullptr)
+	{
 		// render the Sprite
 		this->_renderSprite(modelMatrix, sprite);
 	}
 
 	// Check for Spritebatch to see if we need to render anything
-	if (entity->_spritebatch.size() > 0) {
+	if (entity->_spritebatch.size() > 0)
+	{
 		// render the Spritebatch
 		this->_renderSpriteBatch(modelMatrix, entity->_spritebatch, camera);
 	}
 
 	// Check for Lines to see if we need to render anything
-	Line* line = entity->line();
-	if (line != nullptr) {
+	Line *line = entity->line();
+	if (line != nullptr)
+	{
 		// render the Line.
 		this->_renderLine(modelMatrix, line);
 	}
 
 	// Check for Linebatch to see if we need to render anything
 	size_t s = entity->_linebatch.size();
-	if (s > 0) { // render the Linebatch
-		for (size_t i = 0; i < s; i++) {
+	if (s > 0)
+	{ // render the Linebatch
+		for (size_t i = 0; i < s; i++)
+		{
 			this->_renderLine(modelMatrix, &entity->_linebatch[i]);
 		}
 	}
 
 	// Render all Children (recursively)
-	std::vector<Entity*> children = entity->children();
-	std::vector<Entity*>::iterator child;
-	for (child = children.begin(); child != children.end(); child++) {
+	std::vector<Entity *> children = entity->children();
+	std::vector<Entity *>::iterator child;
+	for (child = children.begin(); child != children.end(); child++)
+	{
 		this->_renderEntity(modelMatrix, *child, camera);
 	}
 }
 
-void Renderer::_renderSpriteBatch(glm::mat4 modelMatrix, std::vector<Sprite*>& spritebatch, Camera* camera)
+void Renderer::_renderSpriteBatch(glm::mat4 modelMatrix, std::vector<Sprite *> &spritebatch, Camera *camera)
 {
-	Sprite* spr = spritebatch[0];
-	Shader* shader = _resman.getShader(spr->vertexshader().c_str(), spr->fragmentshader().c_str());
+	Sprite *spr = spritebatch[0];
+	Shader *shader = _resman.getShader(spr->vertexshader().c_str(), spr->fragmentshader().c_str());
 	// ask resourcemanager
-	if (shader == nullptr) {
+	if (shader == nullptr)
+	{
 		shader = _defaultShader; // fallback to defaultshader
 	}
 	std::string texturename = spr->texturename();
 	int filter = spr->filter();
 	int wrap = spr->wrap();
-	Texture* texture = _resman.getTexture(texturename, filter, wrap);
+	Texture *texture = _resman.getTexture(texturename, filter, wrap);
 
-	if (spr->size.x == 0) { spr->size.x = texture->width() * spr->uvdim.x; }
-	if (spr->size.y == 0) { spr->size.y = texture->height() * spr->uvdim.y; }
+	if (spr->size.x == 0)
+	{
+		spr->size.x = texture->width() * spr->uvdim.x;
+	}
+	if (spr->size.y == 0)
+	{
+		spr->size.y = texture->height() * spr->uvdim.y;
+	}
 
-	Mesh* mesh = _resman.getSpriteMesh(spr->size.x, spr->size.y, spr->pivot.x, spr->pivot.y, spr->uvdim.x, spr->uvdim.y, spr->circlemesh(), spr->which());
+	Mesh *mesh = _resman.getSpriteMesh(spr->size.x, spr->size.y, spr->pivot.x, spr->pivot.y, spr->uvdim.x, spr->uvdim.y, spr->circlemesh(), spr->which());
 
-	if (texture != nullptr) {
+	if (texture != nullptr)
+	{
 		// Bind the texture in Texture Unit 0
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture->getGLTexture());
-		//glUniform1i(shader->textureID(), 0);
+		// glUniform1i(shader->textureID(), 0);
 
 		// for every Sprite in the batch...
 		int s = spritebatch.size();
-		for (int i = 0; i < s; i++) {
-			Sprite* sprite = spritebatch[i]; // a Sprite handle
-			int culled = 0; // state that we need to draw it
-			if (sprite->useCulling()) { // but maybe we don't
-				int half_width = SWIDTH/2;
-				int half_height = SHEIGHT/2;
+		for (int i = 0; i < s; i++)
+		{
+			Sprite *sprite = spritebatch[i]; // a Sprite handle
+			int culled = 0;									 // state that we need to draw it
+			if (sprite->useCulling())
+			{ // but maybe we don't
+				int half_width = SWIDTH / 2;
+				int half_height = SHEIGHT / 2;
 
 				int left_edge = camera->position.x - half_width;
 				int right_edge = camera->position.x + half_width;
@@ -256,22 +278,51 @@ void Renderer::_renderSpriteBatch(glm::mat4 modelMatrix, std::vector<Sprite*>& s
 				float posy = sprite->spriteposition.y;
 
 				int debug = 0;
-				if (debug) { // cull visibly within the frame
-					if (posx - spr->size.x < left_edge) { culled = 1; }
-					if (posx + spr->size.x > right_edge) { culled = 1; }
-					if (posy + spr->size.y > bottom_edge) { culled = 1; }
-					if (posy - spr->size.y < top_edge) { culled = 1; }
-				} else {
-					if (posx + spr->size.x < left_edge) { culled = 1; }
-					if (posx - spr->size.x > right_edge) { culled = 1; }
-					if (posy - spr->size.y > bottom_edge) { culled = 1; }
-					if (posy + spr->size.y < top_edge) { culled = 1; }
+				if (debug)
+				{ // cull visibly within the frame
+					if (posx - spr->size.x < left_edge)
+					{
+						culled = 1;
+					}
+					if (posx + spr->size.x > right_edge)
+					{
+						culled = 1;
+					}
+					if (posy + spr->size.y > bottom_edge)
+					{
+						culled = 1;
+					}
+					if (posy - spr->size.y < top_edge)
+					{
+						culled = 1;
+					}
+				}
+				else
+				{
+					if (posx + spr->size.x < left_edge)
+					{
+						culled = 1;
+					}
+					if (posx - spr->size.x > right_edge)
+					{
+						culled = 1;
+					}
+					if (posy - spr->size.y > bottom_edge)
+					{
+						culled = 1;
+					}
+					if (posy + spr->size.y < top_edge)
+					{
+						culled = 1;
+					}
 				}
 			}
 			// this Sprite isn't culled and needs to be drawn
-			if (!culled) {
+			if (!culled)
+			{
 				RGBAColor blendcolor = MAGENTA;
-				if (texture->warranty()) {
+				if (texture->warranty())
+				{
 					blendcolor = sprite->color;
 				}
 
@@ -279,8 +330,10 @@ void Renderer::_renderSpriteBatch(glm::mat4 modelMatrix, std::vector<Sprite*>& s
 				glUniform2f(shader->uvOffsetID(), sprite->uvoffset.x, sprite->uvoffset.y);
 
 				// _customParamsID
-				for (int i=0; i<8; i++) {
-					if (shader->customParamsID(i) != -1) {
+				for (int i = 0; i < 8; i++)
+				{
+					if (shader->customParamsID(i) != -1)
+					{
 						glUniform3f(shader->customParamsID(i), sprite->customParams[i].x, sprite->customParams[i].y, sprite->customParams[i].z);
 					}
 				}
@@ -291,9 +344,9 @@ void Renderer::_renderSpriteBatch(glm::mat4 modelMatrix, std::vector<Sprite*>& s
 				glm::vec3 scale = glm::vec3(sprite->spritescale.x, sprite->spritescale.y, sprite->spritescale.z);
 
 				// Build the model matrix for this sprite.
-				glm::mat4 translationMatrix	= glm::translate(modelMatrix, position);
-				glm::mat4 rotationMatrix	= glm::eulerAngleYXZ(rotation.y, rotation.x, rotation.z);
-				glm::mat4 scalingMatrix		= glm::scale(glm::mat4(1.0f), scale);
+				glm::mat4 translationMatrix = glm::translate(modelMatrix, position);
+				glm::mat4 rotationMatrix = glm::eulerAngleYXZ(rotation.y, rotation.x, rotation.z);
+				glm::mat4 scalingMatrix = glm::scale(glm::mat4(1.0f), scale);
 
 				glm::mat4 mm = translationMatrix * rotationMatrix * scalingMatrix;
 
@@ -301,33 +354,44 @@ void Renderer::_renderSpriteBatch(glm::mat4 modelMatrix, std::vector<Sprite*>& s
 			}
 		}
 	}
-
 }
 
-void Renderer::_renderSprite(const glm::mat4 modelMatrix, Sprite* sprite)
+void Renderer::_renderSprite(const glm::mat4 modelMatrix, Sprite *sprite)
 {
-	Shader* shader = _resman.getShader(sprite->vertexshader().c_str(), sprite->fragmentshader().c_str());
-	if (shader == nullptr) {
+	Shader *shader = _resman.getShader(sprite->vertexshader().c_str(), sprite->fragmentshader().c_str());
+	if (shader == nullptr)
+	{
 		shader = _defaultShader; // fallback to defaultshader
 	}
 
-	Texture* texture = nullptr;
-	if (sprite->dynamic()) {
-		if (sprite->texture() != nullptr) {
+	Texture *texture = nullptr;
+	if (sprite->dynamic())
+	{
+		if (sprite->texture() != nullptr)
+		{
 			texture = new Texture();
 			texture->createFromBuffer(sprite->texture()->pixels());
 		}
-	} else {
+	}
+	else
+	{
 		texture = _resman.getTexture(sprite->texturename(), sprite->filter(), sprite->wrap());
 	}
 
-	if (sprite->size.x == 0) { sprite->size.x = texture->width() * sprite->uvdim.x; }
-	if (sprite->size.y == 0) { sprite->size.y = texture->height() * sprite->uvdim.y; }
+	if (sprite->size.x == 0)
+	{
+		sprite->size.x = texture->width() * sprite->uvdim.x;
+	}
+	if (sprite->size.y == 0)
+	{
+		sprite->size.y = texture->height() * sprite->uvdim.y;
+	}
 
-	Mesh* mesh = _resman.getSpriteMesh(sprite->size.x, sprite->size.y, sprite->pivot.x, sprite->pivot.y, sprite->uvdim.x, sprite->uvdim.y, sprite->circlemesh(), sprite->which());
+	Mesh *mesh = _resman.getSpriteMesh(sprite->size.x, sprite->size.y, sprite->pivot.x, sprite->pivot.y, sprite->uvdim.x, sprite->uvdim.y, sprite->circlemesh(), sprite->which());
 
 	RGBAColor blendcolor = MAGENTA;
-	if (texture->warranty()) {
+	if (texture->warranty())
+	{
 		blendcolor = sprite->color;
 	}
 
@@ -335,67 +399,77 @@ void Renderer::_renderSprite(const glm::mat4 modelMatrix, Sprite* sprite)
 	glUniform2f(shader->uvOffsetID(), sprite->uvoffset.x, sprite->uvoffset.y);
 
 	// _customParamsID
-	for (int i=0; i<8; i++) {
-		if (shader->customParamsID(i) != -1) {
+	for (int i = 0; i < 8; i++)
+	{
+		if (shader->customParamsID(i) != -1)
+		{
 			glUniform3f(shader->customParamsID(i), sprite->customParams[i].x, sprite->customParams[i].y, sprite->customParams[i].z);
 		}
 	}
 
-	if (texture != nullptr) {
+	if (texture != nullptr)
+	{
 		// Bind the texture in Texture Unit 0
 		glActiveTexture(GL_TEXTURE0 + 0);
 		glBindTexture(GL_TEXTURE_2D, texture->getGLTexture());
-		//glUniform1i(shader->textureID(), 0);
+		// glUniform1i(shader->textureID(), 0);
 	}
 
-	if (sprite->palette() != nullptr) {
+	if (sprite->palette() != nullptr)
+	{
 		// Bind the palette in Texture Unit 1
 		glActiveTexture(GL_TEXTURE0 + 1);
 		glBindTexture(GL_TEXTURE_1D, sprite->palette()->getGLTexture());
-		//glUniform1i(shader->paletteID(), 1);
+		// glUniform1i(shader->paletteID(), 1);
 	}
 
 	this->_renderMesh(modelMatrix, shader, mesh, mesh->numverts(), GL_TRIANGLES, blendcolor);
 
-	if (sprite->dynamic() && texture != nullptr) {
+	if (sprite->dynamic() && texture != nullptr)
+	{
 		delete texture;
 	}
 }
 
-void Renderer::_renderLine(const glm::mat4 modelMatrix, Line* line)
+void Renderer::_renderLine(const glm::mat4 modelMatrix, Line *line)
 {
-	Shader* shader = _defaultShader;
+	Shader *shader = _defaultShader;
 
-	Texture* texture = _resman.getTexture(AUTOGENWHITE, 0, 1);
-	Mesh* mesh = nullptr;
+	Texture *texture = _resman.getTexture(AUTOGENWHITE, 0, 1);
+	Mesh *mesh = nullptr;
 	RGBAColor blendcolor = line->color;
 
-	int numpoints = (line->points().size()*2) - 1;
-	if (line->closed()) {
+	int numpoints = (line->points().size() * 2) - 1;
+	if (line->closed())
+	{
 		numpoints += 1;
 	}
 
-	if (line->dynamic()) {
+	if (line->dynamic())
+	{
 		mesh = new Mesh();
 		mesh->generateLineMesh(line);
-	} else {
+	}
+	else
+	{
 		mesh = _resman.getLineMesh(line);
 	}
 
 	// Bind the texture in Texture Unit 0
 	glActiveTexture(GL_TEXTURE0 + 0);
 	glBindTexture(GL_TEXTURE_2D, texture->getGLTexture());
-	//glUniform1i(shader->textureID(), 0);
+	// glUniform1i(shader->textureID(), 0);
 
 	this->_renderMesh(modelMatrix, shader, mesh, numpoints, GL_LINES, blendcolor);
 
-	if (line->dynamic()) {
+	if (line->dynamic())
+	{
 		delete mesh;
 	}
 }
 
-void Renderer::_renderMesh(const glm::mat4 modelMatrix, Shader* shader,
-	Mesh* mesh, int numverts, GLuint mode, RGBAColor blendcolor)
+void Renderer::_renderMesh(const glm::mat4 modelMatrix, Shader *shader,
+													 Mesh *mesh, int numverts, GLuint mode, RGBAColor blendcolor)
 {
 	// use our shader program
 	glUseProgram(shader->programID());
@@ -407,13 +481,14 @@ void Renderer::_renderMesh(const glm::mat4 modelMatrix, Shader* shader,
 	glUniformMatrix4fv(shader->matrixID(), 1, GL_FALSE, &MVP[0][0]);
 
 	// _blendColorID
-	glUniform4f(shader->blendColorID(), (float) blendcolor.r/255.0f, (float) blendcolor.g/255.0f, (float) blendcolor.b/255.0f, (float) blendcolor.a/255.0f);
+	glUniform4f(shader->blendColorID(), (float)blendcolor.r / 255.0f, (float)blendcolor.g / 255.0f, (float)blendcolor.b / 255.0f, (float)blendcolor.a / 255.0f);
 
 	// Set our "textureSampler" sampler to user Texture Unit 0
 	glUniform1i(shader->textureID(), 0);
 
 	// Set our "paletteSampler" sampler to user Texture Unit 1
-	if (shader->paletteID() != -1) {
+	if (shader->paletteID() != -1)
+	{
 		glUniform1i(shader->paletteID(), 1);
 	}
 
@@ -421,31 +496,31 @@ void Renderer::_renderMesh(const glm::mat4 modelMatrix, Shader* shader,
 	// We can also get the normalbuffer from the Mesh, but that's ignored here.
 	// Use the normalbuffer (with links to the Shader) if you want to use lighting on your Sprites.
 	// TODO: implement
-	GLuint vertexPositionID =  glGetAttribLocation(shader->programID(), "vertexPosition"); // Mesh::_vertexbuffer
-	GLuint vertexUVID =        glGetAttribLocation(shader->programID(), "vertexUV"); // Mesh::_uvbuffer
+	GLuint vertexPositionID = glGetAttribLocation(shader->programID(), "vertexPosition"); // Mesh::_vertexbuffer
+	GLuint vertexUVID = glGetAttribLocation(shader->programID(), "vertexUV");							// Mesh::_uvbuffer
 
 	// 1st attribute buffer : vertices
 	glEnableVertexAttribArray(vertexPositionID);
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->vertexbuffer());
 	glVertexAttribPointer(
-		vertexPositionID,             // The attribute we want to configure
-		3,                            // size : x+y+z => 3
-		GL_FLOAT,                     // type
-		GL_FALSE,                     // normalized?
-		0,                            // stride
-		(void*)0                      // array buffer offset
+			vertexPositionID, // The attribute we want to configure
+			3,								// size : x+y+z => 3
+			GL_FLOAT,					// type
+			GL_FALSE,					// normalized?
+			0,								// stride
+			(void *)0					// array buffer offset
 	);
 
 	// 2nd attribute buffer : UVs
 	glEnableVertexAttribArray(vertexUVID);
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->uvbuffer());
 	glVertexAttribPointer(
-		vertexUVID,                   // The attribute we want to configure
-		2,                            // size : U+V => 2
-		GL_FLOAT,                     // type
-		GL_FALSE,                     // normalized?
-		0,                            // stride
-		(void*)0                      // array buffer offset
+			vertexUVID, // The attribute we want to configure
+			2,					// size : U+V => 2
+			GL_FLOAT,		// type
+			GL_FALSE,		// normalized?
+			0,					// stride
+			(void *)0		// array buffer offset
 	);
 
 	// Draw the triangles or lines
@@ -454,6 +529,8 @@ void Renderer::_renderMesh(const glm::mat4 modelMatrix, Shader* shader,
 	glDisableVertexAttribArray(vertexPositionID);
 	glDisableVertexAttribArray(vertexUVID);
 }
+
+void Renderer::hideCursor() { glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN); };
 
 void Renderer::cleanup()
 {

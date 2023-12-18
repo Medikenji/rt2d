@@ -22,7 +22,7 @@ int main(void)
 {
 	// Core instance
 	Core core;
-
+	core.hideCursor();
 	// Scene01
 	GameScene *myscene = new GameScene(); // create Scene on the heap
 	while (myscene->isRunning())

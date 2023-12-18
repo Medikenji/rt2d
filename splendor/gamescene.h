@@ -20,12 +20,13 @@ public:
 	void controlPlayer(float deltaTime);
 	void createAltPathEnemies(int amount);
 	void createLinePathEnemies(int amount);
+	void checkCol(float deltaTime);
+	bool col(Enemy *enemy);
 
 private:
 	Player *player;
 	std::vector<AltPathEnemy *> altPathEnemies;
 	std::vector<LinePathEnemy *> linePathEnemies;
-
 	Timer t;
 	Vector2 enemyTarget;
 	float mx;

@@ -14,10 +14,9 @@ Core::Core()
 
 Core::~Core()
 {
-
 }
 
-void Core::run(Scene* scene)
+void Core::run(Scene *scene)
 {
 	// update our _deltaTime
 	_calculateDeltaTime();
@@ -35,7 +34,10 @@ void Core::run(Scene* scene)
 	_renderer.renderScene(scene);
 
 	// user clicked the 'close' button in the window
-	if (glfwWindowShouldClose(_renderer.window()) == 1) { scene->stop(); }
+	if (glfwWindowShouldClose(_renderer.window()) == 1)
+	{
+		scene->stop();
+	}
 }
 
 void Core::showFrameRate(float numsecs)
@@ -45,8 +47,9 @@ void Core::showFrameRate(float numsecs)
 
 	frames++;
 	time += _deltaTime;
-	if (time >= numsecs) {
-		printf("%f ms/frame (%f FPS)\n", (numsecs*1000)/double(frames), frames/numsecs);
+	if (time >= numsecs)
+	{
+		printf("%f ms/frame (%f FPS)\n", (numsecs * 1000) / double(frames), frames / numsecs);
 		frames = 0;
 		time = 0;
 	}
@@ -65,4 +68,9 @@ double Core::_calculateDeltaTime()
 void Core::cleanup()
 {
 	_renderer.cleanup();
+}
+
+void Core::hideCursor()
+{
+	_renderer.hideCursor();
 }

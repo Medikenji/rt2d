@@ -20,15 +20,15 @@ Er is een punten systeem. Je begint met 0 punten en 1 vijand in de scène. Wanne
 >
 > **1. Het aantal vijanden gaat omhoog.**
 >
-> > - Het spel begint dus met 1 vijand en dit zal op lopen tot maximaal 4. Het type vijand zal door blijven veranderen.
+> > - Het spel begint dus met 1 vijand en dit zal op lopen tot een maximaal aantal. Het type vijand zal door blijven veranderen.
 >
 > **2. Het vijand type wordt lastiger.**
 >
-> > - Ik heb tot nu toe (06-12-23) 3 verschillende vijand typen. Deze voegen variatie toe. Ook kun je niet visueel zien welk type een vijand is.
+> > - Ik heb tot nu toe 4 verschillende vijand typen. Deze voegen variatie toe. Ook kun je niet visueel zien welk type een vijand is kun je dit wel merken door hoe die beweegt.
 >
 > **3. De snelheid van het spel gaat omhoog.**
 >
-> > - Er is een vermenigvuldiger voor de snelheid van speler en vijanden die lineair langzaam omhoog gaat om de pacing van het spel omhoog te brengen.
+> > - Er is een vermenigvuldiger voor de snelheid van de speler en vijanden die omhoog gaat om de pacing van het spel omhoog te brengen.
 
 Je schakelt vijanden uit door jouw muis of de lijn die van de speler naar de muis wordt getrokken over de vijanden te leggen. Dit moet voor een kort aantal seconden voordat ze verdwijnen.
 Ik hoop dat ik met deze gameplay componenten een simpel maar ook interessant en leuk spel te kan maken.

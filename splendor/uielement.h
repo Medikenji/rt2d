@@ -12,11 +12,11 @@ public:
 	UIElement(Player *player);
 	virtual ~UIElement();
 	void update(float deltaTime);
+	void manageHealthBar();
 
 private:
 	Player *PlayerP;
-	int a;
-	int b;
+	int colorInt;
 
 protected:
 	float PlayerHealth;

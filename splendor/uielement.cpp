@@ -18,7 +18,13 @@ UIElement::~UIElement()
 
 void UIElement::update(float deltaTime)
 {
+	manageHealthBar();
+}
+
+void UIElement::manageHealthBar()
+{
 	PlayerHealth = this->PlayerP->getHealth();
-	this->scale = Point2((SWIDTH / 2) * PlayerHealth, 5);
-	this->sprite()->color = RGBAColor(0, 255, 0, 255);
+	colorInt = (int)(PlayerHealth * 2.55) + 1;
+	this->scale = Point2(((SWIDTH / 2) * PlayerHealth) / 100, 5);
+	this->sprite()->color = RGBAColor(-colorInt, colorInt, 0, 255);
 }

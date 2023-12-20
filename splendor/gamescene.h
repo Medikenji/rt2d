@@ -23,6 +23,7 @@ public:
 	void createLinePathEnemies(int amount);
 	void checkCol(float deltaTime);
 	bool col(Enemy *enemy);
+	void createSingleEntities();
 
 private:
 	Player *player;

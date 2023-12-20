@@ -6,13 +6,9 @@
 GameScene::GameScene() : Scene()
 {
 	t.start();
-	player = new Player();
-	player->position = Point2(SWIDTH / 2, SHEIGHT / 2);
-	UIelement = new UIElement(player);
-	this->addChild(UIelement);
-	this->addChild(player);
 	altPathEnemies = std::vector<AltPathEnemy *>();
 	linePathEnemies = std::vector<LinePathEnemy *>();
+	createSingleEntities();
 	createAltPathEnemies(5);
 	createLinePathEnemies(1);
 }
@@ -133,4 +129,12 @@ bool GameScene::col(Enemy *enemy)
 					enemy->position.x + enemy->sprite()->size.x * enemy->scale.x > player->position.x &&
 					enemy->position.y < player->position.y + player->sprite()->size.y * player->scale.y &&
 					enemy->position.y + enemy->sprite()->size.y * enemy->scale.y > player->position.y);
+}
+
+void GameScene::createSingleEntities()
+{
+	UIelement = new UIElement(player);
+	this->addChild(UIelement);
+	player = new Player();
+	this->addChild(player);
 }

@@ -13,7 +13,6 @@ Enemy::~Enemy()
 
 void Enemy::update(float deltaTime)
 {
-
 	Visuals(deltaTime);
 	addForce(deltaTime);
 }

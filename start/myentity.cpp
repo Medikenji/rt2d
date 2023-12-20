@@ -6,7 +6,7 @@
 
 #include "myentity.h"
 
-MyEntity::MyEntity() : Entity()
+MyEntity::MyEntity() : Splentity()
 {
 	this->addSprite("assets/square.tga");
 	this->sprite()->color = RED;

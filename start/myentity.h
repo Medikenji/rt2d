@@ -11,8 +11,8 @@
 
 #include <rt2d/entity.h>
 
-/// @brief The MyEntity class is the Entity implementation.
-class MyEntity : public Entity
+/// @brief The MyEntity class is the Splentity implementation.
+class MyEntity : public Splentity
 {
 public:
 	/// @brief Constructor

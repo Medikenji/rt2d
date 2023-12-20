@@ -1,8 +1,7 @@
 #include "enemy.h"
 
-Enemy::Enemy() : Entity()
+Enemy::Enemy() : Splentity()
 {
-	speedMultiplier = 2.5;
 	this->addSprite("assets/enemy.tga");
 	this->sprite()->color = RED;
 	this->scale = Point2(0.2, 0.2);

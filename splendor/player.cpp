@@ -1,10 +1,10 @@
 #include "player.h"
 #include <vectorx.h>
-Player::Player() : Entity()
+Player::Player() : Splentity()
 {
-	health = 3;
-	speed = 750;
-	t.start();
+	health = 1;
+	startHealth = health;
+	speed = 750 * speedMultiplier / 2;
 	this->addSprite("assets/player.tga");
 	this->scale = Point2(0.1, 0.1);
 }
@@ -36,7 +36,7 @@ void Player::controlPlayer(int switcher, float deltaTime)
 		velocity += Point(speed, 0) * deltaTime;
 		break;
 	case 5:
-		velocity *= 2;
+		velocity *= (speedMultiplier / 4) + 1;
 		break;
 	}
 }
@@ -63,4 +63,9 @@ void Player::killYourself()
 	{
 		this->parent()->removeChild(this);
 	}
+}
+
+double Player::getHealth()
+{
+	return this->health / startHealth;
 }

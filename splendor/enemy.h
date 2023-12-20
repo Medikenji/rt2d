@@ -2,9 +2,9 @@
 #define ENEMY_H
 
 #include "player.h"
-#include <entity.h>
+#include "splentity.h "
 
-class Enemy : public Entity
+class Enemy : public Splentity
 {
 public:
 	Enemy();
@@ -15,7 +15,6 @@ public:
 	void addForce(float deltaTime);
 	void update(float deltatime);
 	int health;
-	float speedMultiplier;
 	Vector2 velocity;
 
 private:

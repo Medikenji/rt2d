@@ -8,6 +8,8 @@ GameScene::GameScene() : Scene()
 	t.start();
 	player = new Player();
 	player->position = Point2(SWIDTH / 2, SHEIGHT / 2);
+	UIelement = new UIElement(player);
+	this->addChild(UIelement);
 	this->addChild(player);
 	altPathEnemies = std::vector<AltPathEnemy *>();
 	linePathEnemies = std::vector<LinePathEnemy *>();
@@ -23,12 +25,11 @@ GameScene::~GameScene()
 
 void GameScene::update(float deltaTime)
 {
-
-	enemyTarget = player->position;
 	getMouse();
+	enemyTarget = player->position;
 	exitGame();
-	drawLine(mx, my);
 	controlPlayer(deltaTime);
+	drawLine(mx, my);
 	checkCol(deltaTime);
 }
 
@@ -64,7 +65,7 @@ void GameScene::controlPlayer(float deltaTime)
 	{
 		player->controlPlayer(4, deltaTime);
 	}
-	if (input()->getKeyDown(KeyCode::LeftShift))
+	if (input()->getKey(KeyCode::LeftShift))
 	{
 		player->controlPlayer(5, deltaTime);
 	}

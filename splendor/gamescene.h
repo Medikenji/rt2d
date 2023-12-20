@@ -7,6 +7,7 @@
 #include "enemy.h"
 #include "altpathenemy.h"
 #include "linepathenemy.h"
+#include "uielement.h"
 
 class GameScene : public Scene
 {
@@ -25,6 +26,7 @@ public:
 
 private:
 	Player *player;
+	UIElement *UIelement;
 	std::vector<AltPathEnemy *> altPathEnemies;
 	std::vector<LinePathEnemy *> linePathEnemies;
 	Timer t;

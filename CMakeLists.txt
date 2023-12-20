@@ -166,6 +166,10 @@ IF(MAKE_SPLENDOR)
 		splendor/linepathenemy.h
 		splendor/stoicenemy.cpp
 		splendor/stoicenemy.h
+		splendor/splentity.cpp
+		splendor/splentity.h
+		splendor/uielement.cpp
+		splendor/uielement.h
 	)
 	target_link_libraries(splendor
 		${ALL_GRAPHICS_LIBS}

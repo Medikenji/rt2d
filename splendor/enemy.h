@@ -16,6 +16,7 @@ public:
 	void update(float deltatime);
 	int health;
 	Vector2 velocity;
+	Vector2 *targetPosition;
 
 private:
 	Timer t;

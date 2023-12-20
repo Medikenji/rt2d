@@ -2,7 +2,7 @@
 
 LinePathEnemy::LinePathEnemy(Vector2 *targetEntity) : Enemy()
 {
-	this->speed = 350 * this->speedMultiplier;
+	speed = 350 * speedMultiplier;
 	this->health = 100;
 	this->targetPosition = targetEntity;
 	this->position = Point2(rand() % SWIDTH, rand() % SHEIGHT);
@@ -22,7 +22,7 @@ void LinePathEnemy::goMove(Point playerPos, float deltaTime)
 {
 	Vector2 Vectorial = playerPos - this->position;
 	Vectorial.normalize();
-	this->velocity += Vectorial * speed * deltaTime;
+	velocity += Vectorial * speed * deltaTime;
 	this->position += velocity;
-	this->velocity *= 0;
+	velocity *= 0;
 }

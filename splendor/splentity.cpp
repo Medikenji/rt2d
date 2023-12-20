@@ -4,9 +4,13 @@
 
 Splentity::Splentity() : Entity()
 {
-	speedMultiplier = 1;
+	speedMultiplier = 2;
 }
 
 Splentity::~Splentity()
+{
+}
+
+void Splentity::update(float deltaTime)
 {
 }

@@ -133,8 +133,8 @@ bool GameScene::col(Enemy *enemy)
 
 void GameScene::createSingleEntities()
 {
-	UIelement = new UIElement(player);
-	this->addChild(UIelement);
 	player = new Player();
 	this->addChild(player);
+	UIelement = new UIElement(player);
+	this->addChild(UIelement);
 }

@@ -18,6 +18,7 @@ void Player::update(float deltaTime)
 {
 	killYourself();
 	handlePlayer();
+	regenHealth(deltaTime);
 }
 
 void Player::controlPlayer(int switcher, float deltaTime)
@@ -69,4 +70,12 @@ void Player::killYourself()
 double Player::getHealth()
 {
 	return (this->health / this->startHealth) * 100;
+}
+
+void Player::regenHealth(float deltaTime)
+{
+	if (health < startHealth / 4 && health > 0)
+	{
+		health += 0.005 * deltaTime;
+	}
 }

@@ -36,5 +36,5 @@ void Enemy::killYourself()
 void Enemy::addForce(float deltaTime)
 {
 	// gravity
-	velocity += Vector2(0, 350) * deltaTime;
+	velocity += Vector2(0, 350) * speedMultiplier * deltaTime;
 }

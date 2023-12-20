@@ -10,10 +10,10 @@ class Splentity : public Entity
 public:
 	Splentity();
 	virtual ~Splentity();
+	void update(float deltaTime);
 	float speedMultiplier;
 
 private:
-	/* add your private declarations */
 };
 
 #endif /* SPLENTITY_H */

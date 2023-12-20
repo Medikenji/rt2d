@@ -8,6 +8,7 @@
 #include "altpathenemy.h"
 #include "linepathenemy.h"
 #include "uielement.h"
+#include "splentity.h"
 
 class GameScene : public Scene
 {

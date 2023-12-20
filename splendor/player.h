@@ -15,6 +15,7 @@ public:
 	void killYourself();
 	void takeDamage(float deltaTime);
 	double getHealth();
+	void regenHealth(float deltaTime);
 
 private:
 	Timer t;

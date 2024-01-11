@@ -13,7 +13,7 @@ public:
 	void update(float deltaTime);
 
 private:
-	void goMove(Point2 playerPos, float deltaTime);
+	void goMove(Vector2 playerPos, float deltaTime);
 	void goAccelerate(float deltaTime, Vector2 vectorial, int switcher);
 	void countDown(float countdownTime, float deltaTime);
 	float time;

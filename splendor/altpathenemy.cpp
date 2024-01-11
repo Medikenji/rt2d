@@ -2,11 +2,11 @@
 
 AltPathEnemy::AltPathEnemy(Vector2 *targetEntity) : Enemy()
 {
-	this->scale = Point2(0.3, 0.3);
+	this->scale = Vector2(0.3, 0.3);
 	health = 100;
 	randomiser = rand() % 2;
 	this->targetPosition = targetEntity;
-	this->position = Point2(rand() % SWIDTH, rand() % SHEIGHT);
+	this->position = Vector2(rand() % SWIDTH, rand() % SHEIGHT);
 }
 
 AltPathEnemy::~AltPathEnemy()
@@ -19,7 +19,7 @@ void AltPathEnemy::update(float deltaTime)
 	goMove(*targetPosition, deltaTime);
 }
 
-void AltPathEnemy::goMove(Point targetPos, float deltaTime)
+void AltPathEnemy::goMove(Vector2 targetPos, float deltaTime)
 {
 	Vector2 Vectorial = targetPos - this->position;
 	Vectorial.normalize();

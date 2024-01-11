@@ -3,10 +3,10 @@
 Player::Player() : Splentity()
 {
 	this->health = 1;
-	this->position = Point2(SWIDTH / 2, SHEIGHT / 2);
+	this->position = Vector2(SWIDTH / 2, SHEIGHT / 2);
 	this->startHealth = this->health;
 	this->addSprite("assets/player.tga");
-	this->scale = Point2(0.1, 0.1);
+	this->scale = Vector2(0.1, 0.1);
 }
 
 Player::~Player()

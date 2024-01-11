@@ -7,8 +7,8 @@ StoicEnemy::StoicEnemy()
 {
 	globalSpeedScaler = speedMultiplier * 0.5;
 	this->EnemyScale = (rand() % 10) * 0.1 * globalSpeedScaler;
-	this->position = Point2(rand() % SWIDTH, rand() % SHEIGHT);
-	this->scale = Point2(this->EnemyScale, this->EnemyScale / 2);
+	this->position = Vector2(rand() % SWIDTH, rand() % SHEIGHT);
+	this->scale = Vector2(this->EnemyScale, this->EnemyScale / 2);
 }
 
 StoicEnemy::~StoicEnemy()
@@ -31,8 +31,8 @@ void StoicEnemy::countDown(float countdownTime, float deltaTime)
 	{
 		globalSpeedScaler = speedMultiplier * 0.5;
 		this->EnemyScale = (rand() % 10) * 0.1 * globalSpeedScaler;
-		this->scale = Point2(this->EnemyScale, this->EnemyScale / 2);
-		this->position = Point2(rand() % SWIDTH, rand() % SHEIGHT);
+		this->scale = Vector2(this->EnemyScale, this->EnemyScale / 2);
+		this->position = Vector2(rand() % SWIDTH, rand() % SHEIGHT);
 		time = countdownTime;
 	}
 }

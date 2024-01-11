@@ -134,7 +134,7 @@ void GameScene::checkCol(float deltaTime)
 	{
 		if (AltPathEnemy->position.x > SWIDTH || AltPathEnemy->position.y > SHEIGHT)
 		{
-			AltPathEnemy->position = Point2(rand() % SWIDTH, -SHEIGHT);
+			AltPathEnemy->position = Vector2(rand() % SWIDTH, -SHEIGHT);
 		}
 		if (col(AltPathEnemy, player))
 		{
@@ -150,7 +150,7 @@ void GameScene::checkCol(float deltaTime)
 	{
 		if (LinePathEnemy->position.x > SWIDTH || LinePathEnemy->position.y > SHEIGHT)
 		{
-			LinePathEnemy->position = Point2(rand() % SWIDTH, -SHEIGHT);
+			LinePathEnemy->position = Vector2(rand() % SWIDTH, -SHEIGHT);
 		}
 		if (col(LinePathEnemy, player))
 		{
@@ -166,7 +166,7 @@ void GameScene::checkCol(float deltaTime)
 	{
 		if (stoicEnemy->position.x > SWIDTH || stoicEnemy->position.y > SHEIGHT)
 		{
-			stoicEnemy->position = Point2(rand() % SWIDTH, -SHEIGHT);
+			stoicEnemy->position = Vector2(rand() % SWIDTH, -SHEIGHT);
 		}
 		if (col(stoicEnemy, player))
 		{
@@ -215,9 +215,9 @@ void GameScene::CreateScoreT()
 	score = 0;
 	presentScore = 0;
 	this->text = new Text();
-	this->text->position = Point2(20, SHEIGHT - 20);
+	this->text->position = Vector2(20, SHEIGHT - 20);
 	this->addChild(this->text);
-	this->text->scale = Point2(0.75, 0.75);
+	this->text->scale = Vector2(0.75, 0.75);
 }
 
 void GameScene::ManageScoreT()

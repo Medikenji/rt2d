@@ -11,7 +11,12 @@ public:
 	Splentity();
 	virtual ~Splentity();
 	void update(float deltaTime);
-	float speedMultiplier;
+	static float speedMultiplier;
+	double health;
+	void killYourself();
+	void takeDamage(float deltaTime);
+	bool GetLivingStatus();
+	bool IsEntityAlive;
 
 private:
 };

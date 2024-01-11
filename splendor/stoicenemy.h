@@ -10,9 +10,13 @@ class StoicEnemy : public Enemy
 public:
 	StoicEnemy();
 	virtual ~StoicEnemy();
+	void update(float deltaTime);
 
 private:
-	/* add your private declarations */
+	void countDown(float countdownTime, float deltaTime);
+	float time;
+	float EnemyScale;
+	float globalSpeedScaler;
 };
 
 #endif /* STOICENEMY_H */

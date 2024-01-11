@@ -2,6 +2,7 @@
 
 AltPathEnemy::AltPathEnemy(Vector2 *targetEntity) : Enemy()
 {
+	this->scale = Point2(0.3, 0.3);
 	health = 100;
 	randomiser = rand() % 2;
 	this->targetPosition = targetEntity;
@@ -33,16 +34,16 @@ void AltPathEnemy::goAccelerate(float deltaTime, Vector2 vectorial, int switcher
 	switch (switcher)
 	{
 	case 0:
-		speed = 50 * speedMultiplier;
+		speed = rand() % 100 * speedMultiplier;
 		break;
 	case 1:
-		speed = 100 * speedMultiplier;
+		speed = rand() % 200 * speedMultiplier;
 		break;
 	case 2:
-		speed = 150 * speedMultiplier;
+		speed = rand() % 300 * speedMultiplier;
 		break;
 	case 3:
-		speed = 200 * speedMultiplier;
+		speed = rand() % 400 * speedMultiplier;
 		break;
 	}
 }

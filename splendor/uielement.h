@@ -4,6 +4,7 @@
 #define UIELEMENT_H
 
 #include <entity.h>
+#include <text.h>
 #include "player.h"
 
 class UIElement : public Entity

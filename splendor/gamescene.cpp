@@ -8,9 +8,11 @@ GameScene::GameScene() : Scene()
 	t.start();
 	altPathEnemies = std::vector<AltPathEnemy *>();
 	linePathEnemies = std::vector<LinePathEnemy *>();
+	CreateScoreT();
 	createSingleEntities();
 	createAltPathEnemies(5);
 	createLinePathEnemies(1);
+	createStoicEnemies(5);
 }
 
 GameScene::~GameScene()
@@ -21,12 +23,15 @@ GameScene::~GameScene()
 
 void GameScene::update(float deltaTime)
 {
+	HitEnemy = false;
+	IsAlive = player->GetLivingStatus();
 	getMouse();
 	enemyTarget = player->position;
 	exitGame();
 	controlPlayer(deltaTime);
-	drawLine(mx, my);
 	checkCol(deltaTime);
+	drawLine(mx, my);
+	ManageScoreT();
 }
 
 void GameScene::getMouse()
@@ -47,30 +52,39 @@ void GameScene::controlPlayer(float deltaTime)
 {
 	if (input()->getKey(KeyCode::W))
 	{
-		player->controlPlayer(1, deltaTime);
+		player->controlPlayer(Up, deltaTime);
 	}
 	if (input()->getKey(KeyCode::S))
 	{
-		player->controlPlayer(2, deltaTime);
+		player->controlPlayer(Down, deltaTime);
 	}
 	if (input()->getKey(KeyCode::A))
 	{
-		player->controlPlayer(3, deltaTime);
+		player->controlPlayer(Left, deltaTime);
 	}
 	if (input()->getKey(KeyCode::D))
 	{
-		player->controlPlayer(4, deltaTime);
+		player->controlPlayer(Right, deltaTime);
 	}
 	if (input()->getKey(KeyCode::LeftShift))
 	{
-		player->controlPlayer(5, deltaTime);
+		player->controlPlayer(Boost, deltaTime);
 	}
 }
 
 void GameScene::drawLine(float mx, float my)
 {
 	ddClear();
-	ddLine(player->position.x, player->position.y, mx, my, player->sprite()->color);
+	if (HitEnemy == false)
+	{
+		ddLine(player->position.x, player->position.y, mx, my, WHITE);
+		ddCircle(mx, my, 10, WHITE);
+	}
+	else
+	{
+		ddLine(player->position.x, player->position.y, mx, my, GREEN);
+		ddCircle(mx, my, 10, GREEN);
+	}
 }
 
 void GameScene::createAltPathEnemies(int amount)
@@ -97,17 +111,39 @@ void GameScene::createLinePathEnemies(int amount)
 	}
 }
 
+void GameScene::createStoicEnemies(int amount)
+{
+	for (size_t i = 0; i < amount; i++)
+	{
+		stoicEnemies.push_back(new StoicEnemy());
+	}
+	for (const auto stoicEnemy : stoicEnemies)
+	{
+		this->addChild(stoicEnemy);
+	}
+}
+
 void GameScene::checkCol(float deltaTime)
 {
+	if (player->position.x > SWIDTH || player->position.x < 0 || player->position.y > SHEIGHT || player->position.y < 0)
+	{
+		player->takeDamage(deltaTime);
+	}
+
 	for (const auto AltPathEnemy : altPathEnemies)
 	{
 		if (AltPathEnemy->position.x > SWIDTH || AltPathEnemy->position.y > SHEIGHT)
 		{
 			AltPathEnemy->position = Point2(rand() % SWIDTH, -SHEIGHT);
 		}
-		if (col(AltPathEnemy))
+		if (col(AltPathEnemy, player))
 		{
 			player->takeDamage(deltaTime);
+		}
+		if (mouseCol(AltPathEnemy, mx, my))
+		{
+			AddScore(deltaTime, 50);
+			HitEnemy = true;
 		}
 	}
 	for (const auto LinePathEnemy : linePathEnemies)
@@ -116,19 +152,45 @@ void GameScene::checkCol(float deltaTime)
 		{
 			LinePathEnemy->position = Point2(rand() % SWIDTH, -SHEIGHT);
 		}
-		if (col(LinePathEnemy))
+		if (col(LinePathEnemy, player))
 		{
 			player->takeDamage(deltaTime);
+		}
+		if (mouseCol(LinePathEnemy, mx, my))
+		{
+			AddScore(deltaTime, 75);
+			HitEnemy = true;
+		}
+	}
+	for (const auto stoicEnemy : stoicEnemies)
+	{
+		if (stoicEnemy->position.x > SWIDTH || stoicEnemy->position.y > SHEIGHT)
+		{
+			stoicEnemy->position = Point2(rand() % SWIDTH, -SHEIGHT);
+		}
+		if (col(stoicEnemy, player))
+		{
+			player->takeDamage(deltaTime);
+		}
+		if (mouseCol(stoicEnemy, mx, my))
+		{
+			AddScore(deltaTime, 1);
+			HitEnemy = true;
 		}
 	}
 }
 
-bool GameScene::col(Enemy *enemy)
+bool GameScene::col(Enemy *enemy, Player *player)
 {
 	return (enemy->position.x < player->position.x + player->sprite()->size.x * player->scale.x &&
 					enemy->position.x + enemy->sprite()->size.x * enemy->scale.x > player->position.x &&
 					enemy->position.y < player->position.y + player->sprite()->size.y * player->scale.y &&
 					enemy->position.y + enemy->sprite()->size.y * enemy->scale.y > player->position.y);
+}
+
+bool GameScene::mouseCol(Enemy *enemy, int mx, int my)
+{
+	return (abs((int)enemy->position.x - mx) < 10) && (abs((int)enemy->position.y - my) < 10);
 }
 
 void GameScene::createSingleEntities()
@@ -137,4 +199,28 @@ void GameScene::createSingleEntities()
 	this->addChild(player);
 	UIelement = new UIElement(player);
 	this->addChild(UIelement);
+}
+
+void GameScene::AddScore(float deltaTime, int amount)
+{
+	if (IsAlive)
+	{
+		score += amount * deltaTime * Splentity::speedMultiplier;
+		presentScore = (int)score;
+	}
+}
+
+void GameScene::CreateScoreT()
+{
+	score = 0;
+	presentScore = 0;
+	this->text = new Text();
+	this->text->position = Point2(20, SHEIGHT - 20);
+	this->addChild(this->text);
+	this->text->scale = Point2(0.75, 0.75);
+}
+
+void GameScene::ManageScoreT()
+{
+	this->text->message(std::to_string(presentScore));
 }

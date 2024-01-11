@@ -5,7 +5,6 @@
 UIElement::UIElement(Player *player) : Entity()
 {
 	this->addSprite("assets/healthbar.tga");
-	this->scale = Point2((SWIDTH / 2), 5);
 	this->sprite()->pivot = Point2(0, 0);
 	this->sprite()->color = RGBAColor(0, 255, 0, 255);
 	this->position = Point2(0, 0);
@@ -23,8 +22,8 @@ void UIElement::update(float deltaTime)
 
 void UIElement::manageHealthBar()
 {
-	PlayerHealth = this->PlayerP->getHealth();
-	colorInt = (int)(PlayerHealth * 2.55) + 1;
-	this->scale = Point2(((SWIDTH / 2) * PlayerHealth) / 100, 5);
-	this->sprite()->color = RGBAColor(-colorInt, colorInt, 0, 255);
+	this->PlayerHealth = this->PlayerP->getHealth();
+	this->colorInt = (int)(this->PlayerHealth * 2.55) + 1;
+	this->scale = Point2(((SWIDTH / 2) * this->PlayerHealth) / 100, 2);
+	this->sprite()->color = RGBAColor(-this->colorInt, this->colorInt, 0, 255);
 }

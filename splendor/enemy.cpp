@@ -4,7 +4,6 @@ Enemy::Enemy() : Splentity()
 {
 	this->addSprite("assets/enemy.tga");
 	this->sprite()->color = RED;
-	this->scale = Point2(0.2, 0.2);
 }
 
 Enemy::~Enemy()
@@ -36,5 +35,5 @@ void Enemy::killYourself()
 void Enemy::addForce(float deltaTime)
 {
 	// gravity
-	velocity += Vector2(0, 350) * speedMultiplier * deltaTime;
+	velocity += Vector2(0, 350) * (speedMultiplier * 0.9) * deltaTime;
 }

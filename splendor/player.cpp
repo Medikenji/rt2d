@@ -5,7 +5,6 @@ Player::Player() : Splentity()
 	this->health = 1;
 	this->position = Point2(SWIDTH / 2, SHEIGHT / 2);
 	this->startHealth = this->health;
-	this->speed = 750 * this->speedMultiplier / 2;
 	this->addSprite("assets/player.tga");
 	this->scale = Point2(0.1, 0.1);
 }
@@ -16,6 +15,7 @@ Player::~Player()
 
 void Player::update(float deltaTime)
 {
+	Splentity::update(deltaTime);
 	killYourself();
 	handlePlayer();
 	regenHealth(deltaTime);
@@ -25,19 +25,19 @@ void Player::controlPlayer(int switcher, float deltaTime)
 {
 	switch (switcher)
 	{
-	case 1:
+	case 100:
 		this->velocity += Point(0, -this->speed) * deltaTime;
 		break;
-	case 2:
+	case 110:
 		this->velocity += Point(0, this->speed) * deltaTime;
 		break;
-	case 3:
+	case 120:
 		this->velocity += Point(-this->speed, 0) * deltaTime;
 		break;
-	case 4:
+	case 130:
 		this->velocity += Point(this->speed, 0) * deltaTime;
 		break;
-	case 5:
+	case 140:
 		this->velocity *= (this->speedMultiplier / 4) + 1;
 		break;
 	}
@@ -45,26 +45,13 @@ void Player::controlPlayer(int switcher, float deltaTime)
 
 void Player::handlePlayer()
 {
+	this->speed = 750 * this->speedMultiplier / 2;
 	if (this->velocity.x && this->velocity.y != NULL)
 	{
 		this->velocity.x /= this->sqrt2;
-		this->velocity.y /= this->sqrt2;
 	}
 	this->position += this->velocity;
 	this->velocity *= 0;
-}
-
-void Player::takeDamage(float deltaTime)
-{
-	this->health -= 1 * deltaTime;
-}
-
-void Player::killYourself()
-{
-	if (this->health <= 0 && this != nullptr)
-	{
-		this->parent()->removeChild(this);
-	}
 }
 
 double Player::getHealth()
@@ -74,8 +61,12 @@ double Player::getHealth()
 
 void Player::regenHealth(float deltaTime)
 {
-	if (health < startHealth / 4 && health > 0)
+	if (this->health < this->startHealth / 4 && this->health > 0)
 	{
 		health += 0.005 * deltaTime;
+	}
+	else if (this->health < startHealth * 0.75)
+	{
+		health += 0.0005 * deltaTime;
 	}
 }

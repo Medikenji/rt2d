@@ -13,7 +13,6 @@ Enemy::~Enemy()
 void Enemy::update(float deltaTime)
 {
 	Visuals(deltaTime);
-	addForce(deltaTime);
 }
 
 void Enemy::Visuals(float deltaTime)
@@ -23,8 +22,6 @@ void Enemy::Visuals(float deltaTime)
 	{
 		this->rotation.z -= TWO_PI;
 	}
-	RGBAColor color = this->sprite()->color;
-	this->sprite()->color = Color::rotate(color, 0.01f);
 }
 
 void Enemy::killYourself()

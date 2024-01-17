@@ -6,6 +6,7 @@ LinePathEnemy::LinePathEnemy(Vector2 *targetEntity) : Enemy()
 	this->targetPosition = targetEntity;
 	this->position = Vector2(rand() % SWIDTH, rand() % SHEIGHT);
 	this->scale = Vector2(0.2, 0.2);
+	this->sprite()->color = RGBAColor(255, 0, 0, 255);
 }
 
 LinePathEnemy::~LinePathEnemy()

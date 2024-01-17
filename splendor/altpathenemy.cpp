@@ -2,11 +2,12 @@
 
 AltPathEnemy::AltPathEnemy(Vector2 *targetEntity) : Enemy()
 {
-	this->scale = Vector2(0.3, 0.3);
+	this->scale = Vector2(0.055, 0.055);
 	health = 100;
-	randomiser = rand() % 2;
+	randomiser = rand() % 4;
 	this->targetPosition = targetEntity;
-	this->position = Vector2(rand() % SWIDTH, rand() % SHEIGHT);
+	this->position = Vector2(rand() % 320, rand() % 180);
+	this->sprite()->color = RGBAColor(245, 50, 50, 255);
 }
 
 AltPathEnemy::~AltPathEnemy()

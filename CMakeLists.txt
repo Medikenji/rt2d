@@ -170,6 +170,8 @@ IF(MAKE_SPLENDOR)
 		splendor/splentity.h
 		splendor/uielement.cpp
 		splendor/uielement.h
+		splendor/straightenemy.cpp
+		splendor/straightenemy.h
 	)
 	target_link_libraries(splendor
 		${ALL_GRAPHICS_LIBS}

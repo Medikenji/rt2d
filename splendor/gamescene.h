@@ -10,6 +10,7 @@
 #include "uielement.h"
 #include "stoicenemy.h"
 #include "splentity.h"
+#include "straightenemy.h"
 
 #define Up 100
 #define Down 110
@@ -30,6 +31,7 @@ public:
 	void createAltPathEnemies(int amount);
 	void createLinePathEnemies(int amount);
 	void createStoicEnemies(int amount);
+	void createStraightEnemies(int amount);
 	void checkCol(float deltaTime);
 	bool col(Enemy *enemy, Player *player);
 	bool GameScene::mouseCol(Enemy *enemy, int mx, int my);
@@ -44,6 +46,7 @@ private:
 	std::vector<AltPathEnemy *> altPathEnemies;
 	std::vector<LinePathEnemy *> linePathEnemies;
 	std::vector<StoicEnemy *> stoicEnemies;
+	std::vector<StraightEnemy *> straightEnemies;
 	Timer t;
 	Vector2 enemyTarget;
 	float mx;

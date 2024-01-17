@@ -8,11 +8,11 @@ GameScene::GameScene() : Scene()
 	t.start();
 	altPathEnemies = std::vector<AltPathEnemy *>();
 	linePathEnemies = std::vector<LinePathEnemy *>();
-	CreateScoreT();
 	createSingleEntities();
-	createAltPathEnemies(5);
+	createAltPathEnemies(100);
 	createLinePathEnemies(1);
 	createStoicEnemies(5);
+	createStraightEnemies(20);
 }
 
 GameScene::~GameScene()
@@ -123,6 +123,18 @@ void GameScene::createStoicEnemies(int amount)
 	}
 }
 
+void GameScene::createStraightEnemies(int amount)
+{
+	for (size_t i = 0; i < amount; i++)
+	{
+		straightEnemies.push_back(new StraightEnemy());
+	}
+	for (const auto straightEnemy : straightEnemies)
+	{
+		this->addChild(straightEnemy);
+	}
+}
+
 void GameScene::checkCol(float deltaTime)
 {
 	if (player->position.x > SWIDTH || player->position.x < 0 || player->position.y > SHEIGHT || player->position.y < 0)
@@ -142,7 +154,7 @@ void GameScene::checkCol(float deltaTime)
 		}
 		if (mouseCol(AltPathEnemy, mx, my))
 		{
-			AddScore(deltaTime, 50);
+			AddScore(deltaTime, 15);
 			HitEnemy = true;
 		}
 	}
@@ -158,7 +170,7 @@ void GameScene::checkCol(float deltaTime)
 		}
 		if (mouseCol(LinePathEnemy, mx, my))
 		{
-			AddScore(deltaTime, 75);
+			AddScore(deltaTime, 125);
 			HitEnemy = true;
 		}
 	}
@@ -174,8 +186,21 @@ void GameScene::checkCol(float deltaTime)
 		}
 		if (mouseCol(stoicEnemy, mx, my))
 		{
-			AddScore(deltaTime, 1);
+			AddScore(deltaTime, 5);
 			HitEnemy = true;
+		}
+
+		for (const auto straightEnemy : straightEnemies)
+		{
+			if (col(straightEnemy, player))
+			{
+				player->takeDamage(deltaTime * 0.5);
+			}
+			if (mouseCol(straightEnemy, mx, my))
+			{
+				AddScore(deltaTime, 10);
+				HitEnemy = true;
+			}
 		}
 	}
 }
@@ -199,6 +224,7 @@ void GameScene::createSingleEntities()
 	this->addChild(player);
 	UIelement = new UIElement(player);
 	this->addChild(UIelement);
+	CreateScoreT();
 }
 
 void GameScene::AddScore(float deltaTime, int amount)

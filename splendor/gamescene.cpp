@@ -6,13 +6,10 @@
 GameScene::GameScene() : Scene()
 {
 	t.start();
-	altPathEnemies = std::vector<AltPathEnemy *>();
-	linePathEnemies = std::vector<LinePathEnemy *>();
 	createSingleEntities();
-	createAltPathEnemies(100);
 	createLinePathEnemies(1);
-	createStoicEnemies(5);
-	createStraightEnemies(20);
+	timer = new Timer();
+	TimerSetup();
 }
 
 GameScene::~GameScene()
@@ -32,6 +29,7 @@ void GameScene::update(float deltaTime)
 	checkCol(deltaTime);
 	drawLine(mx, my);
 	ManageScoreT();
+	ManageSpawns();
 }
 
 void GameScene::getMouse()
@@ -52,23 +50,23 @@ void GameScene::controlPlayer(float deltaTime)
 {
 	if (input()->getKey(KeyCode::W))
 	{
-		player->controlPlayer(Up, deltaTime);
+		player->controlPlayer(UP, deltaTime);
 	}
 	if (input()->getKey(KeyCode::S))
 	{
-		player->controlPlayer(Down, deltaTime);
+		player->controlPlayer(DOWN, deltaTime);
 	}
 	if (input()->getKey(KeyCode::A))
 	{
-		player->controlPlayer(Left, deltaTime);
+		player->controlPlayer(LEFT, deltaTime);
 	}
 	if (input()->getKey(KeyCode::D))
 	{
-		player->controlPlayer(Right, deltaTime);
+		player->controlPlayer(RIGHT, deltaTime);
 	}
 	if (input()->getKey(KeyCode::LeftShift))
 	{
-		player->controlPlayer(Boost, deltaTime);
+		player->controlPlayer(BOOST, deltaTime);
 	}
 }
 
@@ -141,13 +139,8 @@ void GameScene::checkCol(float deltaTime)
 	{
 		player->takeDamage(deltaTime);
 	}
-
 	for (const auto AltPathEnemy : altPathEnemies)
 	{
-		if (AltPathEnemy->position.x > SWIDTH || AltPathEnemy->position.y > SHEIGHT)
-		{
-			AltPathEnemy->position = Vector2(rand() % SWIDTH, -SHEIGHT);
-		}
 		if (col(AltPathEnemy, player))
 		{
 			player->takeDamage(deltaTime);
@@ -160,10 +153,6 @@ void GameScene::checkCol(float deltaTime)
 	}
 	for (const auto LinePathEnemy : linePathEnemies)
 	{
-		if (LinePathEnemy->position.x > SWIDTH || LinePathEnemy->position.y > SHEIGHT)
-		{
-			LinePathEnemy->position = Vector2(rand() % SWIDTH, -SHEIGHT);
-		}
 		if (col(LinePathEnemy, player))
 		{
 			player->takeDamage(deltaTime);
@@ -176,10 +165,6 @@ void GameScene::checkCol(float deltaTime)
 	}
 	for (const auto stoicEnemy : stoicEnemies)
 	{
-		if (stoicEnemy->position.x > SWIDTH || stoicEnemy->position.y > SHEIGHT)
-		{
-			stoicEnemy->position = Vector2(rand() % SWIDTH, -SHEIGHT);
-		}
 		if (col(stoicEnemy, player))
 		{
 			player->takeDamage(deltaTime);
@@ -231,7 +216,7 @@ void GameScene::AddScore(float deltaTime, int amount)
 {
 	if (IsAlive)
 	{
-		score += amount * deltaTime * Splentity::speedMultiplier;
+		score += amount * deltaTime * (Splentity::speedMultiplier * 1.2);
 		presentScore = (int)score;
 	}
 }
@@ -249,4 +234,22 @@ void GameScene::CreateScoreT()
 void GameScene::ManageScoreT()
 {
 	this->text->message(std::to_string(presentScore));
+}
+
+void GameScene::ManageSpawns()
+{
+	if (timer->seconds() >= spawnRate)
+	{
+		timer->start();
+		enemyAmount--;
+		createAltPathEnemies(10);
+		createStoicEnemies(1);
+		createStraightEnemies(2);
+	}
+}
+
+void GameScene::TimerSetup()
+{
+	spawnRate = 15;
+	timer->start();
 }

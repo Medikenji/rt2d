@@ -11,12 +11,13 @@
 #include "stoicenemy.h"
 #include "splentity.h"
 #include "straightenemy.h"
+#include "timer.h"
 
-#define Up 100
-#define Down 110
-#define Left 120
-#define Right 130
-#define Boost 140
+#define UP 100
+#define DOWN 110
+#define LEFT 120
+#define RIGHT 130
+#define BOOST 140
 
 class GameScene : public Scene
 {
@@ -39,8 +40,11 @@ public:
 	void AddScore(float deltaTime, int amount);
 	void CreateScoreT();
 	void ManageScoreT();
+	void ManageSpawns();
+	void TimerSetup();
 
 private:
+	Timer *timer;
 	Player *player;
 	UIElement *UIelement;
 	std::vector<AltPathEnemy *> altPathEnemies;
@@ -56,6 +60,8 @@ private:
 	bool HitEnemy;
 	bool IsAlive;
 	Text *text;
+	float spawnRate;
+	int enemyAmount;
 };
 
 #endif

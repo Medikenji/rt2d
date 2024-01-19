@@ -17,6 +17,7 @@ public:
 	int health;
 	Vector2 velocity;
 	Vector2 *targetPosition;
+	virtual void Boundry();
 
 private:
 	Timer t;

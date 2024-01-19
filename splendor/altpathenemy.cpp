@@ -2,17 +2,17 @@
 
 AltPathEnemy::AltPathEnemy(Vector2 *targetEntity) : Enemy()
 {
-	this->scale = Vector2(0.055, 0.055);
+	this->scale = Vector2(0.025, 0.025);
 	health = 100;
 	randomiser = rand() % 4;
 	this->targetPosition = targetEntity;
-	this->position = Vector2(rand() % 320, rand() % 180);
 	this->sprite()->color = RGBAColor(245, 50, 50, 255);
 }
 
 AltPathEnemy::~AltPathEnemy()
 {
 }
+
 void AltPathEnemy::update(float deltaTime)
 {
 	Enemy::update(deltaTime);
@@ -22,6 +22,7 @@ void AltPathEnemy::update(float deltaTime)
 
 void AltPathEnemy::goMove(Vector2 targetPos, float deltaTime)
 {
+	ddClear();
 	Vector2 Vectorial = targetPos - this->position;
 	Vectorial.normalize();
 	velocity += Vectorial * speed * deltaTime;

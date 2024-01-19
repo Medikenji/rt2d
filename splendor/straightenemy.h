@@ -19,6 +19,7 @@ private:
 	float speed;
 	float personalMultiplier;
 	void Respawn();
+	void Boundry();
 };
 
 #endif /* STRAIGHTENEMY_H */

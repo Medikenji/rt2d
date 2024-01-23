@@ -41,6 +41,20 @@ void Enemy::Boundry()
 {
 	if (this->position.x > SWIDTH + 10 || this->position.y > SHEIGHT + 10 || this->position.x < -10 || this->position.y < -10)
 	{
-		this->position = Vector2(rand() % SWIDTH, SHEIGHT + 10);
+		switch (rand() % 3)
+		{
+		case 0:
+			this->position = Vector2(rand() % SWIDTH, SHEIGHT + 10);
+			break;
+		case 1:
+			this->position = Vector2(rand() % SWIDTH, -10);
+			break;
+		case 2:
+			this->position = Vector2(SWIDTH + 10, rand() % SHEIGHT);
+			break;
+		case 3:
+			this->position = Vector2(-10, rand() % SHEIGHT);
+			break;
+		}
 	}
 }

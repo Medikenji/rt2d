@@ -12,6 +12,8 @@
 #include "splentity.h"
 #include "straightenemy.h"
 #include "timer.h"
+#include <math.h>
+#include <algorithm>
 
 #define UP 100
 #define DOWN 110
@@ -35,7 +37,7 @@ public:
 	void createStraightEnemies(int amount);
 	void checkCol(float deltaTime);
 	bool col(Enemy *enemy, Player *player);
-	bool GameScene::mouseCol(Enemy *enemy, int mx, int my);
+	bool GameScene::mouseCol(Enemy *enemy, float mx, float my);
 	void createSingleEntities();
 	void AddScore(float deltaTime, int amount);
 	void CreateScoreT();
@@ -61,7 +63,7 @@ private:
 	bool IsAlive;
 	Text *text;
 	float spawnRate;
-	int enemyAmount;
+	int enemyAmount = 50;
 };
 
 #endif

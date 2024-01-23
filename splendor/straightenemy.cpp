@@ -19,6 +19,7 @@ StraightEnemy::~StraightEnemy()
 void StraightEnemy::update(float deltaTime)
 {
 	Enemy::update(deltaTime);
+	this->scale += 0.001 * deltaTime * speedMultiplier;
 	ManageMovement(deltaTime);
 	GoMove(deltaTime);
 	Boundry();

@@ -6,7 +6,7 @@ AltPathEnemy::AltPathEnemy(Vector2 *targetEntity) : Enemy()
 	health = 100;
 	randomiser = rand() % 4;
 	this->targetPosition = targetEntity;
-	this->sprite()->color = RGBAColor(245, 50, 50, 255);
+	this->sprite()->color = RGBAColor(245, 50, 50, (135 + rand() % 120));
 }
 
 AltPathEnemy::~AltPathEnemy()
@@ -16,6 +16,7 @@ AltPathEnemy::~AltPathEnemy()
 void AltPathEnemy::update(float deltaTime)
 {
 	Enemy::update(deltaTime);
+	this->scale += 0.001 * deltaTime * speedMultiplier;
 	countDown(0.5, deltaTime);
 	goMove(*targetPosition, deltaTime);
 }
@@ -58,6 +59,7 @@ void AltPathEnemy::countDown(float countdownTime, float deltaTime)
 	}
 	else
 	{
+		this->sprite()->color = RGBAColor(245, 50, 50, (135 + rand() % 120));
 		randomiser = rand() % 4;
 		time = countdownTime;
 	}

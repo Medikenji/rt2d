@@ -45,7 +45,7 @@ void Player::controlPlayer(int switcher, float deltaTime)
 
 void Player::handlePlayer()
 {
-	this->speed = 750 * this->speedMultiplier / 2;
+	this->speed = 750 * speedMultiplier / 2;
 	if (this->velocity.x && this->velocity.y != NULL)
 	{
 		this->velocity.x /= this->sqrt2;
@@ -63,10 +63,10 @@ void Player::regenHealth(float deltaTime)
 {
 	if (this->health < this->startHealth / 4 && this->health > 0)
 	{
-		health += 0.005 * deltaTime;
+		health += 0.005 * deltaTime * speedMultiplier;
 	}
 	else if (this->health < startHealth * 0.75)
 	{
-		health += 0.0005 * deltaTime;
+		health += 0.0005 * deltaTime * speedMultiplier;
 	}
 }

@@ -7,7 +7,6 @@ GameScene::GameScene() : Scene()
 {
 	t.start();
 	createSingleEntities();
-	createLinePathEnemies(1);
 	timer = new Timer();
 	TimerSetup();
 }
@@ -147,7 +146,7 @@ void GameScene::checkCol(float deltaTime)
 		}
 		if (mouseCol(AltPathEnemy, mx, my))
 		{
-			AddScore(deltaTime, 15);
+			AddScore(deltaTime, 5);
 			HitEnemy = true;
 		}
 	}
@@ -192,15 +191,12 @@ void GameScene::checkCol(float deltaTime)
 
 bool GameScene::col(Enemy *enemy, Player *player)
 {
-	return (enemy->position.x < player->position.x + player->sprite()->size.x * player->scale.x &&
-					enemy->position.x + enemy->sprite()->size.x * enemy->scale.x > player->position.x &&
-					enemy->position.y < player->position.y + player->sprite()->size.y * player->scale.y &&
-					enemy->position.y + enemy->sprite()->size.y * enemy->scale.y > player->position.y);
+	return (abs(enemy->position.x - player->position.x) < (player->sprite()->size.x * player->scale.x + (enemy->sprite()->size.x * enemy->scale.x) / 2)) && (abs(enemy->position.y - player->position.y) < (player->sprite()->size.y * player->scale.y + (enemy->sprite()->size.y * enemy->scale.y) / 2));
 }
 
-bool GameScene::mouseCol(Enemy *enemy, int mx, int my)
+bool GameScene::mouseCol(Enemy *enemy, float mx, float my)
 {
-	return (abs((int)enemy->position.x - mx) < 10) && (abs((int)enemy->position.y - my) < 10);
+	return (abs(enemy->position.x - mx) < (10 + (enemy->sprite()->size.x * enemy->scale.x) / 2)) && (abs(enemy->position.y - my) < (10 + (enemy->sprite()->size.y * enemy->scale.y) / 2));
 }
 
 void GameScene::createSingleEntities()
@@ -209,6 +205,7 @@ void GameScene::createSingleEntities()
 	this->addChild(player);
 	UIelement = new UIElement(player);
 	this->addChild(UIelement);
+	createLinePathEnemies(1);
 	CreateScoreT();
 }
 
@@ -240,16 +237,17 @@ void GameScene::ManageSpawns()
 {
 	if (timer->seconds() >= spawnRate)
 	{
+		spawnRate += 0.75;
 		timer->start();
-		enemyAmount--;
-		createAltPathEnemies(10);
+		createAltPathEnemies(rand() % enemyAmount);
 		createStoicEnemies(1);
-		createStraightEnemies(2);
+		createStraightEnemies((rand() % 2) + 1);
+		enemyAmount++;
 	}
 }
 
 void GameScene::TimerSetup()
 {
-	spawnRate = 15;
+	spawnRate = 5;
 	timer->start();
 }

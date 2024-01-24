@@ -18,7 +18,7 @@ private:
 	int randomiser;
 	float speed;
 	float personalMultiplier;
-	void Respawn();
+	void Spawn();
 	void Boundry();
 };
 

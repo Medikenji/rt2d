@@ -4,12 +4,13 @@
 
 StraightEnemy::StraightEnemy() : Enemy()
 {
+	// setup enemy
 	this->scale = Vector2(0.1, 0.1);
 	this->randomiser = rand() % 3;
 	this->sprite()->color = RGBAColor(255, 50, 50, 255);
 	this->personalMultiplier = rand() % 10;
 	this->speed = speedMultiplier * 800 * personalMultiplier / 10;
-	Respawn();
+	Spawn();
 }
 
 StraightEnemy::~StraightEnemy()
@@ -18,8 +19,11 @@ StraightEnemy::~StraightEnemy()
 
 void StraightEnemy::update(float deltaTime)
 {
-	Enemy::update(deltaTime);
+	// increases enemy size every second
 	this->scale += 0.001 * deltaTime * speedMultiplier;
+
+	// functions
+	Enemy::update(deltaTime);
 	ManageMovement(deltaTime);
 	GoMove(deltaTime);
 	Boundry();
@@ -50,8 +54,9 @@ void StraightEnemy::GoMove(float deltaTime)
 	this->velocity *= 0;
 }
 
-void StraightEnemy::Respawn()
+void StraightEnemy::Spawn()
 {
+	// spawns enemy in right the right place based on randomiser val
 	switch (randomiser)
 	{
 	case 0:
@@ -70,6 +75,7 @@ void StraightEnemy::Respawn()
 
 void StraightEnemy::Boundry()
 {
+	// keeps enemy within game scene based on randomiser val
 	switch (randomiser)
 	{
 	case 0:

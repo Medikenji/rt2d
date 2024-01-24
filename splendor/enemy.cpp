@@ -26,11 +26,6 @@ void Enemy::Visuals(float deltaTime)
 	}
 }
 
-void Enemy::killYourself()
-{
-	parent()->removeChild(this);
-}
-
 void Enemy::addForce(float deltaTime)
 {
 	// gravity
@@ -39,8 +34,10 @@ void Enemy::addForce(float deltaTime)
 
 void Enemy::Boundry()
 {
+	// checks if enemy is to far out of boundry
 	if (this->position.x > SWIDTH + 10 || this->position.y > SHEIGHT + 10 || this->position.x < -10 || this->position.y < -10)
 	{
+		// randomly places enemy outside of screen
 		switch (rand() % 3)
 		{
 		case 0:

@@ -4,6 +4,7 @@
 
 UIElement::UIElement(Player *player) : Entity()
 {
+	// UI setup
 	this->addSprite("assets/healthbar.tga");
 	this->sprite()->pivot = Vector2(0, 0);
 	this->sprite()->color = RGBAColor(0, 255, 0, 255);
@@ -22,8 +23,11 @@ void UIElement::update(float deltaTime)
 
 void UIElement::manageHealthBar()
 {
+	// converts the playerhealth into the size of the healtbar
 	this->PlayerHealth = this->PlayerP->getHealth();
 	this->colorInt = (int)(this->PlayerHealth * 2.55) + 1;
 	this->scale = Vector2(((SWIDTH / 2) * this->PlayerHealth) / 100, 2);
+
+	// changes color depending on health left
 	this->sprite()->color = RGBAColor(-this->colorInt, this->colorInt, 0, 255);
 }

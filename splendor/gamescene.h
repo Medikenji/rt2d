@@ -26,24 +26,6 @@ class GameScene : public Scene
 public:
 	GameScene();
 	virtual ~GameScene();
-	virtual void update(float deltaTime);
-	void getMouse();
-	void exitGame();
-	void drawLine(float mx, float my);
-	void controlPlayer(float deltaTime);
-	void createAltPathEnemies(int amount);
-	void createLinePathEnemies(int amount);
-	void createStoicEnemies(int amount);
-	void createStraightEnemies(int amount);
-	void checkCol(float deltaTime);
-	bool col(Enemy *enemy, Player *player);
-	bool GameScene::mouseCol(Enemy *enemy, float mx, float my);
-	void createSingleEntities();
-	void AddScore(float deltaTime, int amount);
-	void CreateScoreT();
-	void ManageScoreT();
-	void ManageSpawns();
-	void TimerSetup();
 
 private:
 	Timer *timer;
@@ -64,6 +46,22 @@ private:
 	Text *text;
 	float spawnRate;
 	int enemyAmount = 50;
+	virtual void update(float deltaTime);
+	void drawLine(float mx, float my);
+	void controlPlayer(float deltaTime);
+	void createAltPathEnemies(int amount);
+	void createLinePathEnemies(int amount);
+	void createStoicEnemies(int amount);
+	void createStraightEnemies(int amount);
+	void checkCol(float deltaTime);
+	bool col(Enemy *enemy, Player *player);
+	bool GameScene::mouseCol(Enemy *enemy, float mx, float my);
+	void createSingleEntities();
+	void AddScore(float deltaTime, int amount);
+	void CreateScoreT();
+	void ManageScoreT();
+	void ManageSpawns();
+	void TimerSetup();
 };
 
 #endif

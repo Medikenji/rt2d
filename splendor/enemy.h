@@ -11,7 +11,6 @@ public:
 	virtual ~Enemy();
 	void EnemyMover(Point playerPos);
 	void Visuals(float deltaTime);
-	void killYourself();
 	void addForce(float deltaTime);
 	void update(float deltatime);
 	int health;

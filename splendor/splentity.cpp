@@ -28,8 +28,8 @@ void Splentity::killYourself()
 	// allows all splentities to die
 	if (this->health <= 0 && this != nullptr)
 	{
-		this->parent()->removeChild(this);
 		this->IsEntityAlive = false;
+		this->parent()->removeChild(this);
 	}
 }
 

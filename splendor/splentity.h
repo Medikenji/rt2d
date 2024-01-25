@@ -17,7 +17,6 @@ public:
 	void takeDamage(float deltaTime);
 	bool GetLivingStatus();
 	bool IsEntityAlive;
-
 private:
 };
 

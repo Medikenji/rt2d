@@ -21,6 +21,7 @@ private:
 
 protected:
 	float PlayerHealth;
+	bool DamageState;
 };
 
 #endif /* UIELEMENT_H */

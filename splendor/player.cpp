@@ -73,7 +73,7 @@ void Player::regenHealth(float deltaTime)
 	{
 		health += 0.005 * deltaTime * speedMultiplier;
 	}
-	else if (this->health < startHealth * 0.75)
+	else if (this->health < startHealth * 0.99)
 	{
 		health += 0.001 * deltaTime * speedMultiplier;
 	}

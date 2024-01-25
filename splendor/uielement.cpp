@@ -19,15 +19,31 @@ UIElement::~UIElement()
 void UIElement::update(float deltaTime)
 {
 	manageHealthBar();
+	std::cout << "this:   " << this->PlayerHealth << std::endl;
+	std::cout << "player: " << this->PlayerP->getHealth() << std::endl;
 }
 
 void UIElement::manageHealthBar()
 {
 	// converts the playerhealth into the size of the healtbar
+	if (this->PlayerHealth <= this->PlayerP->getHealth())
+	{
+		DamageState = true;
+	}
 	this->PlayerHealth = this->PlayerP->getHealth();
+	std::cout << DamageState << std::endl;
 	this->colorInt = (int)(this->PlayerHealth * 2.55) + 1;
-	this->scale = Vector2(((SWIDTH / 2) * this->PlayerHealth) / 100, 2);
-
-	// changes color depending on health left
+	// changes color depending on situation
 	this->sprite()->color = RGBAColor(-this->colorInt, this->colorInt, 0, 255);
+	if (DamageState)
+	{
+		this->sprite()->color = RGBAColor(-this->colorInt, this->colorInt, 0, 255);
+		this->scale = Vector2(((SWIDTH / 2) * this->PlayerHealth) / 100, 2);
+	}
+	else
+	{
+		this->sprite()->color = RGBAColor(255, 0, 0, 255);
+		this->scale = Vector2(((SWIDTH / 2) * this->PlayerHealth) / 100, 2.5);
+	}
+	DamageState = false;
 }

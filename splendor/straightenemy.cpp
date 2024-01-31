@@ -10,6 +10,7 @@ StraightEnemy::StraightEnemy() : Enemy()
 	this->sprite()->color = RGBAColor(255, 50, 50, 255);
 	this->personalMultiplier = rand() % 10;
 	this->speed = speedMultiplier * 800 * personalMultiplier / 10;
+	this->pointAmount = 15;
 	Spawn();
 }
 

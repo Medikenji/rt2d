@@ -97,11 +97,11 @@ void GameScene::createAltPathEnemies(int amount)
 	// adds a new enemy to the list before adding them as a child from the game
 	for (size_t i = 0; i < amount; i++)
 	{
-		altPathEnemies.push_back(new AltPathEnemy(&enemyTarget));
+		_enemies.push_back(new AltPathEnemy(&enemyTarget));
 	}
-	for (const auto altEnemy : altPathEnemies)
+	for (const auto AltPathEnemy : _enemies)
 	{
-		this->addChild(altEnemy);
+		this->addChild(AltPathEnemy);
 	}
 }
 
@@ -110,11 +110,11 @@ void GameScene::createLinePathEnemies(int amount)
 	// adds a new enemy to the list before adding them as a child from the game
 	for (size_t i = 0; i < amount; i++)
 	{
-		linePathEnemies.push_back(new LinePathEnemy(&enemyTarget));
+		_enemies.push_back(new LinePathEnemy(&enemyTarget));
 	}
-	for (const auto lineEnemy : linePathEnemies)
+	for (const auto LineEnemy : _enemies)
 	{
-		this->addChild(lineEnemy);
+		this->addChild(LineEnemy);
 	}
 }
 
@@ -123,11 +123,11 @@ void GameScene::createStoicEnemies(int amount)
 	// adds a new enemy to the list before adding them as a child from the game
 	for (size_t i = 0; i < amount; i++)
 	{
-		stoicEnemies.push_back(new StoicEnemy());
+		_enemies.push_back(new StoicEnemy());
 	}
-	for (const auto stoicEnemy : stoicEnemies)
+	for (const auto StoicEnemy : _enemies)
 	{
-		this->addChild(stoicEnemy);
+		this->addChild(StoicEnemy);
 	}
 }
 
@@ -136,11 +136,11 @@ void GameScene::createStraightEnemies(int amount)
 	// adds a new enemy to the list before adding them as a child from the game
 	for (size_t i = 0; i < amount; i++)
 	{
-		straightEnemies.push_back(new StraightEnemy());
+		_enemies.push_back(new StraightEnemy());
 	}
-	for (const auto straightEnemy : straightEnemies)
+	for (const auto StraightEnemy : _enemies)
 	{
-		this->addChild(straightEnemy);
+		this->addChild(StraightEnemy);
 	}
 }
 
@@ -152,71 +152,20 @@ void GameScene::checkCol(float deltaTime)
 		player->takeDamage(deltaTime);
 	}
 
-	// checks if any of the enemies in this list touch the player
-	for (const auto AltPathEnemy : altPathEnemies)
+	// checks if any of the enemies touch the player
+	for (auto Enemy : _enemies)
 	{
 		// if the col() function detects a run the player->takeDamage() function
-		if (col(AltPathEnemy, player))
+		if (col(Enemy, player))
 		{
 			player->takeDamage(deltaTime);
 		}
 
-		// if the mouch touches an enemy turn HitEnemy to true and add 5 score per second
-		if (mouseCol(AltPathEnemy, mx, my))
+		// if the mouch touches an enemy turn HitEnemy to true and add score per second
+		if (mouseCol(Enemy, mx, my))
 		{
-			AddScore(deltaTime, 5);
+			AddScore(deltaTime, Enemy->pointAmount);
 			HitEnemy = true;
-		}
-	}
-
-	// checks if any of the enemies in this list touch the player
-	for (const auto LinePathEnemy : linePathEnemies)
-	{
-		// if the col() function detects a run the player->takeDamage() function
-		if (col(LinePathEnemy, player))
-		{
-			player->takeDamage(deltaTime);
-		}
-
-		// if the mouch touches an enemy turn HitEnemy to true and add 125 score per second
-		if (mouseCol(LinePathEnemy, mx, my))
-		{
-			AddScore(deltaTime, 125);
-			HitEnemy = true;
-		}
-	}
-
-	// checks if any of the enemies in this list touch the player
-	for (const auto stoicEnemy : stoicEnemies)
-	{
-		// if the col() function detects a run the player->takeDamage() function
-		if (col(stoicEnemy, player))
-		{
-			player->takeDamage(deltaTime);
-		}
-
-		// if the mouch touches an enemy turn HitEnemy to true and add 5 score per second
-		if (mouseCol(stoicEnemy, mx, my))
-		{
-			AddScore(deltaTime, 5);
-			HitEnemy = true;
-		}
-
-		// checks if any of the enemies in this list touch the player
-		for (const auto straightEnemy : straightEnemies)
-		{
-			// if the col() function detects a run the player->takeDamage() function
-			if (col(straightEnemy, player))
-			{
-				player->takeDamage(deltaTime * 0.5);
-			}
-
-			// if the mouch touches an enemy turn HitEnemy to true and add 5 score per second
-			if (mouseCol(straightEnemy, mx, my))
-			{
-				AddScore(deltaTime, 10);
-				HitEnemy = true;
-			}
 		}
 	}
 }
@@ -274,7 +223,16 @@ void GameScene::CreateScoreT()
 void GameScene::ManageScoreT()
 {
 	// updates te score text
-	this->text->message(std::to_string(presentScore));
+	if (IsAlive)
+	{
+		this->text->message(std::to_string(presentScore));
+	}
+	else
+	{
+		this->text->position = Vector2(SWIDTH / 10, SHEIGHT / 2);
+		this->text->scale = Vector2(1, 1);
+		this->text->message("Game Over, your score is:	" + std::to_string(presentScore), RED);
+	}
 }
 
 void GameScene::ManageSpawns()
@@ -298,6 +256,6 @@ void GameScene::ManageSpawns()
 void GameScene::TimerSetup()
 {
 	// setups timer with 5 second spawn delay
-	spawnRate = 8;
+	spawnRate = 5;
 	timer->start();
 }

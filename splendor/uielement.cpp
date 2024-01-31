@@ -19,8 +19,6 @@ UIElement::~UIElement()
 void UIElement::update(float deltaTime)
 {
 	manageHealthBar();
-	std::cout << "this:   " << this->PlayerHealth << std::endl;
-	std::cout << "player: " << this->PlayerP->getHealth() << std::endl;
 }
 
 void UIElement::manageHealthBar()
@@ -31,7 +29,6 @@ void UIElement::manageHealthBar()
 		DamageState = true;
 	}
 	this->PlayerHealth = this->PlayerP->getHealth();
-	std::cout << DamageState << std::endl;
 	this->colorInt = (int)(this->PlayerHealth * 2.55) + 1;
 	// changes color depending on situation
 	this->sprite()->color = RGBAColor(-this->colorInt, this->colorInt, 0, 255);

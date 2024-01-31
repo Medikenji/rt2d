@@ -9,17 +9,16 @@ class Enemy : public Splentity
 public:
 	Enemy();
 	virtual ~Enemy();
-	void EnemyMover(Point playerPos);
-	void Visuals(float deltaTime);
-	void addForce(float deltaTime);
-	void update(float deltatime);
-	int health;
+	int pointAmount;
 	Vector2 velocity;
 	Vector2 *targetPosition;
+	void update(float deltatime);
 	virtual void Boundry();
 
 private:
 	Timer t;
+	void Visuals(float deltaTime);
+	void addForce(float deltaTime);
 };
 
 #endif

@@ -31,10 +31,8 @@ private:
 	Timer *timer;
 	Player *player;
 	UIElement *UIelement;
-	std::vector<AltPathEnemy *> altPathEnemies;
-	std::vector<LinePathEnemy *> linePathEnemies;
-	std::vector<StoicEnemy *> stoicEnemies;
-	std::vector<StraightEnemy *> straightEnemies;
+	std::vector<Enemy *> _enemies;
+
 	Timer t;
 	Vector2 enemyTarget;
 	float mx;

@@ -9,6 +9,7 @@ StoicEnemy::StoicEnemy() : Enemy()
 	this->EnemyScale = (rand() % 10) * 0.1;
 	this->scale = Vector2(this->EnemyScale, this->EnemyScale);
 	this->sprite()->color = RGBAColor(255, 50, 50, (50 + rand() % 70));
+	this->pointAmount = 5;
 }
 
 StoicEnemy::~StoicEnemy()

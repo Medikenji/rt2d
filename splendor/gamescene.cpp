@@ -203,7 +203,7 @@ void GameScene::ManageSpawns()
 	if (timer->seconds() >= spawnRate)
 	{
 		// increases the spawnrate each time enemies spawn
-		spawnRate += 0.75;
+		spawnRate += 0.5;
 
 		// starts the timer
 		timer->start();

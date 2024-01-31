@@ -10,18 +10,20 @@
 class UIElement : public Entity
 {
 public:
+	// functions
 	UIElement(Player *player);
 	virtual ~UIElement();
-	void update(float deltaTime);
-	void manageHealthBar();
 
 private:
+	// variables
 	Player *PlayerP;
 	int colorInt;
-
-protected:
 	float PlayerHealth;
 	bool DamageState;
+
+	// functions
+	void update(float deltaTime);
+	void manageHealthBar();
 };
 
 #endif /* UIELEMENT_H */

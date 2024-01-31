@@ -10,13 +10,16 @@ class LinePathEnemy : public Enemy
 public:
 	LinePathEnemy(Vector2 *targetEntity);
 	virtual ~LinePathEnemy();
-	virtual void update(float deltaTime);
 
 private:
-	void goMove(Point playerPos, float deltaTime);
+	// variables
 	Vector2 *targetPosition;
 	int speed;
 	Vector2 velocity;
+
+	// functions
+	virtual void update(float deltaTime);
+	void goMove(Point playerPos, float deltaTime);
 };
 
 #endif /* LINEPATHENEMY_H */

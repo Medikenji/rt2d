@@ -13,13 +13,16 @@ public:
 	void update(float deltaTime);
 
 private:
-	void goMove(Vector2 playerPos, float deltaTime);
-	void goAccelerate(float deltaTime, Vector2 vectorial, int switcher);
-	void countDown(float countdownTime, float deltaTime);
+	// variables
 	float time;
 	Vector2 *targetPosition;
 	int randomiser;
 	float speed;
+
+	// functions
+	void goMove(Vector2 playerPos, float deltaTime);
+	void goAccelerate(float deltaTime, Vector2 vectorial, int switcher);
+	void countDown(float countdownTime, float deltaTime);
 };
 
 #endif /* ALTPATHENEMY_H */

@@ -20,7 +20,19 @@ GameScene::~GameScene()
 {
 }
 
+// runs every frame
 void GameScene::update(float deltaTime)
+{
+	updateFunctions();
+	controlPlayer(deltaTime);
+	checkCol(deltaTime);
+	drawLine(mx, my);
+	ManageScoreT();
+	ManageSpawns();
+}
+
+// small things that need to be called every frame
+void GameScene::updateFunctions()
 {
 	// gets location of mouse
 	mx = input()->getMouseX();
@@ -34,15 +46,9 @@ void GameScene::update(float deltaTime)
 
 	// sets the target for enemies
 	enemyTarget = player->position;
-
-	// functions
-	controlPlayer(deltaTime);
-	checkCol(deltaTime);
-	drawLine(mx, my);
-	ManageScoreT();
-	ManageSpawns();
 }
 
+// calls player controls through inputs
 void GameScene::controlPlayer(float deltaTime)
 {
 	// enables quitting the game
@@ -74,6 +80,7 @@ void GameScene::controlPlayer(float deltaTime)
 	}
 }
 
+// draws line from player through mouse depending on scenario
 void GameScene::drawLine(float mx, float my)
 {
 	// clears the line before another one gets drawn
@@ -92,6 +99,132 @@ void GameScene::drawLine(float mx, float my)
 	}
 }
 
+// calls all collision checks and handles them
+void GameScene::checkCol(float deltaTime)
+{
+	// checks if player is outside of screen, if true the player takes damage
+	if (player->position.x > SWIDTH || player->position.x < 0 || player->position.y > SHEIGHT || player->position.y < 0)
+	{
+		player->takeDamage(deltaTime);
+	}
+
+	// checks if any of the enemies touch the player
+	for (auto Enemy : _enemies)
+	{
+		// if the col() function detects a run the player->takeDamage() function
+		if (enemyColCheck(Enemy, player))
+		{
+			player->takeDamage(deltaTime);
+		}
+
+		// if the mouch touches an enemy turn HitEnemy to true and add score per second
+		if (mouseColCheck(Enemy, mx, my))
+		{
+			AddScore(deltaTime, Enemy->pointAmount);
+			HitEnemy = true;
+		}
+	}
+}
+
+// checks if enemy collides with player
+bool GameScene::enemyColCheck(Enemy *enemy, Player *player)
+{
+	// check if the difference between the player and enemy position is less than a dynamic value
+	return (abs(enemy->position.x - player->position.x) < (player->sprite()->size.x * player->scale.x + (enemy->sprite()->size.x * enemy->scale.x) / 2)) && (abs(enemy->position.y - player->position.y) < (player->sprite()->size.y * player->scale.y + (enemy->sprite()->size.y * enemy->scale.y) / 2));
+}
+
+// checks if enemy collides with mouse
+bool GameScene::mouseColCheck(Enemy *enemy, float mx, float my)
+{
+	// check if the difference between the mouse and enemy position is less than a dynamic value
+	return (abs(enemy->position.x - mx) < (10 + (enemy->sprite()->size.x * enemy->scale.x) / 2)) && (abs(enemy->position.y - my) < (10 + (enemy->sprite()->size.y * enemy->scale.y) / 2));
+}
+
+// creates all enteties needed on startup
+void GameScene::createSingleEntities()
+{
+	// creates player
+	player = new Player();
+	this->addChild(player);
+
+	// creates ui
+	UIelement = new UIElement(player);
+	this->addChild(UIelement);
+	CreateScoreT();
+
+	// creates starter enemy
+	createLinePathEnemies(1);
+}
+
+// adds score based on parameters
+void GameScene::AddScore(float deltaTime, int amount)
+{
+	// adds a variable score when player is alive and called
+	if (IsAlive)
+	{
+		score += amount * deltaTime * (Splentity::speedMultiplier * 1.2);
+		presentScore = (int)score;
+	}
+}
+
+// creates score text
+void GameScene::CreateScoreT()
+{
+	// sets score to 0
+	score = 0;
+	presentScore = 0;
+
+	// creates score text
+	this->text = new Text();
+	this->text->position = Vector2(20, SHEIGHT - 20);
+	this->addChild(this->text);
+	this->text->scale = Vector2(0.75, 0.75);
+}
+
+// updates the score text
+void GameScene::ManageScoreT()
+{
+	// updates te score text
+	if (IsAlive)
+	{
+		this->text->message(std::to_string(presentScore));
+	}
+	else
+	{
+		this->text->position = Vector2(SWIDTH / 10, SHEIGHT / 2);
+		this->text->scale = Vector2(1, 1);
+		this->text->message("Game Over, your score is:	" + std::to_string(presentScore), RED);
+	}
+}
+
+// spawns enemies based on a timer
+void GameScene::ManageSpawns()
+{
+	if (timer->seconds() >= spawnRate)
+	{
+		// increases the spawnrate each time enemies spawn
+		spawnRate += 0.75;
+
+		// starts the timer
+		timer->start();
+
+		// creates enemies
+		createAltPathEnemies(rand() % enemyAmount);
+		createStoicEnemies(1);
+		createStraightEnemies((rand() % 2) + 1);
+		enemyAmount++;
+	}
+}
+
+// starts timer
+void GameScene::TimerSetup()
+{
+	// setups timer with 5 second spawn delay
+	spawnRate = 5;
+	timer->start();
+}
+
+// functions for creating enemies
 void GameScene::createAltPathEnemies(int amount)
 {
 	// adds a new enemy to the list before adding them as a child from the game
@@ -142,120 +275,4 @@ void GameScene::createStraightEnemies(int amount)
 	{
 		this->addChild(StraightEnemy);
 	}
-}
-
-void GameScene::checkCol(float deltaTime)
-{
-	// checks if player is outside of screen, if true the player takes damage
-	if (player->position.x > SWIDTH || player->position.x < 0 || player->position.y > SHEIGHT || player->position.y < 0)
-	{
-		player->takeDamage(deltaTime);
-	}
-
-	// checks if any of the enemies touch the player
-	for (auto Enemy : _enemies)
-	{
-		// if the col() function detects a run the player->takeDamage() function
-		if (col(Enemy, player))
-		{
-			player->takeDamage(deltaTime);
-		}
-
-		// if the mouch touches an enemy turn HitEnemy to true and add score per second
-		if (mouseCol(Enemy, mx, my))
-		{
-			AddScore(deltaTime, Enemy->pointAmount);
-			HitEnemy = true;
-		}
-	}
-}
-
-bool GameScene::col(Enemy *enemy, Player *player)
-{
-	// check if the difference between the player and enemy position is less than a dynamic value
-	return (abs(enemy->position.x - player->position.x) < (player->sprite()->size.x * player->scale.x + (enemy->sprite()->size.x * enemy->scale.x) / 2)) && (abs(enemy->position.y - player->position.y) < (player->sprite()->size.y * player->scale.y + (enemy->sprite()->size.y * enemy->scale.y) / 2));
-}
-
-bool GameScene::mouseCol(Enemy *enemy, float mx, float my)
-{
-	// check if the difference between the mouse and enemy position is less than a dynamic value
-	return (abs(enemy->position.x - mx) < (10 + (enemy->sprite()->size.x * enemy->scale.x) / 2)) && (abs(enemy->position.y - my) < (10 + (enemy->sprite()->size.y * enemy->scale.y) / 2));
-}
-
-void GameScene::createSingleEntities()
-{
-	// creates player
-	player = new Player();
-	this->addChild(player);
-
-	// creates ui
-	UIelement = new UIElement(player);
-	this->addChild(UIelement);
-	CreateScoreT();
-
-	// creates starter enemy
-	createLinePathEnemies(1);
-}
-
-void GameScene::AddScore(float deltaTime, int amount)
-{
-	// adds a variable score when player is alive and called
-	if (IsAlive)
-	{
-		score += amount * deltaTime * (Splentity::speedMultiplier * 1.2);
-		presentScore = (int)score;
-	}
-}
-
-void GameScene::CreateScoreT()
-{
-	// sets score to 0
-	score = 0;
-	presentScore = 0;
-
-	// creates score text
-	this->text = new Text();
-	this->text->position = Vector2(20, SHEIGHT - 20);
-	this->addChild(this->text);
-	this->text->scale = Vector2(0.75, 0.75);
-}
-
-void GameScene::ManageScoreT()
-{
-	// updates te score text
-	if (IsAlive)
-	{
-		this->text->message(std::to_string(presentScore));
-	}
-	else
-	{
-		this->text->position = Vector2(SWIDTH / 10, SHEIGHT / 2);
-		this->text->scale = Vector2(1, 1);
-		this->text->message("Game Over, your score is:	" + std::to_string(presentScore), RED);
-	}
-}
-
-void GameScene::ManageSpawns()
-{
-	if (timer->seconds() >= spawnRate)
-	{
-		// increases the spawnrate each time enemies spawn
-		spawnRate += 0.75;
-
-		// starts the timer
-		timer->start();
-
-		// creates enemies
-		createAltPathEnemies(rand() % enemyAmount);
-		createStoicEnemies(1);
-		createStraightEnemies((rand() % 2) + 1);
-		enemyAmount++;
-	}
-}
-
-void GameScene::TimerSetup()
-{
-	// setups timer with 5 second spawn delay
-	spawnRate = 5;
-	timer->start();
 }

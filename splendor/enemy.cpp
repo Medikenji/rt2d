@@ -26,12 +26,6 @@ void Enemy::Visuals(float deltaTime)
 	}
 }
 
-void Enemy::addForce(float deltaTime)
-{
-	// gravity
-	velocity += Vector2(0, 350) * (speedMultiplier * 0.9) * deltaTime;
-}
-
 void Enemy::Boundry()
 {
 	// checks if enemy is to far out of boundry

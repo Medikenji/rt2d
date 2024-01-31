@@ -7,18 +7,23 @@
 class Enemy : public Splentity
 {
 public:
-	Enemy();
-	virtual ~Enemy();
+	// variables
 	int pointAmount;
 	Vector2 velocity;
 	Vector2 *targetPosition;
+
+	// functions
+	Enemy();
+	virtual ~Enemy();
 	void update(float deltatime);
-	virtual void Boundry();
 
 private:
+	// variables
 	Timer t;
+
+	// functions
 	void Visuals(float deltaTime);
-	void addForce(float deltaTime);
+	virtual void Boundry();
 };
 
 #endif

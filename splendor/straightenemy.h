@@ -12,12 +12,15 @@ public:
 	virtual ~StraightEnemy();
 
 private:
-	void update(float deltaTime);
-	void ManageMovement(float deltaTime);
-	void GoMove(float deltaTime);
+	// variables
 	int randomiser;
 	float speed;
 	float personalMultiplier;
+
+	// functions
+	void update(float deltaTime);
+	void ManageMovement(float deltaTime);
+	void GoMove(float deltaTime);
 	void Spawn();
 	void Boundry();
 };

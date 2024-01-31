@@ -6,19 +6,25 @@
 class Player : public Splentity
 {
 public:
+	// variables
 	Point velocity;
+
+	// functions
 	Player();
-	void handlePlayer();
-	void controlPlayer(int switcher, float deltaTime);
 	virtual ~Player();
-	virtual void update(float deltaTime);
 	double getHealth();
-	void regenHealth(float deltaTime);
+	void controlPlayer(int switcher, float deltaTime);
 
 private:
+	// variables
 	Timer t;
 	int speed;
 	double sqrt2 = sqrt(2);
 	double startHealth;
+
+	// functions
+	virtual void update(float deltaTime);
+	void handlePlayer();
+	void regenHealth(float deltaTime);
 };
 #endif

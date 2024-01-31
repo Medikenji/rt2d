@@ -28,11 +28,11 @@ public:
 	virtual ~GameScene();
 
 private:
+	// variables
 	Timer *timer;
 	Player *player;
 	UIElement *UIelement;
 	std::vector<Enemy *> _enemies;
-
 	Timer t;
 	Vector2 enemyTarget;
 	float mx;
@@ -44,22 +44,25 @@ private:
 	Text *text;
 	float spawnRate;
 	int enemyAmount = 50;
+
+	// functions
 	virtual void update(float deltaTime);
-	void drawLine(float mx, float my);
+	void updateFunctions();
 	void controlPlayer(float deltaTime);
-	void createAltPathEnemies(int amount);
-	void createLinePathEnemies(int amount);
-	void createStoicEnemies(int amount);
-	void createStraightEnemies(int amount);
+	void drawLine(float mx, float my);
 	void checkCol(float deltaTime);
-	bool col(Enemy *enemy, Player *player);
-	bool GameScene::mouseCol(Enemy *enemy, float mx, float my);
+	bool enemyColCheck(Enemy *enemy, Player *player);
+	bool mouseColCheck(Enemy *enemy, float mx, float my);
 	void createSingleEntities();
 	void AddScore(float deltaTime, int amount);
 	void CreateScoreT();
 	void ManageScoreT();
 	void ManageSpawns();
 	void TimerSetup();
+	void createAltPathEnemies(int amount);
+	void createLinePathEnemies(int amount);
+	void createStoicEnemies(int amount);
+	void createStraightEnemies(int amount);
 };
 
 #endif

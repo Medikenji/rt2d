@@ -1,6 +1,3 @@
-#include <fstream>
-#include <sstream>
-#include <color.h>
 #include "gamescene.h"
 
 GameScene::GameScene() : Scene()
@@ -26,7 +23,7 @@ void GameScene::update(float deltaTime)
 	updateFunctions();
 	controlPlayer(deltaTime);
 	checkCol(deltaTime);
-	drawLine(mx, my);
+	drawLine(mx, my, deltaTime);
 	ManageScoreT();
 	ManageSpawns();
 }
@@ -81,7 +78,7 @@ void GameScene::controlPlayer(float deltaTime)
 }
 
 // draws line from player through mouse depending on scenario
-void GameScene::drawLine(float mx, float my)
+void GameScene::drawLine(float mx, float my, float deltaTime)
 {
 	// clears the line before another one gets drawn
 	ddClear();
@@ -89,13 +86,21 @@ void GameScene::drawLine(float mx, float my)
 	// draws line after checking if an enemy has been hit for the right color
 	if (HitEnemy == false)
 	{
+		if (mouseAnimManager > 1 + *globalMultiplier * 0.75)
+		{
+			mouseAnimManager -= 15 * *globalMultiplier * deltaTime;
+		}
 		ddLine(player->position.x, player->position.y, mx, my, WHITE);
-		ddCircle(mx, my, 10, WHITE);
+		ddCircle(mx, my, mouseAnimManager, WHITE);
 	}
 	else
 	{
+		if (mouseAnimManager < 15 * *globalMultiplier * 0.75)
+		{
+			mouseAnimManager += 30 * *globalMultiplier * deltaTime;
+		}
 		ddLine(player->position.x, player->position.y, mx, my, GREEN);
-		ddCircle(mx, my, 10, GREEN);
+		ddCircle(mx, my, mouseAnimManager, GREEN);
 	}
 }
 
@@ -137,7 +142,7 @@ bool GameScene::enemyColCheck(Enemy *enemy, Player *player)
 bool GameScene::mouseColCheck(Enemy *enemy, float mx, float my)
 {
 	// check if the difference between the mouse and enemy position is less than a dynamic value
-	return (abs(enemy->position.x - mx) < (10 + (enemy->sprite()->size.x * enemy->scale.x) / 2)) && (abs(enemy->position.y - my) < (10 + (enemy->sprite()->size.y * enemy->scale.y) / 2));
+	return (abs(enemy->position.x - mx) < (mouseAnimManager + (enemy->sprite()->size.x * enemy->scale.x) / 2)) && (abs(enemy->position.y - my) < (mouseAnimManager + (enemy->sprite()->size.y * enemy->scale.y) / 2));
 }
 
 // creates all enteties needed on startup
@@ -162,7 +167,7 @@ void GameScene::AddScore(float deltaTime, int amount)
 	// adds a variable score when player is alive and called
 	if (IsAlive)
 	{
-		score += amount * deltaTime * (Splentity::speedMultiplier * 1.2);
+		score += amount * deltaTime / *globalMultiplier * 1.5;
 		presentScore = (int)score;
 	}
 }

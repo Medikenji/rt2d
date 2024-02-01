@@ -12,6 +12,9 @@
 #include "splentity.h"
 #include "straightenemy.h"
 #include "timer.h"
+#include <fstream>
+#include <sstream>
+#include <color.h>
 #include <math.h>
 #include <algorithm>
 
@@ -44,12 +47,14 @@ private:
 	Text *text;
 	float spawnRate;
 	int enemyAmount = 50;
+	float *globalMultiplier = &Splentity::speedMultiplier;
+	float mouseAnimManager = 1 + *globalMultiplier * 0.75;
 
 	// functions
 	virtual void update(float deltaTime);
 	void updateFunctions();
 	void controlPlayer(float deltaTime);
-	void drawLine(float mx, float my);
+	void drawLine(float mx, float my, float deltaTime);
 	void checkCol(float deltaTime);
 	bool enemyColCheck(Enemy *enemy, Player *player);
 	bool mouseColCheck(Enemy *enemy, float mx, float my);

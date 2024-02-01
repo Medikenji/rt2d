@@ -19,6 +19,7 @@ void LinePathEnemy::update(float deltaTime)
 	// functions
 	Enemy::update(deltaTime);
 	goMove(*targetPosition, deltaTime);
+	this->pointAmount = 83 * speedMultiplier * 1.5;
 }
 
 void LinePathEnemy::goMove(Point playerPos, float deltaTime)

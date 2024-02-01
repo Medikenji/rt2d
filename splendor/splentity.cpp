@@ -13,8 +13,9 @@ Splentity::~Splentity()
 
 void Splentity::update(float deltaTime)
 {
+	std::cout << speedMultiplier << std::endl;
 	// constantly increases the global speed multiplier
-	speedMultiplier += 0.01 * deltaTime;
+	speedMultiplier += 0.005 * speedMultiplier * deltaTime;
 }
 
 void Splentity::takeDamage(float deltaTime)

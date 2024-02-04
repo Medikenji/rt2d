@@ -18,6 +18,8 @@
 #include <math.h>
 #include <algorithm>
 
+using namespace std;
+
 #define UP 100
 #define DOWN 110
 #define LEFT 120
@@ -46,7 +48,7 @@ private:
 	bool IsAlive;
 	Text *text;
 	float spawnRate;
-	int enemyAmount = 50;
+	int enemyAmount = 100;
 	float *globalMultiplier = &Splentity::speedMultiplier;
 	float mouseAnimManager = 1 + *globalMultiplier * 0.75;
 
@@ -58,7 +60,7 @@ private:
 	void checkCol(float deltaTime);
 	bool enemyColCheck(Enemy *enemy, Player *player);
 	bool mouseColCheck(Enemy *enemy, float mx, float my);
-	void createSingleEntities();
+	void setupGame();
 	void AddScore(float deltaTime, int amount);
 	void CreateScoreT();
 	void ManageScoreT();

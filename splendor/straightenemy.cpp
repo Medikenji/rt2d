@@ -11,6 +11,7 @@ StraightEnemy::StraightEnemy() : Enemy()
 	this->personalMultiplier = rand() % 10;
 	this->speed = speedMultiplier * 800 * personalMultiplier / 10;
 	this->pointAmount = 15;
+	this->damageAmount = 0.8;
 	Spawn();
 }
 

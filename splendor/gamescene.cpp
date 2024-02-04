@@ -5,12 +5,12 @@ GameScene::GameScene() : Scene()
 	// starts timer on setup
 	t.start();
 
-	// creates all entities that need to exist on startup
-	createSingleEntities();
-
 	// creates and starts timer
 	timer = new Timer();
 	TimerSetup();
+
+	// creates all entities that need to exist on startup
+	setupGame();
 }
 
 GameScene::~GameScene()
@@ -110,7 +110,7 @@ void GameScene::checkCol(float deltaTime)
 	// checks if player is outside of screen, if true the player takes damage
 	if (player->position.x > SWIDTH || player->position.x < 0 || player->position.y > SHEIGHT || player->position.y < 0)
 	{
-		player->takeDamage(deltaTime);
+		player->takeDamage(deltaTime, 0.5);
 	}
 
 	// checks if any of the enemies touch the player
@@ -119,13 +119,13 @@ void GameScene::checkCol(float deltaTime)
 		// if the col() function detects a run the player->takeDamage() function
 		if (enemyColCheck(Enemy, player))
 		{
-			player->takeDamage(deltaTime);
+			player->takeDamage(deltaTime, Enemy->damageAmount * *globalMultiplier);
 		}
 
 		// if the mouch touches an enemy turn HitEnemy to true and add score per second
 		if (mouseColCheck(Enemy, mx, my))
 		{
-			AddScore(deltaTime, Enemy->pointAmount);
+			AddScore(deltaTime, Enemy->pointAmount / *globalMultiplier);
 			HitEnemy = true;
 		}
 	}
@@ -146,7 +146,7 @@ bool GameScene::mouseColCheck(Enemy *enemy, float mx, float my)
 }
 
 // creates all enteties needed on startup
-void GameScene::createSingleEntities()
+void GameScene::setupGame()
 {
 	// creates player
 	player = new Player();

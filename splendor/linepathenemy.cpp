@@ -8,6 +8,7 @@ LinePathEnemy::LinePathEnemy(Vector2 *targetEntity) : Enemy()
 	this->scale = Vector2(0.1, 0.1);
 	this->sprite()->color = RGBAColor(255, 0, 0, 255);
 	this->pointAmount = 125;
+	this->damageAmount = 1;
 }
 
 LinePathEnemy::~LinePathEnemy()

@@ -2,12 +2,13 @@
 
 AltPathEnemy::AltPathEnemy(Vector2 *targetEntity) : Enemy()
 { // setup enemy
-	this->scale = Vector2(0.025, 0.025);
+	this->scale = Vector2(0.015, 0.015);
 	health = 100;
 	randomiser = rand() % 4;
 	this->targetPosition = targetEntity;
 	this->sprite()->color = RGBAColor(245, 50, 50, (135 + rand() % 120));
 	this->pointAmount = 5;
+	this->damageAmount = 0.1;
 }
 
 AltPathEnemy::~AltPathEnemy()
@@ -18,7 +19,7 @@ void AltPathEnemy::update(float deltaTime)
 {
 	Enemy::update(deltaTime);
 	// increases enemy size every second
-	this->scale += 0.001 * deltaTime * speedMultiplier;
+	this->scale += 0.0005 * deltaTime * speedMultiplier;
 	// functions
 	countDown(0.5, deltaTime);
 	goMove(*targetPosition, deltaTime);
@@ -43,16 +44,16 @@ void AltPathEnemy::goAccelerate(float deltaTime, Vector2 vectorial, int switcher
 	switch (switcher)
 	{
 	case 0:
-		speed = rand() % 100 * speedMultiplier;
+		speed = rand() % 50 * speedMultiplier;
 		break;
 	case 1:
-		speed = rand() % 200 * speedMultiplier;
+		speed = rand() % 100 * speedMultiplier;
 		break;
 	case 2:
-		speed = rand() % 300 * speedMultiplier;
+		speed = rand() % 150 * speedMultiplier;
 		break;
 	case 3:
-		speed = rand() % 400 * speedMultiplier;
+		speed = rand() % 200 * speedMultiplier;
 		break;
 	}
 }

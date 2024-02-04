@@ -18,10 +18,10 @@ void Splentity::update(float deltaTime)
 	speedMultiplier += 0.005 * speedMultiplier * deltaTime;
 }
 
-void Splentity::takeDamage(float deltaTime)
+void Splentity::takeDamage(float deltaTime, float damageAmount)
 {
 	// allows all splentities to take damage
-	this->health -= 1 * deltaTime;
+	this->health -= damageAmount * deltaTime;
 }
 
 void Splentity::killYourself()

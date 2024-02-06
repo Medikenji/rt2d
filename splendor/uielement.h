@@ -11,7 +11,7 @@ class UIElement : public Entity
 {
 public:
 	// functions
-	UIElement(Player *player);
+	UIElement(Player *player, float *score);
 	virtual ~UIElement();
 
 private:

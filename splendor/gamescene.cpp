@@ -2,6 +2,8 @@
 
 GameScene::GameScene() : Scene()
 {
+
+	score = 0;
 	// starts timer on setup
 	t.start();
 
@@ -26,6 +28,7 @@ void GameScene::update(float deltaTime)
 	drawLine(mx, my, deltaTime);
 	ManageScoreT();
 	ManageSpawns();
+	saveScore(score);
 }
 
 // small things that need to be called every frame
@@ -153,12 +156,17 @@ void GameScene::setupGame()
 	this->addChild(player);
 
 	// creates ui
-	UIelement = new UIElement(player);
+	UIelement = new UIElement(player, &score);
 	this->addChild(UIelement);
 	CreateScoreT();
 
 	// creates starter enemy
 	createLinePathEnemies(1);
+
+	// _WroteFile = false
+	_WroteFile = false;
+
+	HighScore = getScore();
 }
 
 // adds score based on parameters
@@ -168,7 +176,7 @@ void GameScene::AddScore(float deltaTime, int amount)
 	if (IsAlive)
 	{
 		score += amount * deltaTime / *globalMultiplier * 1.5;
-		presentScore = (int)score;
+		currentScore = (int)score;
 	}
 }
 
@@ -177,7 +185,7 @@ void GameScene::CreateScoreT()
 {
 	// sets score to 0
 	score = 0;
-	presentScore = 0;
+	currentScore = 0;
 
 	// creates score text
 	this->text = new Text();
@@ -192,13 +200,13 @@ void GameScene::ManageScoreT()
 	// updates te score text
 	if (IsAlive)
 	{
-		this->text->message(std::to_string(presentScore));
+		this->text->message(std::to_string(currentScore));
 	}
 	else
 	{
 		this->text->position = Vector2(SWIDTH / 10, SHEIGHT / 2);
 		this->text->scale = Vector2(1, 1);
-		this->text->message("Game Over, your score is:	" + std::to_string(presentScore), RED);
+		this->text->message("Game Over, your score is:	" + std::to_string(currentScore), RED);
 	}
 }
 
@@ -280,4 +288,48 @@ void GameScene::createStraightEnemies(int amount)
 	{
 		this->addChild(StraightEnemy);
 	}
+}
+
+void GameScene::saveScore(int score)
+{
+	if (!IsAlive && !_WroteFile)
+	{
+		// if player is death save the score in highscore.txt if its higher than the int stored
+		if (score > HighScore)
+		{
+			std::ofstream file_buffer("highscore.txt");
+			file_buffer << score;
+			file_buffer.close();
+		}
+		_WroteFile = true;
+	}
+}
+
+int GameScene::getScore()
+{
+	if (fileExists("highscore.txt"))
+	{
+		// returns the int stored in highscore.txt
+		std::string score;
+		std::ifstream file_buffer("highscore.txt");
+		std::getline(file_buffer, score);
+		file_buffer.close();
+		return std::stoi(score);
+	}
+	else
+	{
+		// if highscore.txt doesn't exist creat it
+		std::cout << "highscore.txt does not exist" << std::endl;
+		std::ofstream file_buffer("highscore.txt");
+		file_buffer << 0;
+		file_buffer.close();
+		return -1;
+	}
+}
+
+bool GameScene::fileExists(std::string filename)
+{
+	// checks if file exitsts
+	std::ifstream infile(filename);
+	return infile.good();
 }

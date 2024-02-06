@@ -7,7 +7,7 @@ AltPathEnemy::AltPathEnemy(Vector2 *targetEntity) : Enemy()
 	randomiser = rand() % 4;
 	this->targetPosition = targetEntity;
 	this->sprite()->color = RGBAColor(245, 50, 50, (135 + rand() % 120));
-	this->pointAmount = 5;
+	this->pointAmount = 1;
 	this->damageAmount = 0.1;
 }
 

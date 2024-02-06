@@ -2,7 +2,7 @@
 
 #include "uielement.h"
 
-UIElement::UIElement(Player *player) : Entity()
+UIElement::UIElement(Player *player, float *score) : Entity()
 {
 	// UI setup
 	this->addSprite("assets/healthbar.tga");
@@ -24,7 +24,7 @@ void UIElement::update(float deltaTime)
 void UIElement::manageHealthBar()
 {
 	// converts the playerhealth into the size of the healtbar
-	if (this->PlayerHealth <= this->PlayerP->getHealth())
+	if (static_cast<float>(static_cast<int>(this->PlayerHealth * 10)) / 10 <= static_cast<float>(static_cast<int>(this->PlayerP->getHealth() * 10)) / 10)
 	{
 		DamageState = true;
 	}

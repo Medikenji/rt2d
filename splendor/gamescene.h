@@ -18,8 +18,6 @@
 #include <math.h>
 #include <algorithm>
 
-using namespace std;
-
 #define UP 100
 #define DOWN 110
 #define LEFT 120
@@ -43,7 +41,7 @@ private:
 	float mx;
 	float my;
 	float score;
-	int presentScore;
+	int currentScore;
 	bool HitEnemy;
 	bool IsAlive;
 	Text *text;
@@ -51,6 +49,8 @@ private:
 	int enemyAmount = 100;
 	float *globalMultiplier = &Splentity::speedMultiplier;
 	float mouseAnimManager = 1 + *globalMultiplier * 0.75;
+	bool _WroteFile;
+	long HighScore;
 
 	// functions
 	virtual void update(float deltaTime);
@@ -70,6 +70,9 @@ private:
 	void createLinePathEnemies(int amount);
 	void createStoicEnemies(int amount);
 	void createStraightEnemies(int amount);
+	void saveScore(int score);
+	int getScore();
+	bool fileExists(std::string filename);
 };
 
 #endif

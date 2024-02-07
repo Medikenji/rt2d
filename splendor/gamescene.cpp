@@ -2,14 +2,13 @@
 
 GameScene::GameScene() : Scene()
 {
-
-	score = 0;
+	this->_Score = 0;
 	// starts timer on setup
-	t.start();
+	this->_T.start();
 
 	// creates and starts timer
-	timer = new Timer();
-	TimerSetup();
+	this->_pTimer = new Timer();
+	timerSetup();
 
 	// creates all entities that need to exist on startup
 	setupGame();
@@ -25,27 +24,26 @@ void GameScene::update(float deltaTime)
 	updateFunctions();
 	controlPlayer(deltaTime);
 	checkCol(deltaTime);
-	drawLine(mx, my, deltaTime);
-	ManageScoreT();
-	ManageSpawns();
-	saveScore(score);
+	drawLine(this->_mouseX, this->_mouseY, deltaTime);
+	saveScore(this->_Score);
+	manageSpawns();
 }
 
 // small things that need to be called every frame
 void GameScene::updateFunctions()
 {
 	// gets location of mouse
-	mx = input()->getMouseX();
-	my = input()->getMouseY();
+	this->_mouseX = input()->getMouseX();
+	this->_mouseY = input()->getMouseY();
 
 	// resets the enemy hit val every frame
-	HitEnemy = false;
+	this->_hitEnemy = false;
 
 	// checks if player is alive
-	IsAlive = player->GetLivingStatus();
+	this->_playerIsAlive = this->_pPlayer->getLivingStatus();
 
 	// sets the target for enemies
-	enemyTarget = player->position;
+	this->_enemyTarget = this->_pPlayer->position;
 }
 
 // calls player controls through inputs
@@ -60,50 +58,50 @@ void GameScene::controlPlayer(float deltaTime)
 	// player movement controlls
 	if (input()->getKey(KeyCode::W))
 	{
-		player->controlPlayer(UP, deltaTime);
+		this->_pPlayer->controlPlayer(UP, deltaTime);
 	}
 	if (input()->getKey(KeyCode::S))
 	{
-		player->controlPlayer(DOWN, deltaTime);
+		this->_pPlayer->controlPlayer(DOWN, deltaTime);
 	}
 	if (input()->getKey(KeyCode::A))
 	{
-		player->controlPlayer(LEFT, deltaTime);
+		this->_pPlayer->controlPlayer(LEFT, deltaTime);
 	}
 	if (input()->getKey(KeyCode::D))
 	{
-		player->controlPlayer(RIGHT, deltaTime);
+		this->_pPlayer->controlPlayer(RIGHT, deltaTime);
 	}
 	if (input()->getKey(KeyCode::LeftShift))
 	{
-		player->controlPlayer(BOOST, deltaTime);
+		this->_pPlayer->controlPlayer(BOOST, deltaTime);
 	}
 }
 
 // draws line from player through mouse depending on scenario
-void GameScene::drawLine(float mx, float my, float deltaTime)
+void GameScene::drawLine(float mouseX, float mouseY, float deltaTime)
 {
 	// clears the line before another one gets drawn
 	ddClear();
 
 	// draws line after checking if an enemy has been hit for the right color
-	if (HitEnemy == false)
+	if (this->_hitEnemy == false)
 	{
-		if (mouseAnimManager > 1 + *globalMultiplier * 0.75)
+		if (this->_dynamicMouse > 1 + *this->_pGlobalMultiplier * 0.75)
 		{
-			mouseAnimManager -= 15 * *globalMultiplier * deltaTime;
+			this->_dynamicMouse -= 15 * *this->_pGlobalMultiplier * deltaTime;
 		}
-		ddLine(player->position.x, player->position.y, mx, my, WHITE);
-		ddCircle(mx, my, mouseAnimManager, WHITE);
+		ddLine(this->_pPlayer->position.x, this->_pPlayer->position.y, mouseX, mouseY, WHITE);
+		ddCircle(this->_mouseX, mouseY, this->_dynamicMouse, WHITE);
 	}
 	else
 	{
-		if (mouseAnimManager < 15 * *globalMultiplier * 0.75)
+		if (this->_dynamicMouse < 15 * *this->_pGlobalMultiplier * 0.75)
 		{
-			mouseAnimManager += 30 * *globalMultiplier * deltaTime;
+			this->_dynamicMouse += 30 * *this->_pGlobalMultiplier * deltaTime;
 		}
-		ddLine(player->position.x, player->position.y, mx, my, GREEN);
-		ddCircle(mx, my, mouseAnimManager, GREEN);
+		ddLine(this->_pPlayer->position.x, this->_pPlayer->position.y, this->_mouseX, this->_mouseY, GREEN);
+		ddCircle(this->_mouseX, this->_mouseY, this->_dynamicMouse, GREEN);
 	}
 }
 
@@ -111,25 +109,25 @@ void GameScene::drawLine(float mx, float my, float deltaTime)
 void GameScene::checkCol(float deltaTime)
 {
 	// checks if player is outside of screen, if true the player takes damage
-	if (player->position.x > SWIDTH || player->position.x < 0 || player->position.y > SHEIGHT || player->position.y < 0)
+	if (this->_pPlayer->position.x > SWIDTH || this->_pPlayer->position.x < 0 || this->_pPlayer->position.y > SHEIGHT || this->_pPlayer->position.y < 0)
 	{
-		player->takeDamage(deltaTime, 0.5);
+		this->_pPlayer->takeDamage(deltaTime, 0.5);
 	}
 
 	// checks if any of the enemies touch the player
-	for (auto Enemy : _enemies)
+	for (auto Enemy : this->_Enemies)
 	{
 		// if the col() function detects a run the player->takeDamage() function
-		if (enemyColCheck(Enemy, player))
+		if (enemyColCheck(Enemy, this->_pPlayer))
 		{
-			player->takeDamage(deltaTime, Enemy->damageAmount * *globalMultiplier);
+			_pPlayer->takeDamage(deltaTime, Enemy->damageAmount * *this->_pGlobalMultiplier);
 		}
 
-		// if the mouch touches an enemy turn HitEnemy to true and add score per second
-		if (mouseColCheck(Enemy, mx, my))
+		// if the mouch touches an enemy turn _hitEnemy to true and add _Score per second
+		if (mouseColCheck(Enemy, this->_mouseX, this->_mouseY))
 		{
-			AddScore(deltaTime, Enemy->pointAmount / *globalMultiplier);
-			HitEnemy = true;
+			addScore(deltaTime, Enemy->pointAmount / *this->_pGlobalMultiplier);
+			this->_hitEnemy = true;
 		}
 	}
 }
@@ -142,99 +140,68 @@ bool GameScene::enemyColCheck(Enemy *enemy, Player *player)
 }
 
 // checks if enemy collides with mouse
-bool GameScene::mouseColCheck(Enemy *enemy, float mx, float my)
+bool GameScene::mouseColCheck(Enemy *enemy, float _mouseX, float _mouseY)
 {
 	// check if the difference between the mouse and enemy position is less than a dynamic value
-	return (abs(enemy->position.x - mx) < (mouseAnimManager + (enemy->sprite()->size.x * enemy->scale.x) / 2)) && (abs(enemy->position.y - my) < (mouseAnimManager + (enemy->sprite()->size.y * enemy->scale.y) / 2));
+	return (abs(enemy->position.x - _mouseX) < (_dynamicMouse + (enemy->sprite()->size.x * enemy->scale.x) / 2)) && (abs(enemy->position.y - _mouseY) < (_dynamicMouse + (enemy->sprite()->size.y * enemy->scale.y) / 2));
 }
 
 // creates all enteties needed on startup
 void GameScene::setupGame()
 {
+	this->_highScore = getScore();
+
 	// creates player
-	player = new Player();
-	this->addChild(player);
+	this->_pPlayer = new Player();
+	this->addChild(_pPlayer);
 
 	// creates ui
-	UIelement = new UIElement(player, &score);
-	this->addChild(UIelement);
-	CreateScoreT();
+	this->_pUIelement = new UIElement(this->_pPlayer, &this->_Score, this->_highScore);
+	this->addChild(this->_pUIelement);
 
 	// creates starter enemy
 	createLinePathEnemies(1);
 
-	// _WroteFile = false
-	_WroteFile = false;
-
-	HighScore = getScore();
+	// _wroteFile = false
+	this->_wroteFile = false;
 }
 
-// adds score based on parameters
-void GameScene::AddScore(float deltaTime, int amount)
+// adds _Score based on parameters
+void GameScene::addScore(float deltaTime, int amount)
 {
-	// adds a variable score when player is alive and called
-	if (IsAlive)
+	// adds a variable _Score when player is alive and called
+	if (this->_playerIsAlive)
 	{
-		score += amount * deltaTime / *globalMultiplier * 1.5;
-		currentScore = (int)score;
-	}
-}
-
-// creates score text
-void GameScene::CreateScoreT()
-{
-	// sets score to 0
-	score = 0;
-	currentScore = 0;
-
-	// creates score text
-	this->text = new Text();
-	this->text->position = Vector2(20, SHEIGHT - 20);
-	this->addChild(this->text);
-	this->text->scale = Vector2(0.75, 0.75);
-}
-
-// updates the score text
-void GameScene::ManageScoreT()
-{
-	// updates te score text
-	if (IsAlive)
-	{
-		this->text->message(std::to_string(currentScore));
-	}
-	else
-	{
-		this->text->position = Vector2(SWIDTH / 10, SHEIGHT / 2);
-		this->text->scale = Vector2(1, 1);
-		this->text->message("Game Over, your score is:	" + std::to_string(currentScore), RED);
+		this->_Score += amount * deltaTime / *this->_pGlobalMultiplier * 1.5;
+		this->_displayedScore = (int)this->_Score;
 	}
 }
 
 // spawns enemies based on a timer
-void GameScene::ManageSpawns()
+void GameScene::manageSpawns()
 {
-	if (timer->seconds() >= spawnRate)
+	if (this->_pTimer->seconds() >= this->_spawnRate)
 	{
-		// increases the spawnrate each time enemies spawn
-		spawnRate += 0.5;
+		// increases the spawnrate each _Time enemies spawn
+		this->_spawnRate += 0.5;
 
 		// starts the timer
-		timer->start();
+		this->_pTimer->start();
 
 		// creates enemies
-		createAltPathEnemies(rand() % enemyAmount);
+		createAltPathEnemies(rand() % this->_altEnemyAmount);
 		createStoicEnemies(1);
 		createStraightEnemies((rand() % 2) + 1);
-		enemyAmount++;
+		this->_altEnemyAmount++;
 	}
 }
 
 // starts timer
-void GameScene::TimerSetup()
+void GameScene::timerSetup()
 {
 	// setups timer with 5 second spawn delay
-	spawnRate = 5;
-	timer->start();
+	this->_spawnRate = 5;
+	this->_pTimer->start();
 }
 
 // functions for creating enemies
@@ -243,9 +210,9 @@ void GameScene::createAltPathEnemies(int amount)
 	// adds a new enemy to the list before adding them as a child from the game
 	for (size_t i = 0; i < amount; i++)
 	{
-		_enemies.push_back(new AltPathEnemy(&enemyTarget));
+		this->_Enemies.push_back(new AltPathEnemy(&this->_enemyTarget));
 	}
-	for (const auto AltPathEnemy : _enemies)
+	for (const auto AltPathEnemy : this->_Enemies)
 	{
 		this->addChild(AltPathEnemy);
 	}
@@ -256,9 +223,9 @@ void GameScene::createLinePathEnemies(int amount)
 	// adds a new enemy to the list before adding them as a child from the game
 	for (size_t i = 0; i < amount; i++)
 	{
-		_enemies.push_back(new LinePathEnemy(&enemyTarget));
+		_Enemies.push_back(new LinePathEnemy(&this->_enemyTarget));
 	}
-	for (const auto LineEnemy : _enemies)
+	for (const auto LineEnemy : this->_Enemies)
 	{
 		this->addChild(LineEnemy);
 	}
@@ -269,9 +236,9 @@ void GameScene::createStoicEnemies(int amount)
 	// adds a new enemy to the list before adding them as a child from the game
 	for (size_t i = 0; i < amount; i++)
 	{
-		_enemies.push_back(new StoicEnemy());
+		_Enemies.push_back(new StoicEnemy());
 	}
-	for (const auto StoicEnemy : _enemies)
+	for (const auto StoicEnemy : this->_Enemies)
 	{
 		this->addChild(StoicEnemy);
 	}
@@ -282,26 +249,26 @@ void GameScene::createStraightEnemies(int amount)
 	// adds a new enemy to the list before adding them as a child from the game
 	for (size_t i = 0; i < amount; i++)
 	{
-		_enemies.push_back(new StraightEnemy());
+		_Enemies.push_back(new StraightEnemy());
 	}
-	for (const auto StraightEnemy : _enemies)
+	for (const auto StraightEnemy : this->_Enemies)
 	{
 		this->addChild(StraightEnemy);
 	}
 }
 
-void GameScene::saveScore(int score)
+void GameScene::saveScore(int _Score)
 {
-	if (!IsAlive && !_WroteFile)
+	if (!this->_playerIsAlive && !this->_wroteFile)
 	{
-		// if player is death save the score in highscore.txt if its higher than the int stored
-		if (score > HighScore)
+		// if player is death save the _Score in highscore.txt if its higher than the int stored
+		if (_Score > this->_highScore)
 		{
 			std::ofstream file_buffer("highscore.txt");
-			file_buffer << score;
+			file_buffer << _Score;
 			file_buffer.close();
 		}
-		_WroteFile = true;
+		this->_wroteFile = true;
 	}
 }
 
@@ -310,11 +277,11 @@ int GameScene::getScore()
 	if (fileExists("highscore.txt"))
 	{
 		// returns the int stored in highscore.txt
-		std::string score;
+		std::string _Score;
 		std::ifstream file_buffer("highscore.txt");
-		std::getline(file_buffer, score);
+		std::getline(file_buffer, _Score);
 		file_buffer.close();
-		return std::stoi(score);
+		return std::stoi(_Score);
 	}
 	else
 	{
@@ -327,9 +294,9 @@ int GameScene::getScore()
 	}
 }
 
-bool GameScene::fileExists(std::string filename)
+bool GameScene::fileExists(std::string fileName)
 {
 	// checks if file exitsts
-	std::ifstream infile(filename);
+	std::ifstream infile(fileName);
 	return infile.good();
 }

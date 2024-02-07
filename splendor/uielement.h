@@ -6,24 +6,23 @@
 #include <entity.h>
 #include <text.h>
 #include "player.h"
+#include "healthbar.h"
+#include "scoredisplay.h"
 
 class UIElement : public Entity
 {
 public:
 	// functions
-	UIElement(Player *player, float *score);
+	UIElement(Player *player, float *score, long highscore);
 	virtual ~UIElement();
 
 private:
 	// variables
-	Player *PlayerP;
-	int colorInt;
-	float PlayerHealth;
-	bool DamageState;
+	HealthBar *_pHealthBar;
+	ScoreDisplay *_pScoreDisplay;
 
 	// functions
-	void update(float deltaTime);
-	void manageHealthBar();
+	virtual void update(float deltaTime);
 };
 
 #endif /* UIELEMENT_H */

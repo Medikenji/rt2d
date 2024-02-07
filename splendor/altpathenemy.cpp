@@ -3,9 +3,9 @@
 AltPathEnemy::AltPathEnemy(Vector2 *targetEntity) : Enemy()
 { // setup enemy
 	this->scale = Vector2(0.015, 0.015);
-	health = 100;
-	randomiser = rand() % 4;
-	this->targetPosition = targetEntity;
+	this->health = 100;
+	this->_Randomiser = rand() % 4;
+	this->_pTargetPosition = targetEntity;
 	this->sprite()->color = RGBAColor(245, 50, 50, (135 + rand() % 120));
 	this->pointAmount = 1;
 	this->damageAmount = 0.1;
@@ -19,10 +19,10 @@ void AltPathEnemy::update(float deltaTime)
 {
 	Enemy::update(deltaTime);
 	// increases enemy size every second
-	this->scale += 0.0005 * deltaTime * speedMultiplier;
+	this->scale += 0.0005 * deltaTime * sGameMultiplier;
 	// functions
 	countDown(0.5, deltaTime);
-	goMove(*targetPosition, deltaTime);
+	goMove(*this->_pTargetPosition, deltaTime);
 }
 
 void AltPathEnemy::goMove(Vector2 targetPos, float deltaTime)
@@ -30,12 +30,12 @@ void AltPathEnemy::goMove(Vector2 targetPos, float deltaTime)
 	// makes enemy point and go to player
 	Vector2 Vectorial = targetPos - this->position;
 	Vectorial.normalize();
-	velocity += Vectorial * speed * deltaTime;
-	goAccelerate(deltaTime, Vectorial, randomiser);
-	this->position += velocity;
+	this->_Velocity += Vectorial * this->_Speed * deltaTime;
+	goAccelerate(deltaTime, Vectorial, this->_Randomiser);
+	this->position += this->_Velocity;
 
-	// resets velocity
-	velocity *= 0;
+	// resets _Velocity
+	this->_Velocity *= 0;
 }
 
 void AltPathEnemy::goAccelerate(float deltaTime, Vector2 vectorial, int switcher)
@@ -44,16 +44,16 @@ void AltPathEnemy::goAccelerate(float deltaTime, Vector2 vectorial, int switcher
 	switch (switcher)
 	{
 	case 0:
-		speed = rand() % 50 * speedMultiplier;
+		this->_Speed = rand() % 50 * sGameMultiplier;
 		break;
 	case 1:
-		speed = rand() % 100 * speedMultiplier;
+		this->_Speed = rand() % 100 * sGameMultiplier;
 		break;
 	case 2:
-		speed = rand() % 150 * speedMultiplier;
+		this->_Speed = rand() % 150 * sGameMultiplier;
 		break;
 	case 3:
-		speed = rand() % 200 * speedMultiplier;
+		this->_Speed = rand() % 200 * sGameMultiplier;
 		break;
 	}
 }
@@ -61,9 +61,9 @@ void AltPathEnemy::goAccelerate(float deltaTime, Vector2 vectorial, int switcher
 void AltPathEnemy::countDown(float countdownTime, float deltaTime)
 {
 	// starts timer
-	if (time > 0)
+	if (this->_Time > 0)
 	{
-		time -= 1 * deltaTime;
+		this->_Time -= 1 * deltaTime;
 	}
 	else
 	{
@@ -71,9 +71,9 @@ void AltPathEnemy::countDown(float countdownTime, float deltaTime)
 		this->sprite()->color = RGBAColor(245, 50, 50, (135 + rand() % 120));
 
 		// randomises speed
-		randomiser = rand() % 4;
+		this->_Randomiser = rand() % 4;
 
 		// resets timer
-		time = countdownTime;
+		this->_Time = countdownTime;
 	}
 }

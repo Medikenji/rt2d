@@ -13,11 +13,11 @@ Enemy::~Enemy()
 
 void Enemy::update(float deltaTime)
 {
-	Visuals(deltaTime);
-	Boundry();
+	handleVisuals(deltaTime);
+	checkBoundry();
 }
 
-void Enemy::Visuals(float deltaTime)
+void Enemy::handleVisuals(float deltaTime)
 {
 	this->rotation.z += 50 * deltaTime;
 	if (this->rotation.z > TWO_PI)
@@ -26,7 +26,7 @@ void Enemy::Visuals(float deltaTime)
 	}
 }
 
-void Enemy::Boundry()
+void Enemy::checkBoundry()
 {
 	// checks if enemy is to far out of boundry
 	if (this->position.x > SWIDTH + 10 || this->position.y > SHEIGHT + 10 || this->position.x < -10 || this->position.y < -10)

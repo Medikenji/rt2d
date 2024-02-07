@@ -1,7 +1,7 @@
 // splentity.cpp
 
 #include "splentity.h"
-float Splentity::speedMultiplier = 1.0;
+float Splentity::sGameMultiplier = 1.0;
 Splentity::Splentity() : Entity()
 {
 	IsEntityAlive = true;
@@ -13,8 +13,8 @@ Splentity::~Splentity()
 
 void Splentity::update(float deltaTime)
 {
-	// constantly increases the global speed multiplier
-	speedMultiplier += 0.005 * speedMultiplier * deltaTime;
+	// constantly increases the global _Speed multiplier
+	sGameMultiplier += 0.005 * sGameMultiplier * deltaTime;
 }
 
 void Splentity::takeDamage(float deltaTime, float damageAmount)
@@ -33,7 +33,7 @@ void Splentity::killYourself()
 	}
 }
 
-bool Splentity::GetLivingStatus()
+bool Splentity::getLivingStatus()
 {
 	// allows splenities to return their alive status
 	return (this->IsEntityAlive);

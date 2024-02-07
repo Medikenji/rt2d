@@ -13,16 +13,16 @@ public:
 
 private:
 	// variables
-	int randomiser;
-	float speed;
-	float personalMultiplier;
+	int _Randomiser;
+	float _Speed;
+	float _personalMultiplier;
 
 	// functions
 	void update(float deltaTime);
-	void ManageMovement(float deltaTime);
-	void GoMove(float deltaTime);
-	void Spawn();
-	void Boundry();
+	void manageMovement(float deltaTime);
+	void goMove(float deltaTime);
+	void spawnSelf();
+	void checkBoundry();
 };
 
 #endif /* STRAIGHTENEMY_H */

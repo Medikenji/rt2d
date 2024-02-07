@@ -10,15 +10,15 @@ class Splentity : public Entity
 public:
 	// variables
 	double health;
-	static float speedMultiplier;
+	static float sGameMultiplier;
 	float damageAmount;
+	bool IsEntityAlive;
 
 	// functions
 	Splentity();
 	virtual ~Splentity();
 	void takeDamage(float deltaTime, float damageAmount);
-	bool GetLivingStatus();
-	bool IsEntityAlive;
+	bool getLivingStatus();
 
 protected:
 	// functions

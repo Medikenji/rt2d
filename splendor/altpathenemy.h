@@ -14,10 +14,10 @@ public:
 
 private:
 	// variables
-	float time;
-	Vector2 *targetPosition;
-	int randomiser;
-	float speed;
+	float _Time;
+	Vector2 *_pTargetPosition;
+	int _Randomiser;
+	float _Speed;
 
 	// functions
 	void goMove(Vector2 playerPos, float deltaTime);

@@ -13,9 +13,9 @@ public:
 
 private:
 	// variables
-	Vector2 *targetPosition;
-	int speed;
-	Vector2 velocity;
+	Vector2 *_pTargetPosition;
+	int _Speed;
+	Vector2 _Velocity;
 
 	// functions
 	virtual void update(float deltaTime);

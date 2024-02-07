@@ -6,13 +6,13 @@ StraightEnemy::StraightEnemy() : Enemy()
 {
 	// setup enemy
 	this->scale = Vector2(0.1, 0.1);
-	this->randomiser = rand() % 3;
+	this->_Randomiser = rand() % 3;
 	this->sprite()->color = RGBAColor(255, 50, 50, 255);
-	this->personalMultiplier = rand() % 10;
-	this->speed = speedMultiplier * 800 * personalMultiplier / 10;
+	this->_personalMultiplier = rand() % 10;
+	this->_Speed = sGameMultiplier * 800 * _personalMultiplier / 10;
 	this->pointAmount = 15;
 	this->damageAmount = 0.8;
-	Spawn();
+	spawnSelf();
 }
 
 StraightEnemy::~StraightEnemy()
@@ -22,44 +22,44 @@ StraightEnemy::~StraightEnemy()
 void StraightEnemy::update(float deltaTime)
 {
 	// increases enemy size every second
-	this->scale += 0.001 * deltaTime * speedMultiplier;
+	this->scale += 0.001 * deltaTime * sGameMultiplier;
 
 	// functions
 	Enemy::update(deltaTime);
-	ManageMovement(deltaTime);
-	GoMove(deltaTime);
-	Boundry();
+	manageMovement(deltaTime);
+	goMove(deltaTime);
+	checkBoundry();
 }
 
-void StraightEnemy::ManageMovement(float deltaTime)
+void StraightEnemy::manageMovement(float deltaTime)
 {
-	switch (randomiser)
+	switch (_Randomiser)
 	{
 	case 0:
-		this->velocity = Vector2(this->speed, 0) * deltaTime;
+		this->_Velocity = Vector2(this->_Speed, 0) * deltaTime;
 		break;
 	case 1:
-		this->velocity = Vector2(-speed, 0) * deltaTime;
+		this->_Velocity = Vector2(-_Speed, 0) * deltaTime;
 		break;
 	case 2:
-		this->velocity = Vector2(0, this->speed) * deltaTime;
+		this->_Velocity = Vector2(0, this->_Speed) * deltaTime;
 		break;
 	case 3:
-		this->velocity = Vector2(0, -this->speed) * deltaTime;
+		this->_Velocity = Vector2(0, -this->_Speed) * deltaTime;
 		break;
 	}
 }
 
-void StraightEnemy::GoMove(float deltaTime)
+void StraightEnemy::goMove(float deltaTime)
 {
-	this->position += velocity;
-	this->velocity *= 0;
+	this->position += _Velocity;
+	this->_Velocity *= 0;
 }
 
-void StraightEnemy::Spawn()
+void StraightEnemy::spawnSelf()
 {
-	// spawns enemy in right the right place based on randomiser val
-	switch (randomiser)
+	// spawns enemy in right the right place based on _Randomiser val
+	switch (_Randomiser)
 	{
 	case 0:
 		this->position = Vector2(-10, rand() % SHEIGHT);
@@ -75,10 +75,10 @@ void StraightEnemy::Spawn()
 	}
 }
 
-void StraightEnemy::Boundry()
+void StraightEnemy::checkBoundry()
 {
-	// keeps enemy within game scene based on randomiser val
-	switch (randomiser)
+	// keeps enemy within game scene based on _Randomiser val
+	switch (_Randomiser)
 	{
 	case 0:
 		if (this->position.x > SWIDTH + 10)

@@ -27,30 +27,30 @@
 class GameScene : public Scene
 {
 public:
+	// functions
 	GameScene();
 	virtual ~GameScene();
 
 private:
 	// variables
-	Timer *timer;
-	Player *player;
-	UIElement *UIelement;
-	std::vector<Enemy *> _enemies;
-	Timer t;
-	Vector2 enemyTarget;
-	float mx;
-	float my;
-	float score;
-	int currentScore;
-	bool HitEnemy;
-	bool IsAlive;
-	Text *text;
-	float spawnRate;
-	int enemyAmount = 100;
-	float *globalMultiplier = &Splentity::speedMultiplier;
-	float mouseAnimManager = 1 + *globalMultiplier * 0.75;
-	bool _WroteFile;
-	long HighScore;
+	Timer *_pTimer;
+	Player *_pPlayer;
+	UIElement *_pUIelement;
+	std::vector<Enemy *> _Enemies;
+	Timer _T;
+	Vector2 _enemyTarget;
+	float _mouseX;
+	float _mouseY;
+	float _Score;
+	int _displayedScore;
+	bool _hitEnemy;
+	bool _playerIsAlive;
+	float _spawnRate;
+	int _altEnemyAmount = 100;
+	float *_pGlobalMultiplier = &Splentity::sGameMultiplier;
+	float _dynamicMouse = 1 + *_pGlobalMultiplier * 0.75;
+	bool _wroteFile;
+	long _highScore;
 
 	// functions
 	virtual void update(float deltaTime);
@@ -61,18 +61,16 @@ private:
 	bool enemyColCheck(Enemy *enemy, Player *player);
 	bool mouseColCheck(Enemy *enemy, float mx, float my);
 	void setupGame();
-	void AddScore(float deltaTime, int amount);
-	void CreateScoreT();
-	void ManageScoreT();
-	void ManageSpawns();
-	void TimerSetup();
+	void addScore(float deltaTime, int amount);
+	void manageSpawns();
+	void timerSetup();
 	void createAltPathEnemies(int amount);
 	void createLinePathEnemies(int amount);
 	void createStoicEnemies(int amount);
 	void createStraightEnemies(int amount);
 	void saveScore(int score);
 	int getScore();
-	bool fileExists(std::string filename);
+	bool fileExists(std::string fileName);
 };
 
 #endif

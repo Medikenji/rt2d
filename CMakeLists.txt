@@ -172,6 +172,10 @@ IF(MAKE_SPLENDOR)
 		splendor/uielement.h
 		splendor/straightenemy.cpp
 		splendor/straightenemy.h
+		splendor/scoredisplay.cpp
+		splendor/scoredisplay.h
+		splendor/healthbar.cpp
+		splendor/healthbar.h
 	)
 	target_link_libraries(splendor
 		${ALL_GRAPHICS_LIBS}

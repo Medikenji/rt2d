@@ -7,7 +7,7 @@ class Player : public Splentity
 {
 public:
 	// variables
-	Point velocity;
+	Point _Velocity;
 
 	// functions
 	Player();
@@ -17,10 +17,10 @@ public:
 
 private:
 	// variables
-	Timer t;
-	int speed;
-	double sqrt2 = sqrt(2);
-	double startHealth;
+	Timer _T;
+	int _Speed;
+	double _Sqrt2 = sqrt(2);
+	double _startHealth;
 
 	// functions
 	virtual void update(float deltaTime);

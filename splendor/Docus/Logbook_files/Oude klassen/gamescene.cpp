@@ -33,12 +33,12 @@ void GameScene::update(float deltaTime)
 	getMouse();
 	exitGame();
 	controlPlayer(deltaTime);
-	drawLine(mx, my);
+	drawLine(mMouseX, my);
 }
 
 void GameScene::getMouse()
 {
-	mx = input()->getMouseX();
+	mMouseX = input()->getMouseX();
 	my = input()->getMouseY();
 }
 
@@ -74,8 +74,8 @@ void GameScene::controlPlayer(float deltaTime)
 	}
 }
 
-void GameScene::drawLine(float mx, float my)
+void GameScene::drawLine(float mMouseX, float my)
 {
 	ddClear();
-	ddLine(player->position.x, player->position.y, mx, my, player->sprite()->color);
+	ddLine(player->position.x, player->position.y, mMouseX, my, player->sprite()->color);
 }

@@ -13,9 +13,9 @@ public:
 
 private:
 	// variables
-	float time;
-	float EnemyScale;
-	float globalSpeedScaler;
+	float _Time;
+	float _enemyScale;
+	float _globalSpeedScaler;
 
 	// functions
 	void countDown(float countdownTime, float deltaTime);

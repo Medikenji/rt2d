@@ -9,8 +9,8 @@ class Enemy : public Splentity
 public:
 	// variables
 	int pointAmount;
-	Vector2 velocity;
-	Vector2 *targetPosition;
+	Vector2 _Velocity;
+	Vector2 *pTargetPosition;
 
 	// functions
 	Enemy();
@@ -19,11 +19,11 @@ public:
 
 private:
 	// variables
-	Timer t;
+	Timer _T;
 
 	// functions
-	void Visuals(float deltaTime);
-	virtual void Boundry();
+	void handleVisuals(float deltaTime);
+	virtual void checkBoundry();
 };
 
 #endif

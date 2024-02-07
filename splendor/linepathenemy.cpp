@@ -4,7 +4,7 @@ LinePathEnemy::LinePathEnemy(Vector2 *targetEntity) : Enemy()
 {
 	// setup enemy
 	this->health = 100;
-	this->targetPosition = targetEntity;
+	this->_pTargetPosition = targetEntity;
 	this->scale = Vector2(0.1, 0.1);
 	this->sprite()->color = RGBAColor(255, 0, 0, 255);
 	this->pointAmount = 125;
@@ -19,21 +19,21 @@ void LinePathEnemy::update(float deltaTime)
 {
 	// functions
 	Enemy::update(deltaTime);
-	goMove(*targetPosition, deltaTime);
-	this->pointAmount = 83 * speedMultiplier * 1.5;
+	goMove(*_pTargetPosition, deltaTime);
+	this->pointAmount = 83 * sGameMultiplier * 1.5;
 }
 
 void LinePathEnemy::goMove(Point playerPos, float deltaTime)
 {
-	// updates the speed
-	speed = 350 * speedMultiplier;
+	// updates the _Speed
+	_Speed = 350 * sGameMultiplier;
 
-	// makes enemy point and go to player
+	// makes enemy point and go to _pPlayer
 	Vector2 Vectorial = playerPos - this->position;
 	Vectorial.normalize();
-	velocity += Vectorial * speed * deltaTime;
-	this->position += velocity;
+	_Velocity += Vectorial * _Speed * deltaTime;
+	this->position += _Velocity;
 
 	// resets enemy velocity
-	velocity *= 0;
+	_Velocity *= 0;
 }

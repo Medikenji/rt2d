@@ -31,7 +31,7 @@ void StraightEnemy::update(float deltaTime)
 	checkBoundry();
 }
 
-void StraightEnemy::manageMovement(float deltaTime)
+const void StraightEnemy::manageMovement(float deltaTime)
 {
 	switch (_Randomiser)
 	{
@@ -50,13 +50,13 @@ void StraightEnemy::manageMovement(float deltaTime)
 	}
 }
 
-void StraightEnemy::goMove(float deltaTime)
+const void StraightEnemy::goMove(float deltaTime)
 {
 	this->position += _Velocity;
 	this->_Velocity *= 0;
 }
 
-void StraightEnemy::spawnSelf()
+const void StraightEnemy::spawnSelf()
 {
 	// spawns enemy in right the right place based on _Randomiser val
 	switch (_Randomiser)
@@ -75,7 +75,7 @@ void StraightEnemy::spawnSelf()
 	}
 }
 
-void StraightEnemy::checkBoundry()
+const void StraightEnemy::checkBoundry()
 {
 	// keeps enemy within game scene based on _Randomiser val
 	switch (_Randomiser)

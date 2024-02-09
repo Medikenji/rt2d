@@ -23,8 +23,6 @@ void ScoreDisplay::update(float deltaTime)
 // creates _Score text
 void ScoreDisplay::createScoreT()
 {
-	_displayedScore = 0;
-
 	// creates _Score text
 	this->_pText = new Text();
 	this->_pText->position = Vector2(20, SHEIGHT - 20);
@@ -38,14 +36,13 @@ void ScoreDisplay::manageScoreT()
 	// updates te _Score text
 	if (_pPlayer->getLivingStatus())
 	{
-		_displayedScore = (int)*_pScore;
-		this->_pText->message(std::to_string(_displayedScore), dynamicColor(255, 255, 0));
+		this->_pText->message(std::to_string((int)*_pScore), dynamicColor(255, 255, 0));
 	}
 	else
 	{
 		this->_pText->position = Vector2(SWIDTH / 10, SHEIGHT / 2);
 		this->_pText->scale = Vector2(1, 1);
-		this->_pText->message("Game Over, your _Score is:	" + std::to_string(_displayedScore), RED);
+		this->_pText->message("Game Over, your score is:	" + std::to_string((int)*_pScore), RED);
 	}
 }
 

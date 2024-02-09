@@ -22,7 +22,7 @@ private:
 	Timer _T;
 
 	// functions
-	void handleVisuals(float deltaTime);
+	const void handleVisuals(float deltaTime);
 	virtual void checkBoundry();
 };
 

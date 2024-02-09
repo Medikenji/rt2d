@@ -2,13 +2,13 @@
 
 AltPathEnemy::AltPathEnemy(Vector2 *targetEntity) : Enemy()
 { // setup enemy
-	this->scale = Vector2(0.015, 0.015);
+	this->scale = Vector2(0.03, 0.03);
 	this->health = 100;
 	this->_Randomiser = rand() % 4;
 	this->_pTargetPosition = targetEntity;
 	this->sprite()->color = RGBAColor(245, 50, 50, (135 + rand() % 120));
 	this->pointAmount = 1;
-	this->damageAmount = 0.1;
+	this->damageAmount = 2.5;
 }
 
 AltPathEnemy::~AltPathEnemy()
@@ -25,7 +25,7 @@ void AltPathEnemy::update(float deltaTime)
 	goMove(*this->_pTargetPosition, deltaTime);
 }
 
-void AltPathEnemy::goMove(Vector2 targetPos, float deltaTime)
+const void AltPathEnemy::goMove(Vector2 targetPos, float deltaTime)
 {
 	// makes enemy point and go to player
 	Vector2 Vectorial = targetPos - this->position;
@@ -38,7 +38,7 @@ void AltPathEnemy::goMove(Vector2 targetPos, float deltaTime)
 	this->_Velocity *= 0;
 }
 
-void AltPathEnemy::goAccelerate(float deltaTime, Vector2 vectorial, int switcher)
+const void AltPathEnemy::goAccelerate(float deltaTime, Vector2 vectorial, int switcher)
 {
 	// updates the speed randomly
 	switch (switcher)
@@ -58,7 +58,7 @@ void AltPathEnemy::goAccelerate(float deltaTime, Vector2 vectorial, int switcher
 	}
 }
 
-void AltPathEnemy::countDown(float countdownTime, float deltaTime)
+const void AltPathEnemy::countDown(float countdownTime, float deltaTime)
 {
 	// starts timer
 	if (this->_Time > 0)

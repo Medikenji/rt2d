@@ -23,7 +23,7 @@ void Player::update(float deltaTime)
 	regenHealth(deltaTime);
 }
 
-void Player::controlPlayer(int switcher, float deltaTime)
+const void Player::controlPlayer(int switcher, float deltaTime)
 {
 	// allows the _pPlayer to move depending on the switcher val
 	switch (switcher)
@@ -46,7 +46,7 @@ void Player::controlPlayer(int switcher, float deltaTime)
 	}
 }
 
-void Player::handlePlayer()
+const void Player::handlePlayer()
 {
 	// allows _pPlayer to not go faster when moving on the X and Y axis
 	this->_Speed = 750 * sGameMultiplier / 2;
@@ -60,13 +60,13 @@ void Player::handlePlayer()
 	this->_Velocity *= 0;
 }
 
-double Player::getHealth()
+double Player::getHealth() const
 {
 	// get setter for _pPlayer health
 	return (this->health / this->_startHealth) * 100;
 }
 
-void Player::regenHealth(float deltaTime)
+const void Player::regenHealth(float deltaTime)
 {
 	// regens health depending on how much hp is left
 	if (this->health < this->_startHealth / 4 && this->health > 0)

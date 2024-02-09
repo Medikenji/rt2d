@@ -15,12 +15,10 @@ public:
 
 private:
 	// variables
-	int _displayedScore;
 	float *_pScore;
 	long _Highscore;
 	Text *_pText;
 	Player *_pPlayer;
-
 	// functions
 	virtual void update(float deltaTime);
 	void manageScoreT();

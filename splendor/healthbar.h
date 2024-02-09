@@ -21,7 +21,7 @@ private:
 
 	// functions
 	virtual void update(float deltaTime);
-	void manageHealthBar();
+	const void manageHealthBar();
 };
 
 #endif /* HEALTHBAR_H */

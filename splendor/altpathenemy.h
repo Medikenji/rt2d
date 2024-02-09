@@ -20,9 +20,9 @@ private:
 	float _Speed;
 
 	// functions
-	void goMove(Vector2 playerPos, float deltaTime);
-	void goAccelerate(float deltaTime, Vector2 vectorial, int switcher);
-	void countDown(float countdownTime, float deltaTime);
+	const void goMove(Vector2 playerPos, float deltaTime);
+	const void goAccelerate(float deltaTime, Vector2 vectorial, int switcher);
+	const void countDown(float countdownTime, float deltaTime);
 };
 
 #endif /* ALTPATHENEMY_H */

@@ -12,8 +12,8 @@ public:
 	// functions
 	Player();
 	virtual ~Player();
-	double getHealth();
-	void controlPlayer(int switcher, float deltaTime);
+	double getHealth() const;
+	const void controlPlayer(int switcher, float deltaTime);
 
 private:
 	// variables
@@ -24,7 +24,7 @@ private:
 
 	// functions
 	virtual void update(float deltaTime);
-	void handlePlayer();
-	void regenHealth(float deltaTime);
+	const void handlePlayer();
+	const void regenHealth(float deltaTime);
 };
 #endif

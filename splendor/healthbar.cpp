@@ -21,7 +21,7 @@ void HealthBar::update(float deltaTime)
 	manageHealthBar();
 }
 
-void HealthBar::manageHealthBar()
+const void HealthBar::manageHealthBar()
 {
 	// converts the playerhealth into the size of the healtbar
 	if (static_cast<float>(static_cast<int>(this->_playerHealth * 10)) / 10 <= static_cast<float>(static_cast<int>(this->_pPlayer->getHealth() * 10)) / 10)
@@ -40,7 +40,7 @@ void HealthBar::manageHealthBar()
 	else
 	{
 		this->sprite()->color = RGBAColor(255, 0, 0, 255);
-		this->scale = Vector2(((SWIDTH / 2) * this->_playerHealth) / 100, 2.5);
+		this->scale = Vector2(((SWIDTH / 2) * this->_playerHealth) / 100, 2);
 	}
 	_damageState = false;
 }

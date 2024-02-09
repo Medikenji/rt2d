@@ -18,8 +18,8 @@ private:
 	float _globalSpeedScaler;
 
 	// functions
-	void countDown(float countdownTime, float deltaTime);
 	void update(float deltaTime);
+	const void countDown(float countdownTime, float deltaTime);
 };
 
 #endif /* STOICENEMY_H */

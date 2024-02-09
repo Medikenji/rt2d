@@ -19,7 +19,7 @@ private:
 
 	// functions
 	virtual void update(float deltaTime);
-	void goMove(Point playerPos, float deltaTime);
+	const void goMove(Point playerPos, float deltaTime);
 };
 
 #endif /* LINEPATHENEMY_H */

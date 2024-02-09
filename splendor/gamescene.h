@@ -37,6 +37,8 @@ private:
 	Player *_pPlayer;
 	UIElement *_pUIelement;
 	std::vector<Enemy *> _Enemies;
+	float *_pPlayerPosX;
+	float *_pPlayerPosY;
 	Timer _T;
 	Vector2 _enemyTarget;
 	float _mouseX;
@@ -46,7 +48,7 @@ private:
 	bool _hitEnemy;
 	bool _playerIsAlive;
 	float _spawnRate;
-	int _altEnemyAmount = 100;
+	unsigned int _altEnemyAmount = 50;
 	float *_pGlobalMultiplier = &Splentity::sGameMultiplier;
 	float _dynamicMouse = 1 + *_pGlobalMultiplier * 0.75;
 	bool _wroteFile;
@@ -54,23 +56,23 @@ private:
 
 	// functions
 	virtual void update(float deltaTime);
-	void updateFunctions();
-	void controlPlayer(float deltaTime);
-	void drawLine(float mx, float my, float deltaTime);
-	void checkCol(float deltaTime);
-	bool enemyColCheck(Enemy *enemy, Player *player);
-	bool mouseColCheck(Enemy *enemy, float mx, float my);
-	void setupGame();
-	void addScore(float deltaTime, int amount);
-	void manageSpawns();
-	void timerSetup();
-	void createAltPathEnemies(int amount);
-	void createLinePathEnemies(int amount);
-	void createStoicEnemies(int amount);
-	void createStraightEnemies(int amount);
-	void saveScore(int score);
-	int getScore();
-	bool fileExists(std::string fileName);
+	const void updateFunctions();
+	const void controlPlayer(float deltaTime);
+	const void drawLine(float mx, float my, float deltaTime);
+	const void checkCol(float deltaTime);
+	const bool enemyColCheck(Enemy *enemy, Player *player);
+	const bool mouseColCheck(Enemy *enemy, float mx, float my);
+	const void setupGame();
+	const void addScore(float deltaTime, const unsigned int amount);
+	const void manageSpawns();
+	const void timerSetup();
+	const void createAltPathEnemies(int amount);
+	const void createLinePathEnemies(int amount);
+	const void createStoicEnemies(int amount);
+	const void createStraightEnemies(int amount);
+	const void saveScore(int score);
+	const int getScore();
+	const bool fileExists(std::string fileName);
 };
 
 #endif

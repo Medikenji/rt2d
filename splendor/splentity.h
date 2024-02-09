@@ -17,13 +17,13 @@ public:
 	// functions
 	Splentity();
 	virtual ~Splentity();
-	void takeDamage(float deltaTime, float damageAmount);
-	bool getLivingStatus();
+	const void takeDamage(float deltaTime, float damageAmount);
+	const bool getLivingStatus() const;
 
 protected:
 	// functions
 	void update(float deltaTime);
-	void killYourself();
+	const void killYourself();
 };
 
 #endif /* SPLENTITY_H */

@@ -26,7 +26,7 @@ void StoicEnemy::update(float deltaTime)
 	countDown(10, deltaTime);
 }
 
-void StoicEnemy::countDown(float countdownTime, float deltaTime)
+const void StoicEnemy::countDown(float countdownTime, float deltaTime)
 {
 	// starts _pTimer
 	if (_Time > 0)

@@ -9,7 +9,6 @@ GameScene::GameScene() : Scene()
 	// creates and starts timer
 	this->_pTimer = new Timer();
 	timerSetup();
-
 	// creates all entities that need to exist on startup
 	setupGame();
 }
@@ -30,7 +29,7 @@ void GameScene::update(float deltaTime)
 }
 
 // small things that need to be called every frame
-void GameScene::updateFunctions()
+const void GameScene::updateFunctions()
 {
 	// gets location of mouse
 	this->_mouseX = input()->getMouseX();
@@ -47,39 +46,27 @@ void GameScene::updateFunctions()
 }
 
 // calls player controls through inputs
-void GameScene::controlPlayer(float deltaTime)
+const void GameScene::controlPlayer(float deltaTime)
 {
 	// enables quitting the game
 	if (input()->getKeyUp(KeyCode::Escape))
-	{
 		this->stop();
-	}
 
 	// player movement controlls
 	if (input()->getKey(KeyCode::W))
-	{
 		this->_pPlayer->controlPlayer(UP, deltaTime);
-	}
 	if (input()->getKey(KeyCode::S))
-	{
 		this->_pPlayer->controlPlayer(DOWN, deltaTime);
-	}
 	if (input()->getKey(KeyCode::A))
-	{
 		this->_pPlayer->controlPlayer(LEFT, deltaTime);
-	}
 	if (input()->getKey(KeyCode::D))
-	{
 		this->_pPlayer->controlPlayer(RIGHT, deltaTime);
-	}
 	if (input()->getKey(KeyCode::LeftShift))
-	{
 		this->_pPlayer->controlPlayer(BOOST, deltaTime);
-	}
 }
 
 // draws line from player through mouse depending on scenario
-void GameScene::drawLine(float mouseX, float mouseY, float deltaTime)
+const void GameScene::drawLine(float mouseX, float mouseY, float deltaTime)
 {
 	// clears the line before another one gets drawn
 	ddClear();
@@ -88,40 +75,32 @@ void GameScene::drawLine(float mouseX, float mouseY, float deltaTime)
 	if (this->_hitEnemy == false)
 	{
 		if (this->_dynamicMouse > 1 + *this->_pGlobalMultiplier * 0.75)
-		{
 			this->_dynamicMouse -= 15 * *this->_pGlobalMultiplier * deltaTime;
-		}
 		ddLine(this->_pPlayer->position.x, this->_pPlayer->position.y, mouseX, mouseY, WHITE);
-		ddCircle(this->_mouseX, mouseY, this->_dynamicMouse, WHITE);
+		ddCircle(this->_mouseX, this->_mouseY, this->_dynamicMouse, WHITE);
 	}
 	else
 	{
 		if (this->_dynamicMouse < 15 * *this->_pGlobalMultiplier * 0.75)
-		{
 			this->_dynamicMouse += 30 * *this->_pGlobalMultiplier * deltaTime;
-		}
 		ddLine(this->_pPlayer->position.x, this->_pPlayer->position.y, this->_mouseX, this->_mouseY, GREEN);
 		ddCircle(this->_mouseX, this->_mouseY, this->_dynamicMouse, GREEN);
 	}
 }
 
 // calls all collision checks and handles them
-void GameScene::checkCol(float deltaTime)
+const void GameScene::checkCol(float deltaTime)
 {
 	// checks if player is outside of screen, if true the player takes damage
 	if (this->_pPlayer->position.x > SWIDTH || this->_pPlayer->position.x < 0 || this->_pPlayer->position.y > SHEIGHT || this->_pPlayer->position.y < 0)
-	{
 		this->_pPlayer->takeDamage(deltaTime, 0.5);
-	}
 
 	// checks if any of the enemies touch the player
 	for (auto Enemy : this->_Enemies)
 	{
 		// if the col() function detects a run the player->takeDamage() function
 		if (enemyColCheck(Enemy, this->_pPlayer))
-		{
 			_pPlayer->takeDamage(deltaTime, Enemy->damageAmount * *this->_pGlobalMultiplier);
-		}
 
 		// if the mouch touches an enemy turn _hitEnemy to true and add _Score per second
 		if (mouseColCheck(Enemy, this->_mouseX, this->_mouseY))
@@ -133,27 +112,28 @@ void GameScene::checkCol(float deltaTime)
 }
 
 // checks if enemy collides with player
-bool GameScene::enemyColCheck(Enemy *enemy, Player *player)
+const bool GameScene::enemyColCheck(Enemy *enemy, Player *player)
 {
-	// check if the difference between the player and enemy position is less than a dynamic value
-	return (abs(enemy->position.x - player->position.x) < (player->sprite()->size.x * player->scale.x + (enemy->sprite()->size.x * enemy->scale.x) / 2)) && (abs(enemy->position.y - player->position.y) < (player->sprite()->size.y * player->scale.y + (enemy->sprite()->size.y * enemy->scale.y) / 2));
+	return (abs(enemy->position.x - *_pPlayerPosX) < (player->sprite()->size.x * player->scale.x + (enemy->sprite()->size.x * enemy->scale.x) / 2)) && (abs(enemy->position.y - *_pPlayerPosY) < (player->sprite()->size.y * player->scale.y + (enemy->sprite()->size.y * enemy->scale.y) / 2));
 }
 
 // checks if enemy collides with mouse
-bool GameScene::mouseColCheck(Enemy *enemy, float _mouseX, float _mouseY)
+const bool GameScene::mouseColCheck(Enemy *enemy, float _mouseX, float _mouseY)
 {
 	// check if the difference between the mouse and enemy position is less than a dynamic value
 	return (abs(enemy->position.x - _mouseX) < (_dynamicMouse + (enemy->sprite()->size.x * enemy->scale.x) / 2)) && (abs(enemy->position.y - _mouseY) < (_dynamicMouse + (enemy->sprite()->size.y * enemy->scale.y) / 2));
 }
 
 // creates all enteties needed on startup
-void GameScene::setupGame()
+const void GameScene::setupGame()
 {
 	this->_highScore = getScore();
 
 	// creates player
 	this->_pPlayer = new Player();
 	this->addChild(_pPlayer);
+	this->_pPlayerPosX = &_pPlayer->position.x;
+	this->_pPlayerPosY = &_pPlayer->position.y;
 
 	// creates ui
 	this->_pUIelement = new UIElement(this->_pPlayer, &this->_Score, this->_highScore);
@@ -167,7 +147,7 @@ void GameScene::setupGame()
 }
 
 // adds _Score based on parameters
-void GameScene::addScore(float deltaTime, int amount)
+const void GameScene::addScore(float deltaTime, unsigned int amount)
 {
 	// adds a variable _Score when player is alive and called
 	if (this->_playerIsAlive)
@@ -178,7 +158,7 @@ void GameScene::addScore(float deltaTime, int amount)
 }
 
 // spawns enemies based on a timer
-void GameScene::manageSpawns()
+const void GameScene::manageSpawns()
 {
 	if (this->_pTimer->seconds() >= this->_spawnRate)
 	{
@@ -197,7 +177,7 @@ void GameScene::manageSpawns()
 }
 
 // starts timer
-void GameScene::timerSetup()
+const void GameScene::timerSetup()
 {
 	// setups timer with 5 second spawn delay
 	this->_spawnRate = 5;
@@ -205,7 +185,7 @@ void GameScene::timerSetup()
 }
 
 // functions for creating enemies
-void GameScene::createAltPathEnemies(int amount)
+const void GameScene::createAltPathEnemies(int amount)
 {
 	// adds a new enemy to the list before adding them as a child from the game
 	for (size_t i = 0; i < amount; i++)
@@ -218,7 +198,7 @@ void GameScene::createAltPathEnemies(int amount)
 	}
 }
 
-void GameScene::createLinePathEnemies(int amount)
+const void GameScene::createLinePathEnemies(int amount)
 {
 	// adds a new enemy to the list before adding them as a child from the game
 	for (size_t i = 0; i < amount; i++)
@@ -231,7 +211,7 @@ void GameScene::createLinePathEnemies(int amount)
 	}
 }
 
-void GameScene::createStoicEnemies(int amount)
+const void GameScene::createStoicEnemies(int amount)
 {
 	// adds a new enemy to the list before adding them as a child from the game
 	for (size_t i = 0; i < amount; i++)
@@ -244,7 +224,7 @@ void GameScene::createStoicEnemies(int amount)
 	}
 }
 
-void GameScene::createStraightEnemies(int amount)
+const void GameScene::createStraightEnemies(int amount)
 {
 	// adds a new enemy to the list before adding them as a child from the game
 	for (size_t i = 0; i < amount; i++)
@@ -257,7 +237,7 @@ void GameScene::createStraightEnemies(int amount)
 	}
 }
 
-void GameScene::saveScore(int _Score)
+const void GameScene::saveScore(int _Score)
 {
 	if (!this->_playerIsAlive && !this->_wroteFile)
 	{
@@ -272,7 +252,7 @@ void GameScene::saveScore(int _Score)
 	}
 }
 
-int GameScene::getScore()
+const int GameScene::getScore()
 {
 	if (fileExists("highscore.txt"))
 	{
@@ -294,7 +274,7 @@ int GameScene::getScore()
 	}
 }
 
-bool GameScene::fileExists(std::string fileName)
+const bool GameScene::fileExists(std::string fileName)
 {
 	// checks if file exitsts
 	std::ifstream infile(fileName);

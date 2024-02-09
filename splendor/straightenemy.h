@@ -19,9 +19,9 @@ private:
 
 	// functions
 	void update(float deltaTime);
-	void manageMovement(float deltaTime);
-	void goMove(float deltaTime);
-	void spawnSelf();
+	const void manageMovement(float deltaTime);
+	const void goMove(float deltaTime);
+	const void spawnSelf();
 	void checkBoundry();
 };
 

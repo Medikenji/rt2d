@@ -14,7 +14,7 @@ Enemy::~Enemy()
 void Enemy::update(float deltaTime)
 {
 	handleVisuals(deltaTime);
-	checkBoundry();
+	checkBoundary();
 }
 
 const void Enemy::handleVisuals(float deltaTime)
@@ -26,9 +26,9 @@ const void Enemy::handleVisuals(float deltaTime)
 	}
 }
 
-void Enemy::checkBoundry()
+void Enemy::checkBoundary()
 {
-	// checks if enemy is to far out of boundry
+	// checks if enemy is to far out of boundary
 	if (this->position.x > SWIDTH + 10 || this->position.y > SHEIGHT + 10 || this->position.x < -10 || this->position.y < -10)
 	{
 		// randomly places enemy outside of screen

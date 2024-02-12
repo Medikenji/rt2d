@@ -28,7 +28,7 @@ void StraightEnemy::update(float deltaTime)
 	Enemy::update(deltaTime);
 	manageMovement(deltaTime);
 	goMove(deltaTime);
-	checkBoundry();
+	checkBoundary();
 }
 
 const void StraightEnemy::manageMovement(float deltaTime)
@@ -75,7 +75,7 @@ const void StraightEnemy::spawnSelf()
 	}
 }
 
-const void StraightEnemy::checkBoundry()
+void StraightEnemy::checkBoundary()
 {
 	// keeps enemy within game scene based on _Randomiser val
 	switch (_Randomiser)

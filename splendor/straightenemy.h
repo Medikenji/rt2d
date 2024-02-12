@@ -22,7 +22,7 @@ private:
 	const void manageMovement(float deltaTime);
 	const void goMove(float deltaTime);
 	const void spawnSelf();
-	void checkBoundry();
+	void checkBoundary();
 };
 
 #endif /* STRAIGHTENEMY_H */

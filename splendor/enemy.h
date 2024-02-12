@@ -23,7 +23,7 @@ private:
 
 	// functions
 	const void handleVisuals(float deltaTime);
-	virtual void checkBoundry();
+	virtual void checkBoundary();
 };
 
 #endif

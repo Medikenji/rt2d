@@ -23,7 +23,7 @@ void GameScene::update(float deltaTime)
 	updateFunctions();
 	controlPlayer(deltaTime);
 	checkCol(deltaTime);
-	drawLine(this->_mouseX, this->_mouseY, deltaTime);
+	drawLine(deltaTime);
 	saveScore(this->_Score);
 	manageSpawns();
 }
@@ -31,10 +31,6 @@ void GameScene::update(float deltaTime)
 // small things that need to be called every frame
 const void GameScene::updateFunctions()
 {
-	// gets location of mouse
-	this->_mouseX = input()->getMouseX();
-	this->_mouseY = input()->getMouseY();
-
 	// resets the enemy hit val every frame
 	this->_hitEnemy = false;
 
@@ -43,6 +39,10 @@ const void GameScene::updateFunctions()
 
 	// sets the target for enemies
 	this->_enemyTarget = this->_pPlayer->position;
+
+	// gets location of mouse
+	_mouseX = input()->getMouseX();
+	_mouseY = input()->getMouseY();
 }
 
 // calls player controls through inputs
@@ -52,7 +52,7 @@ const void GameScene::controlPlayer(float deltaTime)
 	if (input()->getKeyUp(KeyCode::Escape))
 		this->stop();
 
-	// player movement controlls
+	// player movement controls
 	if (input()->getKey(KeyCode::W))
 		this->_pPlayer->controlPlayer(UP, deltaTime);
 	if (input()->getKey(KeyCode::S))
@@ -66,7 +66,7 @@ const void GameScene::controlPlayer(float deltaTime)
 }
 
 // draws line from player through mouse depending on scenario
-const void GameScene::drawLine(float mouseX, float mouseY, float deltaTime)
+const void GameScene::drawLine(float deltaTime)
 {
 	// clears the line before another one gets drawn
 	ddClear();
@@ -76,7 +76,7 @@ const void GameScene::drawLine(float mouseX, float mouseY, float deltaTime)
 	{
 		if (this->_dynamicMouse > 1 + *this->_pGlobalMultiplier * 0.75)
 			this->_dynamicMouse -= 15 * *this->_pGlobalMultiplier * deltaTime;
-		ddLine(this->_pPlayer->position.x, this->_pPlayer->position.y, mouseX, mouseY, WHITE);
+		ddLine(this->_pPlayer->position.x, this->_pPlayer->position.y, this->_mouseX, this->_mouseY, WHITE);
 		ddCircle(this->_mouseX, this->_mouseY, this->_dynamicMouse, WHITE);
 	}
 	else
@@ -102,8 +102,8 @@ const void GameScene::checkCol(float deltaTime)
 		if (enemyColCheck(Enemy, this->_pPlayer))
 			_pPlayer->takeDamage(deltaTime, Enemy->damageAmount * *this->_pGlobalMultiplier);
 
-		// if the mouch touches an enemy turn _hitEnemy to true and add _Score per second
-		if (mouseColCheck(Enemy, this->_mouseX, this->_mouseY))
+		// if the mouse touches an enemy turn _hitEnemy to true and add _Score per second
+		if (mouseColCheck(Enemy))
 		{
 			addScore(deltaTime, Enemy->pointAmount / *this->_pGlobalMultiplier);
 			this->_hitEnemy = true;
@@ -118,13 +118,13 @@ const bool GameScene::enemyColCheck(Enemy *enemy, Player *player)
 }
 
 // checks if enemy collides with mouse
-const bool GameScene::mouseColCheck(Enemy *enemy, float _mouseX, float _mouseY)
+const bool GameScene::mouseColCheck(Enemy *enemy)
 {
 	// check if the difference between the mouse and enemy position is less than a dynamic value
-	return (abs(enemy->position.x - _mouseX) < (_dynamicMouse + (enemy->sprite()->size.x * enemy->scale.x) / 2)) && (abs(enemy->position.y - _mouseY) < (_dynamicMouse + (enemy->sprite()->size.y * enemy->scale.y) / 2));
+	return (abs(enemy->position.x - this->_mouseX) < (_dynamicMouse + (enemy->sprite()->size.x * enemy->scale.x) / 2)) && (abs(enemy->position.y - this->_mouseY) < (_dynamicMouse + (enemy->sprite()->size.y * enemy->scale.y) / 2));
 }
 
-// creates all enteties needed on startup
+// creates all entities needed on startup
 const void GameScene::setupGame()
 {
 	this->_highScore = getScore();
@@ -144,6 +144,9 @@ const void GameScene::setupGame()
 
 	// _wroteFile = false
 	this->_wroteFile = false;
+
+	// sets up variables
+	_altEnemyAmount = 50;
 }
 
 // adds _Score based on parameters
@@ -276,7 +279,7 @@ const int GameScene::getScore()
 
 const bool GameScene::fileExists(std::string fileName)
 {
-	// checks if file exitsts
+	// checks if file exists
 	std::ifstream infile(fileName);
 	return infile.good();
 }
